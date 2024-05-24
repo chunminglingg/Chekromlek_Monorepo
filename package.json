@@ -7,16 +7,16 @@
   "workspaces": {
     "packages": [
       "packages/*",
-      "apps/*"
+      "apps"
     ],
     "nohoist": [
       "**/packages/**",
-      "**/apps/**"
+      "*/apps/*"
     ]
   },
   "scripts": {
     "start:docker": "docker-compose up --build",
-    "start:app": "yarn workspace apps start:dev",
+    "start:app": "yarn workspace chekromlek-v1 start:dev",
     "start:api-gateway": "yarn workspace api-gateway start:dev",
     "start:auth-service": "yarn workspace auth start:dev",
     "start:notificaton-service": "yarn workspace notification start:dev",

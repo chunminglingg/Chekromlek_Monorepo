@@ -17,29 +17,6 @@ services:
       timeout: 10s
       retries: 5
 
-  # Application 
-  next-app:
-    build:
-      context: .
-      dockerfile: ./apps/Dockerfile.dev
-    volumes:
-      - .:/app
-      - /app/node_modules
-      - /app/apps/node_modules
-    ports:
-      - '8000:8000'
-    environment:
-      - NODE_ENV=development
-
-  next-prod: 
-    build:
-      context: .
-      dockerfile: ./apps/Dockerfile.prod
-    ports:
-      - '8080:8080'
-    environment:
-      - NODE_ENV=development
-
   # 2. Gateway - API Gateway service
   gateway:
     container_name: gateway_container
