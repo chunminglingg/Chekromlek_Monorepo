@@ -1,15 +1,15 @@
+import { verificationToken } from '@users/middlewares/auth-token-validate';
 import { IUser } from '../database/models/user.model';
-import validateInput from '@users/middlewares/validate-input';
-import { UserSaveSchema, UserUpdateSchema } from '@users/schema/user.schema';
+// import { UserSaveSchema, UserUpdateSchema } from '@users/schema/user.schema';
 import { UserService } from '@users/services/user.service';
 import { StatusCode } from '@users/utils/consts';
 import { logger } from '@users/utils/logger';
-// import axios from 'axios';
 import {
   Body,
   Middlewares,
   Path,
   Post,
+  Get,
   Put,
   Route,
   SuccessResponse,
@@ -23,9 +23,9 @@ export class UserController {
   }
   @SuccessResponse(StatusCode.Created, 'Created')
   @Post('/')
-  @Middlewares(validateInput(UserSaveSchema))
+  // @Middlewares(validateInput(UserSaveSchema))
   public async SaveProfile(
-    @Body() reqBody: IUser & { userId: string }
+    @Body() reqBody: IUser & { authId: string },
   ): Promise<any> {
     try {
       // const authResponse = await axios.get(
@@ -47,14 +47,16 @@ export class UserController {
     }
   }
   @SuccessResponse(StatusCode.OK, 'OK')
-  @Put('/:userId')
-  @Middlewares(validateInput(UserUpdateSchema))
+  @Put('/:id')
+  // @Middlewares(validateInput(UserUpdateSchema))
+  @Middlewares(verificationToken)
   public async UpdateProfile(
     @Body() reqBody: IUser,
-    @Path() userId: string
+    @Path() id: string,
   ): Promise<any> {
     try {
-      const modifiedUser = await this.userService.UpdateById(userId, reqBody);
+      console.log(verificationToken);
+      const modifiedUser = await this.userService.UpdateById(id, reqBody);
 
       return {
         message: 'User profile update successfully',
@@ -62,6 +64,36 @@ export class UserController {
       };
     } catch (error) {
       logger.error(`UserService controller method error: ${error}`);
+      throw error;
+    }
+  }
+  @SuccessResponse(StatusCode.OK, 'OK')
+  @Get('/auth/:authId')
+  @Middlewares(verificationToken)
+  public async GetAuthById(@Path() authId: string): Promise<any> {
+    try {
+      const user = await this.userService.getAuthById(authId);
+      return {
+        message: 'Get Successfully',
+        data: user,
+      };
+    } catch (error) {
+      logger.error('Controller Get Auth Error:', error);
+      throw error;
+    }
+  }
+  @SuccessResponse(StatusCode.OK, 'OK')
+  @Get('/:id')
+  @Middlewares(verificationToken)
+  public async GetUserById(@Path() id: string): Promise<any> {
+    try {
+      const user = await this.userService.getUserById({ id });
+      return {
+        message: 'Get Successfully',
+        data: user,
+      };
+    } catch (error) {
+      logger.error('Controller Get Auth Error:', error);
       throw error;
     }
   }

@@ -7,7 +7,7 @@ export class UserService {
   constructor() {
     this.userRepo = new UserRepository();
   }
-  async CreateUser(user: IUser & { userId: string }) {
+  async CreateUser(user: IUser & { authId: string }) {
     try {
       const newUser = await this.userRepo.createUser(user);
       return newUser;
@@ -21,6 +21,23 @@ export class UserService {
       return await this.userRepo.UpdateUserbyId({ id, update: update });
     } catch (error) {
       logger.error('Update error: ', error);
+      throw error;
+    }
+  }
+  async getAuthById(authId: string) {
+    try {
+      return await this.userRepo.FindAuthById(authId);
+    } catch (error) {
+      logger.error('Get Auth Error:', error);
+      throw error;
+    }
+  }
+
+  async getUserById({ id }: { id: string }) {
+    try {
+      return await this.userRepo.FindUserById({ id });
+    } catch (error) {
+      logger.error('Get user error:', error);
       throw error;
     }
   }

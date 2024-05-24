@@ -9,6 +9,7 @@ const errorHandler = (
   res: Response,
   _next: NextFunction
 ): Response => {
+  console.log("Error:",err)
   logger.error(`Gateway Service`, err);
 
   // If the error is an instance of our own throw ERROR

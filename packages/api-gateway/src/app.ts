@@ -74,7 +74,7 @@ applyProxy(app);
 // Global Error Handler
 // ====================
 app.use("*", (req: Request, res: Response, _next: NextFunction) => {
-  const fullUrl = `${req.protocol}://${req.get("host")}${req.originalUrl}`;
+  const fullUrl = `${req.protocol}://${req.get("user")}${req.originalUrl}`;
   logger.error(`${fullUrl} endpoint does not exist`);
   res
     .status(StatusCode.NotFound)
