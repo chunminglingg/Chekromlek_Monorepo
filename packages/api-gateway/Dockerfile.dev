@@ -1,0 +1,17 @@
+FROM node:21-alpine3.18
+
+
+WORKDIR /app
+COPY package.json ./
+COPY tsconfig.json ./
+COPY public_key.pem /app/public_key.pem
+
+COPY src ./src
+
+RUN npm install 
+
+
+
+EXPOSE 3000
+
+CMD ["npm","run","start:dev"]

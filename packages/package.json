@@ -1,0 +1,12 @@
+{
+  "name": "backend-chekromlek",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/tan-hangsapho/backend-chekromlek.git",
+  "author": "Chunming <chunming200@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start:dev" : "cd volumes && docker-compose up --build",
+    "start:all" : "cd volumes && npm run start:dev  & cd ../volumes/backend-chekromlek & cd Chekromlek && yarn start"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+      "target": "es5",   // Adjust if needed (e.g., "es2015")
+      "module": "commonjs",
+      "strict": true,
+      "allowJs": true,   // Allow integration with existing JavaScript code
+      "outDir": "./dist",  // Output compiled JavaScript to a separate directory
+      "sourceMap": true,  // Generate source maps for debugging
+      "esModuleInterop": true  // Enable ES module interop for compatibility
+  },
+  "include": ["src"],  // Include files from the "src" directory for compilation
+  "paths": {
+    "@api-gateway/*": ["src/*"]
+  }
+}

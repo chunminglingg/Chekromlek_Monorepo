@@ -1,0 +1,106 @@
+version: "3.9"
+services:
+  # 1. RabbitMQ - A messaging service
+  rabbitmq:
+    container_name: rabbitmq_container
+    image: rabbitmq:3.13-rc-management-alpine
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=myuser # Set default RabbitMQ user
+      - RABBITMQ_DEFAULT_PASS=mypassword # Set default RabbitMQ password
+    ports:
+      - "5672:5672" # AMQP protocol port
+      - "15672:15672" # Management UI port
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    
+
+  # 2. Gateway - API Gateway service
+  gateway:
+    container_name: gateway_container
+    build:
+      context: ../api-gateway # Path to the gateway's code
+      dockerfile: Dockerfile.dev # Dockerfile to use for building the gateway
+    restart: always
+    ports:
+      - 3000:3000 # Map port 3000 of the container to port 3000 on the host
+    env_file: ../api-gateway/configs/.env # Environment variables file
+    environment:
+      - DOCKER_ENV=true # Indicate that it's a Docker environment
+      - AUTH_SERVICE_URL=http://auth:3001 # URL for the Auth service
+      - USER_SERVICE_URL=http://user-profile:4000 # URL for the User Profile service
+    secrets:
+      - jwt_public_key # Use JWT public key secret
+    volumes:
+      - ../api-gateway/src:/app/src # Mount the gateway code directory
+
+  # 3. Auth - Authentication service
+  auth:
+    container_name: auth_container
+    build:
+      context: ../auth # Path to the auth service's code
+      dockerfile: Dockerfile.dev # Dockerfile to use for building the auth service
+    restart: always
+    ports:
+      - 3001:3001 # Map port 3001 of the container to port 3001 on the host
+    env_file: ../auth/configs/.env # Environment variables file
+    environment:
+      - DOCKER_ENV=true # Indicate that it's a Docker environment
+    secrets:
+      - jwt_private_key # Use JWT private key secret
+    depends_on:
+      - rabbitmq # Wait for RabbitMQ to start before starting this service
+    volumes:
+      - ../auth/src:/app/src # Mount the auth service code directory
+
+  # 4. User Profile - User profile service
+  user-profile:
+    container_name: user-profile_container
+    build:
+      context: ../users # Path to the user profile service's code
+      dockerfile: Dockerfile.dev # Dockerfile to use for building the user profile service
+    restart: always
+    ports:
+      - 4000:4000 # Map port 4000 of the container to port 4000 on the host
+    env_file: ../users/configs/.env # Environment variables file
+    volumes:
+      - ../users/src:/app/src # Mount the user profile service code directory
+
+  # 5. Notification - Notification sending service
+  notification:
+    container_name: notification_container
+    build:
+      context: ../notification # Path to the notification service's code
+      dockerfile: Dockerfile.dev # Dockerfile to use for building the notification service
+    restart: always
+    ports:
+      - 3002:3002 # Map port 3002 of the container to port 3002 on the host
+    env_file: ../notification/configs/.env # Environment variables file
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - ../notification/src:/app/src # Mount the notification service code directory
+
+  # 6. Post - Post service
+  post:
+    container_name: post_container
+    build:
+      context: ../post # Path to the post service's code
+      dockerfile: Dockerfile.dev  # Use the Dockerfile created for the "post" service
+    restart: always
+    ports:
+      - 3005:3005 # Map port 3005 of the container to port 3005 on the host
+    env_file: ../post/configs/.env # Environment variables file
+    volumes:
+      - ../post/src:/app/src # Mount the post service code directory
+
+# Secrets - Securely store sensitive data
+secrets:
+  jwt_public_key:
+    file: ../api-gateway/public_key.pem # Path to JWT public key file
+  jwt_private_key:
+    file: ../auth/private_key.pem # Path to JWT private key file

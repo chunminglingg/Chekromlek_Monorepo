@@ -1,0 +1,16 @@
+FROM node:21-alpine3.18
+
+WORKDIR /app
+COPY package.json ./
+COPY tsconfig.json ./
+COPY dist ./dist
+COPY src ./src
+
+# Copy the private key file to /app/private_key.pem in the container
+COPY private_key.pem private_key.pem
+
+RUN npm install && npm install -g nodemon
+
+EXPOSE 4000
+
+CMD [ "npm", "run", "start:dev" ]

@@ -1,0 +1,26 @@
+# It install Node.js version 21 on the Alpine Linux 3.18 distribution
+FROM node:21-alpine3.18
+
+## create the directory
+WORKDIR /app
+# copy package from host machine
+COPY package.json ./
+COPY tsconfig.json ./
+COPY src ./src
+COPY dist ./dist
+COPY private_key.pem /app/private_key.pem
+
+# List all files and directories to verify the build directory
+RUN ls -a
+
+# Installs the latest version of npm globally in the containe
+RUN npm install 
+
+# Install nodemon globally
+RUN npm install -g nodemon
+
+# Informs Docker that the container will listen on port 3000 at runtime.
+EXPOSE 3001
+
+# Specifies the command to run when the container starts.
+CMD ["npm", "run", "start:dev"]
