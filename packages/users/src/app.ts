@@ -32,7 +32,7 @@ app.use(
     origin: [`${config.apiGatewayUrl}`, `${config.authServiceUrl}`],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  })
+  }),
 );
 
 // =======================
@@ -41,7 +41,7 @@ app.use(
 app.use(compression());
 app.use(express.json({ limit: '200mb' }));
 app.use(urlencoded({ extended: true, limit: '200mb' }));
-app.use(express.static('public'));
+app.use(express.static('private'));
 app.use(loggerMiddleware);
 app.use((req: Request, _res: Response, next: NextFunction) => {
   if (req.headers.authorization) {
