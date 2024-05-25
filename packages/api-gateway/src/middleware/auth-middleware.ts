@@ -26,12 +26,13 @@ async function verifyUser(req: Request, _res: Response, _next: NextFunction) {
     const token = (req.session as SessionWithJwt)!.jwt;
 
     if (token) {
-      const verifiedData = await verify(token, publicKey, { algorithms: ["RS256"] });
-      // Use verifiedData here
+      await verify(token, publicKey, { algorithms: ["RS256"] });
     } else {
-      // Handle missing JWT (e.g., throw an error or redirect to login)
       logger.error("JWT token not found in session");
-      throw new APIError("Please login to access this resource.", StatusCode.Unauthorized);
+      throw new APIError(
+        "Please login to access this resource.",
+        StatusCode.Unauthorized
+      );
     }
 
     _next();

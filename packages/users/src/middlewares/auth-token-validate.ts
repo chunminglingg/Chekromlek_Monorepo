@@ -1,24 +1,26 @@
 import { privateKey } from '@users/server';
+import { StatusCode } from '@users/utils/consts';
 import jwt from 'jsonwebtoken';
 
-export const verificationToken = (req: any, _res: any, next: any) => {
+export const verificationToken = (req: any, res: any, next: any) => {
   try {
-    const token = req.headers.authorization?.split(' ')[1]; // Extract token from Authorization header
+    const token = req.headers.authorization?.split(' ')[1];
+    console.log('Token', token);
     if (!token) {
-      throw new Error('Token not provided');
+      return res
+        .status(StatusCode.Unauthorized)
+        .json({ message: 'Authorization header not provided' });
     }
-    console.log('token', token);
     const decodedToken = jwt.verify(token, privateKey, {
       algorithms: ['RS256'],
     }) as {
-      userId: string;
+      userid: string;
     };
+    console.log('Decoded:', decodedToken);
 
-    console.log('Decoded: ', decodedToken);
-
-    req.userId = decodedToken.userId; // Attach userId to the request object
+    req.userid = decodedToken.userid; // Attach userId to the request object
     next(); // If token is valid, continue to the next middleware or route handler
-  } catch (error) {
-    throw error;
+  } catch (error: any) {
+    throw new Error(error.message); // Throw error for invalid token
   }
 };
