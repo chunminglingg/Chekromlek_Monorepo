@@ -12,6 +12,8 @@ import * as swaggerDocument from '../dist/swagger/swagger.json';
 import { errorHandler } from '@users/middlewares/error-handler';
 import getConfig from '@users/utils/config';
 import { RegisterRoutes } from './routes/routes';
+import { verify } from 'jsonwebtoken';
+import { privateKey } from './server';
 
 export const app = express();
 
@@ -40,17 +42,17 @@ app.use(express.json({ limit: '200mb' }));
 app.use(urlencoded({ extended: true, limit: '200mb' }));
 app.use(express.static('public'));
 app.use(loggerMiddleware);
-// app.use((req: Request, _res: Response, next: NextFunction) => {
-//   if (req.headers.authorization) {
-//     const token = req.headers.authorization.split(' ')[1];
-//     console.log('token: ', token);
-//     const payload = verify(token, privateKey);
-//     console.log('payload', payload);
-//     // @ts-ignore
-//     req.currentUser = payload;
-//   }
-//   next();
-// });
+app.use((req: Request, _res: Response, next: NextFunction) => {
+  if (req.headers.authorization) {
+    const token = req.headers.authorization.split(' ')[1];
+    console.log('token: ', token);
+    const payload = verify(token, privateKey);
+    console.log('payload', payload);
+    // @ts-ignore
+    req.currentUser = payload;
+  }
+  next();
+});
 
 // ========================
 // Global API V1
@@ -63,7 +65,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // Global Error Handler
 // ========================
 app.use('*', (req: Request, res: Response, _next: NextFunction) => {
-  const fullUrl = `${req.protocol}://${req.get('user')}${req.originalUrl}`;
+  const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
   logger.error(`${fullUrl} endpoint does not exist`);
   res
     .status(StatusCode.NotFound)
