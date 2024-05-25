@@ -9,6 +9,8 @@ export interface IPost {
   userId?: string;
   postImage?: string;
   category: string;
+  like?: number;
+  isSave?: boolean;
   createdAt?: Date;
 }
 
@@ -20,6 +22,8 @@ const postModel = new mongoose.Schema(
     descriptions: { type: String, required: true },
     postImage: { type: String , optional},
     category: { type: String, required: true },
+    like: { type: Number, default: 0 },
+    isSave: { type: Boolean, default: false },
     createdAt: { type: Date, optional },
   },
   {

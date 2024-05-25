@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 export interface IUser {
   _id?: string;
+  userId?:string;
   username?: string;
   email?: string;
   profile?: string;
@@ -21,7 +22,7 @@ const userSchema = new mongoose.Schema(
     username: { type: String, require: true },
     email: { type: String, required: true, unique: true },
     profile: { type: String },
-    favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
+    isSaved: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
     questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Question' }],
     bio: { type: String },
     gender: { type: String, default: 'other' },

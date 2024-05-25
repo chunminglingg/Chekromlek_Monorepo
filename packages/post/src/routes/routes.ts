@@ -20,6 +20,8 @@ const models: TsoaRoute.Models = {
             "userId": {"dataType":"string"},
             "postImage": {"dataType":"string"},
             "category": {"dataType":"string","required":true},
+            "like": {"dataType":"double"},
+            "isSave": {"dataType":"boolean"},
             "createdAt": {"dataType":"datetime"},
         },
         "additionalProperties": false,

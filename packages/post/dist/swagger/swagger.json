@@ -27,6 +27,13 @@
 					"category": {
 						"type": "string"
 					},
+					"like": {
+						"type": "number",
+						"format": "double"
+					},
+					"isSave": {
+						"type": "boolean"
+					},
 					"createdAt": {
 						"type": "string",
 						"format": "date-time"

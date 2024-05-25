@@ -6,6 +6,8 @@ export interface PostTypesRepo extends UserTypes{
     description?: string;
     postImage?: string;
     category?: string;
+    like?: number;
+    isSave?: boolean;
     createdAt?: Date;
 }
 

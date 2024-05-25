@@ -6,6 +6,8 @@ export interface createPostRepository {
     description?: string;
     postImage?: string;
     category?: string;
+    like?: number;
+    isSave?: boolean;
     createdAt?: Date;
 }
 

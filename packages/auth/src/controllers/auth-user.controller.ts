@@ -103,13 +103,6 @@ export class UserAuthController {
       const user = await this.userService.VerifyEmailToken({ token });
       console.log("This is user:", user);
 
-      // Generate JWT for the verified user
-      const jwtToken = await generateSignature({ userId: user._id });
-
-      console.log(jwtToken);
-      // const userDetail = await this.userService.FindUserByEmail({
-      //   email: user.email ?? "",
-      // });
       const userDetail = await this.userService.FindUserByEmail({
         email: user.email! as string,
       });
@@ -120,12 +113,6 @@ export class UserAuthController {
         );
         throw new APIError(`User not found`, StatusCode.NotFound);
       }
-
-      // await axios.post("http://localhost:4000/v1/users/", {
-      //   userId: user._id,
-      //   username: userDetail.username,
-      //   email: userDetail.email,
-      // });
 
       const messageDetails: IAuthUserMessageDetails = {
         username: userDetail.username,
@@ -142,7 +129,15 @@ export class UserAuthController {
         "User details sent to user service"
       );
 
-      console.log(jwtToken);
+      const response = await axios.post("http://localhost:4000/v1/users/", {
+        authId: user._id,
+        username: userDetail.username,
+        email: userDetail.email,
+      });
+      console.log(response);
+
+      // Generate JWT for the verified user
+      const jwtToken = await generateSignature({ userId: user._id });
 
       return { message: "User verified email successfully", token: jwtToken };
     } catch (error) {
