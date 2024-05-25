@@ -117,7 +117,7 @@ export class UserAuthController {
       const messageDetails: IAuthUserMessageDetails = {
         username: userDetail.username,
         email: userDetail.email,
-        type: "auth",
+        type: "Auth",
       };
 
       // Publish message to the queue
