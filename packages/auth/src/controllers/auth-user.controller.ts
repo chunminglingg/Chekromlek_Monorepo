@@ -122,7 +122,7 @@ export class UserAuthController {
       }
 
       await axios.post("http://localhost:4000/v1/users/", {
-        authId: user.id,
+        authId: userDetail.id,
         username: userDetail.username,
         email: userDetail.email,
       });

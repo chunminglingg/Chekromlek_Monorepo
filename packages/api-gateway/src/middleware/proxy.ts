@@ -5,13 +5,12 @@ import { logger } from "../utils/logger";
 import { ClientRequest, IncomingMessage } from "http";
 import getConfig from "../utils/createConfig";
 import { StatusCode } from "../utils/consts";
-
 interface ProxyConfig {
   [context: string]: Options<IncomingMessage, Response>;
 }
 declare module "express-session" {
   interface Session {
-    jwt?: string; // Make jwt property optional
+    jwt?: string;
   }
 }
 interface NetworkError extends Error {

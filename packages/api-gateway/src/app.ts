@@ -25,7 +25,7 @@ app.use(compression());
 app.use(
   cookieSession({
     name: "session",
-    keys: [`${getConfig().cookieSecretKeyOne}`, `${config.cookieSecretKeyTwo}`],
+    keys: [`${config.cookieSecretKeyOne}`, `${config.cookieSecretKeyTwo}`],
     maxAge: 24 * 7 * 3600000,
     secure: config.env !== "development", // update with value from config
     ...(config.env !== "development" && {
@@ -46,8 +46,7 @@ app.use(helmet());
 // Only Allow Specific Origin to Access API Gateway (Frontend)
 app.use(
   cors({
-    origin:
-      getConfig().env === "development" ? "*" : [config.clientUrl as string],
+    origin: config.env === "development" ? "*" : [config.clientUrl as string],
     credentials: true, // attach token from client
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
