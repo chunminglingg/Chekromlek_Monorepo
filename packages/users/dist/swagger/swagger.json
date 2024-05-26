@@ -119,7 +119,7 @@
 				}
 			}
 		},
-		"/v1/users/{id}": {
+		"/v1/users/update/{id}": {
 			"put": {
 				"operationId": "UpdateProfile",
 				"responses": {
@@ -153,30 +153,6 @@
 						}
 					}
 				}
-			},
-			"get": {
-				"operationId": "GetUserById",
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
 			}
 		},
 		"/v1/users/auth/{authId}": {
@@ -197,6 +173,32 @@
 					{
 						"in": "path",
 						"name": "authId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/users/{id}": {
+			"get": {
+				"operationId": "GetUserById",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
 						"required": true,
 						"schema": {
 							"type": "string"

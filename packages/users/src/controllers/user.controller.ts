@@ -1,6 +1,5 @@
+import { IUser } from '@users/database/models/user.model';
 import { verificationToken } from '@users/middlewares/auth-token-validate';
-import { IUser } from '../database/models/user.model';
-// import { UserSaveSchema, UserUpdateSchema } from '@users/schema/user.schema';
 import { UserService } from '@users/services/user.service';
 import { StatusCode } from '@users/utils/consts';
 import { logger } from '@users/utils/logger';
@@ -28,11 +27,6 @@ export class UserController {
     @Body() reqBody: IUser & { authId: string },
   ): Promise<any> {
     try {
-      // const authResponse = await axios.get(
-      //   `http://localhost:3001/v1/auth/verify?token=${reqBody.authId}`
-      // );
-      // console.log(authResponse);
-
       const newUser = await this.userService.CreateUser(reqBody);
 
       return {
@@ -47,15 +41,14 @@ export class UserController {
     }
   }
   @SuccessResponse(StatusCode.OK, 'OK')
-  @Put('/:id')
+  @Put('/update/:id')
   // @Middlewares(validateInput(UserUpdateSchema))
   @Middlewares(verificationToken)
   public async UpdateProfile(
-    @Body() reqBody: IUser,
     @Path() id: string,
+    @Body() reqBody: IUser,
   ): Promise<any> {
     try {
-      console.log(verificationToken);
       const modifiedUser = await this.userService.UpdateById(id, reqBody);
 
       return {
@@ -84,7 +77,6 @@ export class UserController {
   }
   @SuccessResponse(StatusCode.OK, 'OK')
   @Get('/:id')
-  @Middlewares(verificationToken)
   public async GetUserById(@Path() id: string): Promise<any> {
     try {
       const user = await this.userService.getUserById({ id });

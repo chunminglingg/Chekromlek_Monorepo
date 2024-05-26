@@ -7,10 +7,10 @@ import cookieSession from "cookie-session";
 import hpp from "hpp";
 import compression from "compression";
 import { logger } from "./utils/logger";
-import { StatusCode } from "./utils/@const";
+import { StatusCode } from "./utils/consts";
 import { errorHandler } from "./middleware/error-handler";
-import getConfig from "./utils/Config";
 import { verifyUser } from "./middleware/auth-middleware";
+import getConfig from "./utils/createConfig";
 import unless from "./middleware/unless-route";
 
 const app = express();

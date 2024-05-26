@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import BaseCustomError from "../errors/Base-custom-error";
-import { StatusCode } from "../utils/@const";
+import { StatusCode } from "../utils/consts";
 import { logger } from "../utils/logger";
 
 const errorHandler = (
@@ -9,7 +9,7 @@ const errorHandler = (
   res: Response,
   _next: NextFunction
 ): Response => {
-  console.log("Error:",err)
+  console.log("Error:", err);
   logger.error(`Gateway Service`, err);
 
   // If the error is an instance of our own throw ERROR
