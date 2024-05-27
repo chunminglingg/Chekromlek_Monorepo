@@ -11,15 +11,21 @@ import type { Request as ExRequest, Response as ExResponse, RequestHandler, Rout
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
-    "IPost": {
+    "mongoose.Types.ObjectId": {
+        "dataType": "refAlias",
+        "type": {"dataType":"string","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "postDetail": {
         "dataType": "refObject",
         "properties": {
-            "username": {"dataType":"string"},
-            "title": {"dataType":"string","required":true},
-            "descriptions": {"dataType":"string"},
-            "userId": {"dataType":"string"},
+            "userId": {"ref":"mongoose.Types.ObjectId"},
+            "username": {"ref":"mongoose.Types.ObjectId"},
+            "title": {"dataType":"string"},
+            "description": {"dataType":"string"},
             "postImage": {"dataType":"string"},
-            "category": {"dataType":"string","required":true},
+            "category": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["General Knowledge"]},{"dataType":"enum","enums":["Mental Consultant"]},{"dataType":"enum","enums":["Technology"]},{"dataType":"enum","enums":["Mathematic"]},{"dataType":"enum","enums":["Physical"]},{"dataType":"enum","enums":["Biology"]},{"dataType":"enum","enums":["Chemistry"]},{"dataType":"enum","enums":["Writing"]},{"dataType":"enum","enums":["History"]},{"dataType":"enum","enums":["English"]}]},
+            "Date": {"dataType":"nestedObjectLiteral","nestedProperties":{"endtime":{"dataType":"string"},"startTime":{"dataType":"string"},"endDate":{"dataType":"datetime"},"startDate":{"dataType":"datetime"}}},
             "like": {"dataType":"double"},
             "isSave": {"dataType":"boolean"},
             "createdAt": {"dataType":"datetime"},
@@ -39,11 +45,12 @@ export function RegisterRoutes(app: Router) {
     // ###########################################################################################################
         app.post('/v1/post',
             ...(fetchMiddlewares<RequestHandler>(PostController)),
-            ...(fetchMiddlewares<RequestHandler>(PostController.prototype.SavePost)),
+            ...(fetchMiddlewares<RequestHandler>(PostController.prototype.CreatePost)),
 
-            async function PostController_SavePost(request: ExRequest, response: ExResponse, next: any) {
+            async function PostController_CreatePost(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
-                    reqBody: {"in":"body","name":"reqBody","required":true,"dataType":"intersection","subSchemas":[{"ref":"IPost"},{"dataType":"nestedObjectLiteral","nestedProperties":{"userId":{"dataType":"string","required":true}}}]},
+                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"postDetail"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -55,7 +62,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new PostController();
 
               await templateService.apiHandler({
-                methodName: 'SavePost',
+                methodName: 'CreatePost',
                 controller,
                 response,
                 next,
@@ -67,14 +74,15 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.put('/v1/post/:id',
+        app.patch('/v1/post/:id',
             ...(fetchMiddlewares<RequestHandler>(PostController)),
             ...(fetchMiddlewares<RequestHandler>(PostController.prototype.UpdatePost)),
 
             async function PostController_UpdatePost(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
                     id: {"in":"path","name":"id","required":true,"dataType":"string"},
-                    reqBody: {"in":"body","name":"reqBody","required":true,"ref":"IPost"},
+                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"postDetail"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -91,7 +99,7 @@ export function RegisterRoutes(app: Router) {
                 response,
                 next,
                 validatedArgs,
-                successStatus: 200,
+                successStatus: 201,
               });
             } catch (err) {
                 return next(err);

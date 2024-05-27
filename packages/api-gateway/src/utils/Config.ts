@@ -38,6 +38,7 @@ function createConfig(configPath: string) {
     authServiceUrl: process.env.AUTH_SERVICE_URL,
     userServiceUrl: process.env.USER_SERVICE_URL,
     notificationUrl: process.env.NOTIFICATION_SERVICE_URL,
+    postServiceUrl: process.env.POST_SERVICE_URL
   };
 }
 
