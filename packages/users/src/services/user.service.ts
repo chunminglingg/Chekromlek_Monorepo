@@ -18,7 +18,7 @@ export class UserService {
   }
   async UpdateById(id: string, update: IUser) {
     try {
-      return await this.userRepo.UpdateUserbyId({ id, update: update });
+      return await this.userRepo.UpdateUserById({ id, update: update });
     } catch (error) {
       logger.error('Update error: ', error);
       throw error;

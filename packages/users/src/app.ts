@@ -4,14 +4,14 @@ import helmet from 'helmet';
 import cors from 'cors';
 import compression from 'compression';
 import { urlencoded } from 'body-parser';
-import loggerMiddleware from '@users/middlewares/logger-handler';
-import { StatusCode } from '@users/utils/consts';
-import { logger } from '@users/utils/logger';
 import swaggerUi from 'swagger-ui-express';
 import * as swaggerDocument from '../dist/swagger/swagger.json';
-import { errorHandler } from '@users/middlewares/error-handler';
-import getConfig from '@users/utils/config';
 import { RegisterRoutes } from './routes/routes';
+import loggerMiddleware from './middlewares/logger-handler';
+import { StatusCode } from './utils/consts';
+import { logger } from './utils/logger';
+import { errorHandler } from './middlewares/error-handler';
+import getConfig from './utils/config';
 
 export const app = express();
 
@@ -63,7 +63,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // Global Error Handler
 // ========================
 app.use('*', (req: Request, res: Response, _next: NextFunction) => {
-  const fullUrl = `${req.protocol}://${req.get('user')}${req.originalUrl}`;
+  const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
   logger.error(`${fullUrl} endpoint does not exist`);
   res
     .status(StatusCode.NotFound)

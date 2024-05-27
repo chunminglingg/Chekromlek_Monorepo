@@ -1,20 +1,18 @@
 import express, { Request, Response } from "express";
 import { createProxyMiddleware, Options } from "http-proxy-middleware";
+import { ROUTE_PATHS } from "../route-defs";
 import { logger } from "../utils/logger";
 import { ClientRequest, IncomingMessage } from "http";
-import getConfig from "../utils/Config";
-import { StatusCode } from "../utils/@const";
-import { Session } from "express-session";
-import { ROUTE_PATHS } from "../route-defs";
-
-interface SessionWithJwt extends Session {
-  jwt?: string;
-}
-
+import getConfig from "../utils/createConfig";
+import { StatusCode } from "../utils/consts";
 interface ProxyConfig {
   [context: string]: Options<IncomingMessage, Response>;
 }
-
+declare module "express-session" {
+  interface Session {
+    jwt?: string;
+  }
+}
 interface NetworkError extends Error {
   code?: string;
 }
@@ -31,18 +29,13 @@ const proxyConfigs: ProxyConfig = {
     on: {
       proxyReq: (
         proxyReq: ClientRequest,
-        req: IncomingMessage,
+        _req: IncomingMessage,
         _res: Response
       ) => {
         logger.info(
           `Proxied request URL: ${proxyReq.protocol}//${proxyReq.host}${proxyReq.path}`
         );
         logger.info(`Headers Sent: ${JSON.stringify(proxyReq.getHeaders())}`);
-        const expressReq = req as Request;
-
-        // Extract JWT token from session
-        const token = (expressReq.session as SessionWithJwt).jwt;
-        proxyReq.setHeader("Authorization", `Bearer ${token}`);
       },
       proxyRes: (proxyRes, req, res) => {
         let originalBody: Buffer[] = [];
@@ -59,8 +52,6 @@ const proxyConfigs: ProxyConfig = {
           };
 
           try {
-            console.log(bodyString);
-
             responseBody = JSON.parse(bodyString);
 
             // If Response Error, Not Modified Response
@@ -70,15 +61,18 @@ const proxyConfigs: ProxyConfig = {
 
             // Store JWT in session
             if (responseBody.token) {
-              (req as Request & { session: SessionWithJwt }).session.jwt =
-                responseBody.token;
+              (req as Request).session!.jwt = responseBody.token as string;
+            }
+
+            const filteredResponseBody = { ...responseBody };
+            // Remove the jwt property if it exists
+            if ("token" in filteredResponseBody) {
+              delete filteredResponseBody.token;
             }
 
             // Modify response to send only the message to the client
-            res.json({ message: responseBody.message });
+            res.status(proxyRes.statusCode!).json(filteredResponseBody);
           } catch (error) {
-            logger.error(`Error parsing response: ${error}`);
-            console.error(error);
             return res.status(500).json({ message: "Error parsing response" });
           }
         });
@@ -106,7 +100,7 @@ const proxyConfigs: ProxyConfig = {
     },
   },
   [ROUTE_PATHS.USER_SERVICE]: {
-    target: getConfig().userServiceUrl,
+    target: config.userServiceUrl,
     changeOrigin: true,
     selfHandleResponse: true,
     pathRewrite: (path, _req) => `${ROUTE_PATHS.USER_SERVICE}${path}`,
@@ -120,10 +114,9 @@ const proxyConfigs: ProxyConfig = {
           `Proxied request URL: ${proxyReq.protocol}//${proxyReq.host}${proxyReq.path}`
         );
         logger.info(`Headers Sent: ${JSON.stringify(proxyReq.getHeaders())}`);
-        const expressReq = req as Request;
 
         // Extract JWT token from session
-        const token = (expressReq.session as SessionWithJwt).jwt;
+        const token = (req as Request).session!.jwt;
         proxyReq.setHeader("Authorization", `Bearer ${token}`);
       },
       proxyRes: (proxyRes, _req, res) => {
@@ -131,7 +124,6 @@ const proxyConfigs: ProxyConfig = {
         proxyRes.on("data", function (chunk: Buffer) {
           originalBody.push(chunk);
         });
-        console.log(originalBody);
         proxyRes.on("end", function () {
           const bodyString = Buffer.concat(originalBody).toString("utf8");
 
