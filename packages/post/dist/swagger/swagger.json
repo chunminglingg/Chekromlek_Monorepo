@@ -7,35 +7,53 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"IPost": {
+			"mongoose.Types.ObjectId": {
+				"type": "string"
+			},
+			"postDetail": {
 				"properties": {
+					"userId": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					},
 					"username": {
-						"type": "string"
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
 					},
 					"title": {
 						"type": "string"
 					},
-					"descriptions": {
-						"type": "string"
-					},
-					"userId": {
+					"description": {
 						"type": "string"
 					},
 					"postImage": {
 						"type": "string"
 					},
 					"category": {
-						"type": "string"
+						"type": "string",
+						"enum": [
+							"General Knowledge",
+							"Mental Consultant",
+							"Technology",
+							"Mathematic",
+							"Physical",
+							"Biology",
+							"Chemistry",
+							"Writing",
+							"History",
+							"English"
+						]
+					},
+					"like": {
+						"type": "number",
+						"format": "double"
+					},
+					"isSave": {
+						"type": "boolean"
 					},
 					"createdAt": {
 						"type": "string",
 						"format": "date-time"
 					}
 				},
-				"required": [
-					"title",
-					"category"
-				],
 				"type": "object",
 				"additionalProperties": false
 			}
@@ -53,7 +71,7 @@
 	"paths": {
 		"/v1/post": {
 			"post": {
-				"operationId": "SavePost",
+				"operationId": "CreatePost",
 				"responses": {
 					"201": {
 						"description": "Created successfully",
@@ -71,22 +89,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"allOf": [
-									{
-										"$ref": "#/components/schemas/IPost"
-									},
-									{
-										"properties": {
-											"userId": {
-												"type": "string"
-											}
-										},
-										"required": [
-											"userId"
-										],
-										"type": "object"
-									}
-								]
+								"$ref": "#/components/schemas/postDetail"
 							}
 						}
 					}
@@ -94,11 +97,11 @@
 			}
 		},
 		"/v1/post/{id}": {
-			"put": {
+			"patch": {
 				"operationId": "UpdatePost",
 				"responses": {
-					"200": {
-						"description": "Okay",
+					"201": {
+						"description": "Created successfully",
 						"content": {
 							"application/json": {
 								"schema": {}
@@ -122,7 +125,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/IPost"
+								"$ref": "#/components/schemas/postDetail"
 							}
 						}
 					}

@@ -103,13 +103,6 @@ export class UserAuthController {
       const user = await this.userService.VerifyEmailToken({ token });
       console.log("This is user:", user);
 
-      // Generate JWT for the verified user
-      const jwtToken = await generateSignature({ userId: user._id });
-
-      console.log(jwtToken);
-      // const userDetail = await this.userService.FindUserByEmail({
-      //   email: user.email ?? "",
-      // });
       const userDetail = await this.userService.FindUserByEmail({
         email: user.email! as string,
       });
@@ -130,7 +123,7 @@ export class UserAuthController {
       const messageDetails: IAuthUserMessageDetails = {
         username: userDetail.username,
         email: userDetail.email,
-        type: "auth",
+        type: "Auth",
       };
 
       // Publish message to the queue
@@ -142,7 +135,8 @@ export class UserAuthController {
         "User details sent to user service"
       );
 
-      console.log(jwtToken);
+      // Generate JWT for the verified user
+      const jwtToken = await generateSignature({ userId: user._id , username: user.username });
 
       return { message: "User verified email successfully", token: jwtToken };
     } catch (error) {
