@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 export const verificationToken = (req: any, _res: any, next: any) => {
   const token = req.headers.authorization?.split(' ')[1]; // Extract token from Authorization header
 
+  console.log(token)
   if (!token) {
     throw new Error('Token not provided');
   }

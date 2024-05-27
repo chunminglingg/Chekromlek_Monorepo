@@ -41,7 +41,7 @@ export class UserController {
     }
   }
   @SuccessResponse(StatusCode.OK, 'OK')
-  @Put('/update/:id')
+  @Put('/:id')
   // @Middlewares(validateInput(UserUpdateSchema))
   @Middlewares(verificationToken)
   public async UpdateProfile(
