@@ -1,20 +1,17 @@
 import express, { Request, Response, NextFunction } from 'express';
-
 import hpp from 'hpp';
 import helmet from 'helmet';
 import cors from 'cors';
 import compression from 'compression';
 import { urlencoded } from 'body-parser';
-import { verify } from 'jsonwebtoken';
-import loggerMiddleware from '@users/middlewares/logger-handler';
-import { StatusCode } from '@users/utils/consts';
-import { logger } from '@users/utils/logger';
 import swaggerUi from 'swagger-ui-express';
 import * as swaggerDocument from '../dist/swagger/swagger.json';
-import { privateKey } from './server';
-import { errorHandler } from '@users/middlewares/error-handler';
-import getConfig from '@users/utils/config';
 import { RegisterRoutes } from './routes/routes';
+import loggerMiddleware from './middlewares/logger-handler';
+import { StatusCode } from './utils/consts';
+import { logger } from './utils/logger';
+import { errorHandler } from './middlewares/error-handler';
+import getConfig from './utils/config';
 
 export const app = express();
 
@@ -41,19 +38,19 @@ app.use(
 app.use(compression());
 app.use(express.json({ limit: '200mb' }));
 app.use(urlencoded({ extended: true, limit: '200mb' }));
-app.use(express.static('private'));
+app.use(express.static('public'));
 app.use(loggerMiddleware);
-app.use((req: Request, _res: Response, next: NextFunction) => {
-  if (req.headers.authorization) {
-    const token = req.headers.authorization.split(' ')[1];
-    console.log('token: ', token);
-    const payload = verify(token, privateKey);
-    console.log('payload', payload);
-    // @ts-ignore
-    req.currentUser = payload;
-  }
-  next();
-});
+// app.use((req: Request, _res: Response, next: NextFunction) => {
+//   if (req.headers.authorization) {
+//     const token = req.headers.authorization.split(' ')[1];
+//     console.log('token: ', token);
+//     const payload = verify(token, privateKey);
+//     console.log('payload', payload);
+//     // @ts-ignore
+//     req.currentUser = payload;
+//   }
+//   next();
+// });
 
 // ========================
 // Global API V1

@@ -114,6 +114,12 @@ export class UserAuthController {
         throw new APIError(`User not found`, StatusCode.NotFound);
       }
 
+      await axios.post("http://localhost:4000/v1/users/", {
+        authId: userDetail.id,
+        username: userDetail.username,
+        email: userDetail.email,
+      });
+
       const messageDetails: IAuthUserMessageDetails = {
         username: userDetail.username,
         email: userDetail.email,

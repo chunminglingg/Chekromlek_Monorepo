@@ -1,8 +1,9 @@
 import dotenv from "dotenv";
-import { StatusCode } from "./consts";
-import CustomError from "../errors/custom-erorrs";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { privateKey } from "../server";
+import getConfig from "./config";
+import APIError from "../errors/api-error";
 
 dotenv.config();
 const salt = 10;
@@ -30,13 +31,12 @@ export const validationPassword = async ({
 
 export const generateSignature = async (payload: object): Promise<string> => {
   try {
-    return await jwt.sign(payload, process.env.APP_SECRET as string, {
-      expiresIn: process.env.JWT_EXPIRES_IN,
+    return await jwt.sign(payload, privateKey, {
+      expiresIn: getConfig().jwtExpiresIn!,
+      algorithm: "RS256",
     });
   } catch (error) {
-    throw new CustomError(
-      "Unable to generate signature from jwt",
-      StatusCode.BadRequest
-    );
+    console.log(error);
+    throw new APIError("Unable to generate signature from jwt");
   }
 };
