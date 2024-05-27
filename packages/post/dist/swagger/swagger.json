@@ -42,25 +42,6 @@
 							"English"
 						]
 					},
-					"Date": {
-						"properties": {
-							"endtime": {
-								"type": "string"
-							},
-							"startTime": {
-								"type": "string"
-							},
-							"endDate": {
-								"type": "string",
-								"format": "date-time"
-							},
-							"startDate": {
-								"type": "string",
-								"format": "date-time"
-							}
-						},
-						"type": "object"
-					},
 					"like": {
 						"type": "number",
 						"format": "double"

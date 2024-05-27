@@ -25,7 +25,6 @@ const models: TsoaRoute.Models = {
             "description": {"dataType":"string"},
             "postImage": {"dataType":"string"},
             "category": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["General Knowledge"]},{"dataType":"enum","enums":["Mental Consultant"]},{"dataType":"enum","enums":["Technology"]},{"dataType":"enum","enums":["Mathematic"]},{"dataType":"enum","enums":["Physical"]},{"dataType":"enum","enums":["Biology"]},{"dataType":"enum","enums":["Chemistry"]},{"dataType":"enum","enums":["Writing"]},{"dataType":"enum","enums":["History"]},{"dataType":"enum","enums":["English"]}]},
-            "Date": {"dataType":"nestedObjectLiteral","nestedProperties":{"endtime":{"dataType":"string"},"startTime":{"dataType":"string"},"endDate":{"dataType":"datetime"},"startDate":{"dataType":"datetime"}}},
             "like": {"dataType":"double"},
             "isSave": {"dataType":"boolean"},
             "createdAt": {"dataType":"datetime"},

@@ -135,15 +135,8 @@ export class UserAuthController {
         "User details sent to user service"
       );
 
-      const response = await axios.post("http://localhost:4000/v1/users/", {
-        authId: user._id,
-        username: userDetail.username,
-        email: userDetail.email,
-      });
-      console.log(response);
-
       // Generate JWT for the verified user
-      const jwtToken = await generateSignature({ userId: user._id });
+      const jwtToken = await generateSignature({ userId: user._id , username: user.username });
 
       return { message: "User verified email successfully", token: jwtToken };
     } catch (error) {

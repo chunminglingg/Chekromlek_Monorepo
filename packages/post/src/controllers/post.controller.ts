@@ -14,7 +14,7 @@ import { PostSaveSchema } from "@post/schema/post.schema";
 import { PostService } from "@post/services/post.service";
 import { StatusCode } from "@post/utils/const";
 import { logger } from "@post/utils/logger";
-import { verifyToken } from "@post/middlewares/tokenVerify";
+import { verificationToken } from "@post/middlewares/tokenVerify";
 import { postDetail } from "@post/database/@types/post.interface";
 import CustomError from "@post/errors/customError";
 
@@ -25,7 +25,7 @@ export class PostController extends Controller {
   @SuccessResponse(StatusCode.Created, "Created successfully")
   @Post("/")
   @Middlewares(validateInput(PostSaveSchema))
-  @Middlewares(verifyToken)
+  @Middlewares(verificationToken)
   public async CreatePost(
     @Body() requestBody: postDetail,
     @Request() request: any
@@ -33,9 +33,12 @@ export class PostController extends Controller {
     try {
       const detailPost = {
         ...requestBody,
-        userId: request.userId,
+        userId: request.userId, // Accessing req.userId instead of req.id
         username: request.username,
       };
+      
+      // console.log("req: ", request);
+
       const post = await postService.createPost(detailPost);
       return {
         message: "Post created successfully",
@@ -50,7 +53,7 @@ export class PostController extends Controller {
   @SuccessResponse(StatusCode.Created, "Created successfully")
   @Patch("/:id")
   @Middlewares(validateInput(PostSaveSchema))
-  @Middlewares(verifyToken)
+  @Middlewares(verificationToken)
   public async UpdatePost(
     @Request() request: any,
     @Path() id: string,

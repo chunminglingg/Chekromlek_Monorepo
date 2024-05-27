@@ -16,6 +16,7 @@ export const verificationToken = (req: any, _res: any, next: any) => {
     };
 
     req.authId = decodedToken.authId; // Attach userId to the request object
+    
     next();
   } catch (error: any) {
     throw new Error(error.message); // Throw error for invalid token

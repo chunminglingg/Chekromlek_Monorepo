@@ -16,12 +16,6 @@ export interface postDetail {
     | "Writing"
     | "History"
     | "English";
-  Date?: {
-    startDate?: Date;
-    endDate?: Date;
-    startTime?: string;
-    endtime?: string;
-  }
   like?: number;
   isSave?: boolean;
   createdAt?: Date;

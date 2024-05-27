@@ -6,8 +6,8 @@ const PostCard = new mongoose.Schema(
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     username: { type: mongoose.Schema.Types.String, ref: "User" },
     title: { type: String, required: true },
-    descriptions: { type: String, required: true },
-    postImage: { type: String },
+    description: { type: String, required: true },
+    postImage: { type: String , default: "jpg", },
     category: {
       type: String,
       enum: [
@@ -23,15 +23,9 @@ const PostCard = new mongoose.Schema(
         "English",
       ],
     },
-    Date: {
-      startDate: Date,
-      endDate: Date,
-      startTime: String,
-      endTime: String,
-    },
     like: { type: Number, default: 0 },
     isSave: { type: Boolean, default: false },
-    createdAt: { type: Date },
+    createdAt: { type: Date , default: Date.now()},
   },
   {
     toJSON: {
