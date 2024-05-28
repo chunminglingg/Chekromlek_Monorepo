@@ -1,16 +1,17 @@
 import {
   Body,
   Controller,
+  Get,
   Middlewares,
-  Patch,
   Path,
   Post,
+  Put,
   Request,
   Route,
   SuccessResponse,
 } from "tsoa";
 import validateInput from "@post/middlewares/input-validation";
-import { PostSaveSchema } from "@post/schema/post.schema";
+import { PostSaveSchema, PostUpdateSchema } from "@post/schema/post.schema";
 import { PostService } from "@post/services/post.service";
 import { StatusCode } from "@post/utils/const";
 import { logger } from "@post/utils/logger";
@@ -36,7 +37,7 @@ export class PostController extends Controller {
         userId: request.userId, // Accessing req.userId instead of req.id
         username: request.username,
       };
-      
+
       // console.log("req: ", request);
 
       const post = await postService.createPost(detailPost);
@@ -50,17 +51,35 @@ export class PostController extends Controller {
     }
   }
 
+  @SuccessResponse(StatusCode.Found, "Found the post")
+  @Get("/{id}")
+  public async GetPostById(@Path() id: string): Promise<any> {
+    try {
+      const existPost = await postService.findPostById(id);
+
+      if (!existPost) {
+        throw new CustomError("Post not found", StatusCode.NotFound);
+      }
+      return {
+        message: "Post found successfully",
+        data: existPost,
+      };
+    } catch (error) {
+      logger.error(`Service method error: ${error}`);
+      throw error;
+    }
+  }
+
   @SuccessResponse(StatusCode.Created, "Created successfully")
-  @Patch("/:id")
-  @Middlewares(validateInput(PostSaveSchema))
+  @Put("/{id}")
+  @Middlewares(validateInput(PostUpdateSchema))
   @Middlewares(verificationToken)
   public async UpdatePost(
-    @Request() request: any,
     @Path() id: string,
     @Body() requestBody: postDetail
   ): Promise<any> {
     try {
-      const existPost = await postService.findPostById(request.id);
+      const existPost = await postService.findPostById(id);
       if (!existPost) {
         throw new CustomError("Post not found", StatusCode.NotFound);
       }

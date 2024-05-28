@@ -12,6 +12,9 @@
 			},
 			"postDetail": {
 				"properties": {
+					"_id": {
+						"type": "string"
+					},
 					"userId": {
 						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
 					},
@@ -48,6 +51,9 @@
 					},
 					"isSave": {
 						"type": "boolean"
+					},
+					"answer": {
+						"type": "string"
 					},
 					"createdAt": {
 						"type": "string",
@@ -97,7 +103,31 @@
 			}
 		},
 		"/v1/post/{id}": {
-			"patch": {
+			"get": {
+				"operationId": "GetPostById",
+				"responses": {
+					"302": {
+						"description": "Found the post",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"put": {
 				"operationId": "UpdatePost",
 				"responses": {
 					"201": {

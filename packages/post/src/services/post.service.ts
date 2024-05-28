@@ -18,9 +18,24 @@ export class PostService {
         }
     }
 
+    
+    async findPostById (id: string) {
+        try {
+            const findPostByid = await this.postRepo.findPost(id);
+            if (!findPostByid) {
+                throw new APIError(`Post not found in service` , StatusCode.NotFound)
+            }
+            return findPostByid;
+        } catch (error) {
+            logger.error(`findPostbyId() method error: ${error}`)
+            throw error;
+        }
+    }
+    
     async updatePost (id: string , newUpdate: postDetail) {
         try {
             const findExistingPost = await this.postRepo.findPost(id);
+            
             if (!findExistingPost) {
                 throw new APIError(`Post not found` , StatusCode.NotFound)
             }
@@ -31,18 +46,4 @@ export class PostService {
             throw error;
         }
     }
-
-    async findPostById (id: string) {
-        try {
-            const findPostByid = await this.postRepo.findPost(id);
-            if (!findPostByid) {
-                throw new APIError(`Post not found` , StatusCode.NotFound)
-            }
-            return findPostByid;
-        } catch (error) {
-            logger.error(`findPostbyId() method error: ${error}`)
-            throw error;
-        }
-    }
-
 }

@@ -17,20 +17,6 @@ export class postRepository {
     }
   }
 
-  async updatePost(id: string , newUpdate: postDetail) {
-   try {
-    const updatedPost = await PostModel.findByIdAndUpdate(id , newUpdate , {new : true});
-    return updatedPost;
-   } catch (error: unknown | any) {
-     if (error instanceof CustomError) {
-       throw error;
-     } else {
-       throw new CustomError(error.message, StatusCode.BadRequest);
-     }
-    }
-  }
-
-  
   async findPost(id: string) {
     try { 
       const findPostById = await PostModel.findById(id)
@@ -40,6 +26,19 @@ export class postRepository {
         throw error;
       }
       throw new CustomError(error.message, StatusCode.BadRequest);
+    }
+  }
+
+  async updatePost(id: string , newUpdate: postDetail) {
+   try {
+    const updatedPost = await PostModel.findByIdAndUpdate(id , newUpdate , {new : true});    
+    return updatedPost;
+   } catch (error: unknown | any) {
+     if (error instanceof CustomError) {
+       throw error;
+     } else {
+       throw new CustomError(error.message, StatusCode.BadRequest);
+     }
     }
   }
 

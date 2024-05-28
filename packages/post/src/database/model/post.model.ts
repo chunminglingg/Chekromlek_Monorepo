@@ -26,6 +26,7 @@ const PostCard = new mongoose.Schema(
     like: { type: Number, default: 0 },
     isSave: { type: Boolean, default: false },
     createdAt: { type: Date , default: Date.now()},
+    answer: { type: String}
   },
   {
     toJSON: {
