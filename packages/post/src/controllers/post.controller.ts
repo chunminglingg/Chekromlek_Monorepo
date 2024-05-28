@@ -36,7 +36,7 @@ export class PostController extends Controller {
         userId: request.userId, // Accessing req.userId instead of req.id
         username: request.username,
       };
-      
+
       // console.log("req: ", request);
 
       const post = await postService.createPost(detailPost);
