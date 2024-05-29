@@ -2,6 +2,8 @@ import Image from "next/image";
 import React from "react";
 import "../../../globals.css";
 import Link from "next/link";
+import { Button } from "@/components/Atoms/Button/Button";
+import { Typography } from "@/components";
 
 const page = () => {
   return (
@@ -51,7 +53,7 @@ const page = () => {
                 </p>
                 <input
                   type="email"
-                  className="border w-[92%] h-[50px] p-4 rounded-xl"
+                  className="border w-[92%] h-[50px] p-4 rounded-xl focus:outline-none"
                   placeholder="yourname@example.com"
                 />
               </div>
@@ -62,9 +64,9 @@ const page = () => {
                   </button>
                 </Link> */}
                 <Link href={"/login/newpass"}>
-                  <button className="px-6 py-3 bg-[#7B2CBF] text-white rounded-xl hover:opacity-[90%]">
-                    Search
-                  </button>
+                  <Button className="px-6 py-3 bg-[#7B2CBF] text-white rounded-xl hover:opacity-[90%]">
+                   <Typography color="submit">Search</Typography>
+                  </Button>
                 </Link>
               </div>
             </div>

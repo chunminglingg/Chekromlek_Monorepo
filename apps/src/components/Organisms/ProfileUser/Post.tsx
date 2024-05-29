@@ -1,31 +1,10 @@
 import React from "react";
-import { ButtonCategories } from "@/components/Molecules";
-import { ListofNew } from "@/components/Organisms/RangeofList";
-import Link from "next/link";
-import Image from "next/image";
-import PostCard from "@/components/Organisms/postCard/PostCard";
-const Math = () => {
+import { PostCard } from "../postCard";
+
+export default function Post() {
   return (
     <div>
-    <div className="flex ms-3 w-auto h-auto">
-      <div className="flex justify-center h-[30%] w-[50px]">
-        <button>
-          <Link href={"/categories/"}>
-            <Image
-              src={"/icons/arrow-back.svg"}
-              alt="back"
-              width={30}
-              height={30}
-            />
-          </Link>
-        </button>
-      </div>
-      <div className="items-center w-[420px] flex-row">
-        <p className="text-purple-600 font-bold text-[23px]">Mathematic</p>
-       
-      </div>
-    </div>
-    <div className="flex flex-col gap-2 mt-4">
+      <div className="flex flex-col gap-2 mt-4">
         <PostCard
           profile="/card-svg/avatar.svg"
           hour={2}
@@ -52,6 +31,4 @@ const Math = () => {
       </div>
     </div>
   );
-};
-
-export default Math;
+}

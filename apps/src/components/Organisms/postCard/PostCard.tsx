@@ -9,6 +9,7 @@ import { Button } from "@/components/Atoms/Button/Button";
 import { Typography } from "@/components/Atoms";
 
 interface postCardProps {
+  id: string;
   profile: string;
   username: string;
   hour: number;
@@ -18,6 +19,7 @@ interface postCardProps {
 }
 
 const PostCard: React.FC<postCardProps> = ({
+  id,
   profile,
   username,
   hour,
@@ -73,7 +75,7 @@ const PostCard: React.FC<postCardProps> = ({
                   </h3>
                   <div className="flex flex-row gap-1">
                     <Image
-                      src={"icons/time.svg"}
+                      src={"/icons/time.svg"}
                       alt="time"
                       width={13}
                       height={13}
@@ -88,12 +90,8 @@ const PostCard: React.FC<postCardProps> = ({
               <EditCard onHide={hideCard} />
             </div>
             <div className="card-content flex flex-col gap-2 ">
-              {/* Render truncated caption with "See more" link */}
-              {/* <p className=" flex justify-start items-start title font-semibold text-[#343A40] text-2xl hover:underline max-sm:text-xl max-sm:font-medium pt-4 text-left cursor-pointer">
-                {title}
-              </p> */}
-              <div className="mt-1">
-                <Typography fontSize="title">
+              <div className="mt-1 items-start ">
+                <Typography fontSize="title" align="left">
                 {title}
               </Typography>
               </div>
@@ -138,24 +136,10 @@ const PostCard: React.FC<postCardProps> = ({
                 </div>
                 {/* Answer */}
                 <div className="right-item ">
-                  <Link href={"/viewpost"}>
-                   
-                    {/* <button className="rounded-lg from-purple-400 to-violet-500 bg-gradient-to-r hover:opacity-[70%] ">
-                 
-                 <div className="m-[1%] text-black px-4 py-2 font-semibold rounded-md bg-white flex flex-row gap-2"> 
-                 <p>Answer</p>
-                  <Image
-                    alt="post"
-                    src={'/card-svg/postsw.svg'}
-                    width={20}
-                    height={20}
-                  />
-                   </div>
-                        </button> */}
-                        
+                  <Link href={`/post/${id}`}>      
                     <Button className=" relative">
-                      <div className="absolute inset-0 bg-gradient-to-b from-indigo-600 to-purple-500 rounded-xl" />
-                      <div className=" px-6 py-2  bg-white rounded-xl flex flex-row gap-2  relative group transition duration-200 text-white hover:opacity-100">
+                      <div className="absolute inset-0 bg-gradient-to-b from-[#7B2CBF] to-[#D600E8] rounded-xl" />
+                      <div className=" px-6 py-[9px]  bg-white rounded-xl flex flex-row gap-2  relative group transition duration-200 text-white hover:bg-gray-100">
                         <p className="text-black text-[14px]">Answer</p>
                       </div>
                     </Button>

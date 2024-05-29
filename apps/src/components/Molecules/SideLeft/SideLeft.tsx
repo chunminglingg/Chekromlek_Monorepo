@@ -3,6 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { ReactNode, useState } from "react";
 
+
+interface SideStyleProps {
+  // Define props here if you plan to pass any props to SideStyle component
+}
 const SideStyle = () => {
   const [isHomeClick, setIsHomeClick] = useState(false);
   const [isCategoryClick, setIsCategoryClick] = useState(false);
