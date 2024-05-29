@@ -1,17 +1,24 @@
 FROM node:21-alpine3.18
 
-
+# Set the working directory
 WORKDIR /app
-COPY package.json ./
+
+# Copy package.json and package-lock.json
+COPY package.json package-lock.json ./
+
+# Install dependencies
+RUN npm install
+
+# Install nodemon globally
+RUN npm install -g nodemon
+
+# Copy the rest of the application files
 COPY tsconfig.json ./
-COPY public_key.pem /app/public_key.pem
-
 COPY src ./src
+COPY public_key.pem ./
 
-RUN npm install 
-
-
-
+# Expose the port your app runs on
 EXPOSE 3000
 
-CMD ["npm","run","start:dev"]
+# Command to run the application
+CMD ["npm", "run", "start:dev"]

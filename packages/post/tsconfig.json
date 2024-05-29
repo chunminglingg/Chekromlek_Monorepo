@@ -31,6 +31,6 @@
       "tsoa": ["../../node_modules/tsoa/dist"]
     }
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/custom.d.ts"],
   "exclude": ["node_modules", "build"]
 }

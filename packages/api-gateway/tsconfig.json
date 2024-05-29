@@ -1,15 +1,37 @@
 {
   "compilerOptions": {
-      "target": "es5",   // Adjust if needed (e.g., "es2015")
-      "module": "commonjs",
-      "strict": true,
-      "allowJs": true,   // Allow integration with existing JavaScript code
-      "outDir": "./dist",  // Output compiled JavaScript to a separate directory
-      "sourceMap": true,  // Generate source maps for debugging
-      "esModuleInterop": true  // Enable ES module interop for compatibility
-  },
-  "include": ["src"],  // Include files from the "src" directory for compilation
-  "paths": {
-    "@api-gateway/*": ["src/*"]
+    "target": "ES2015",
+    "lib": ["dom", "ES2015"],
+    "module": "commonjs",
+    "baseUrl": ".",
+    "outDir": "./build",
+    "rootDir": ".",
+    "strict": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "alwaysStrict": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "pretty": true,
+    "resolveJsonModule": true,
+    "plugins": [
+      {
+        "transform": "typescript-transform-paths"
+      },
+      {
+        "transform": "typescript-transform-paths",
+        "afterDeclarations": true
+      }
+    ],
+    "paths": {
+      "@api-gateway/*": ["src/*"],
+      "tsoa": ["node_modules/tsoa/dist"]
+    }
   }
 }

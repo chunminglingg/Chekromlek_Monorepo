@@ -1,8 +1,8 @@
-import { logInit, logger } from "./utils/logger";
 import app from "./app";
-import getConfig from "./utils/Config";
+import getConfig from "./utils/createConfig";
 import fs from "fs";
 import path from "path";
+import { logInit, logger } from "./utils/logger";
 
 // READ FILE JWT PUBLIC KEY FIRST
 export const publicKey = fs.readFileSync(
