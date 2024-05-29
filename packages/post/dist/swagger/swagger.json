@@ -10,6 +10,24 @@
 			"mongoose.Types.ObjectId": {
 				"type": "string"
 			},
+			"IAnswer": {
+				"properties": {
+					"postId": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					},
+					"userId": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					},
+					"username": {
+						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+					},
+					"answer": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
 			"postDetail": {
 				"properties": {
 					"userId": {
@@ -52,8 +70,17 @@
 					"createdAt": {
 						"type": "string",
 						"format": "date-time"
+					},
+					"answers": {
+						"items": {
+							"$ref": "#/components/schemas/IAnswer"
+						},
+						"type": "array"
 					}
 				},
+				"required": [
+					"answers"
+				],
 				"type": "object",
 				"additionalProperties": false
 			}
@@ -97,7 +124,7 @@
 			}
 		},
 		"/v1/post/{id}": {
-			"patch": {
+			"post": {
 				"operationId": "UpdatePost",
 				"responses": {
 					"201": {
@@ -126,6 +153,42 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/postDetail"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/post/{id}/answer": {
+			"post": {
+				"operationId": "CreateAnswer",
+				"responses": {
+					"201": {
+						"description": "Created successfully",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IAnswer"
 							}
 						}
 					}

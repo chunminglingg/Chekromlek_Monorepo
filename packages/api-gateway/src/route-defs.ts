@@ -2,5 +2,4 @@ export const ROUTE_PATHS = {
   AUTH_SERVICE: "/v1/auth",
   USER_SERVICE: "/v1/users",
   POST_SERVICE: "/v1/post",
-  ANSWER_SERVICE: "/v1/answer",
 };
