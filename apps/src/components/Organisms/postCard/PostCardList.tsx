@@ -16,6 +16,7 @@ const PostCardList= ({searchQuery = "" }) => {
       }).map((info) => (
         <PostCard
           key={info.id}
+          id={info.id}
           hour={info.hour}
           caption={info.caption}
           profile={info.profile}

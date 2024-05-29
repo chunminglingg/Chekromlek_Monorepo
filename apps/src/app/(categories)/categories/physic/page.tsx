@@ -1,12 +1,14 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import PostCard from "@/components/Organisms/postCard/PostCard";
 const Physic = () => {
   return (
-    <div className="flex ms-3 w-[450px%] h-[90px] items-center justify-start">
+    <div>
+    <div className="flex ms-3 w-auto h-auto">
       <div className="flex justify-center h-[30%] w-[50px]">
         <button>
-          <Link href={"http://localhost:3000/categories/"}>
+          <Link href={"/categories/"}>
             <Image
               src={"/icons/arrow-back.svg"}
               alt="back"
@@ -16,8 +18,35 @@ const Physic = () => {
           </Link>
         </button>
       </div>
-      <div className="items-center w-[420px]">
+      <div className="items-center w-[420px] flex-row">
         <p className="text-purple-600 font-bold text-[23px]">Physic</p>
+       
+      </div>
+    </div>
+    <div className="flex flex-col gap-2 mt-4">
+        <PostCard
+          profile="/card-svg/avatar.svg"
+          hour={2}
+          username="Kimlang Tieng"
+          caption="Why is it  s it that although China is already the second largest  in the world..already the second largest  in the worldalready the second largest  in the worldthat although China is already the second largest  in the world"
+          id={"1"}
+        />
+        <PostCard
+          profile="/card-svg/avatar.svg"
+          hour={2}
+          username="Kimlang Tieng"
+          caption="Why is it that although China is already the second largest  in the world."
+          postImage="/socialMedia/imageContent.svg"
+          id={"2"}
+        />
+        <PostCard
+          profile="/card-svg/avatar.svg"
+          hour={2}
+          username="Kimlang Tieng"
+          caption="Why is it that although China is already the second largest  in the world."
+          postImage="/socialMedia/imageContent.svg"
+          id={"3"}
+        />
       </div>
     </div>
   );
