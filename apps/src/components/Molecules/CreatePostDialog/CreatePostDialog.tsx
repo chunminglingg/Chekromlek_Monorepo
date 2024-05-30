@@ -9,8 +9,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { SelectScrollable } from "../Selection/Selection";
-import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
 import { HeaderPost } from "../AfterPostHeader";
 import UploadButton from "@/components/Molecules/UploadImage/UploadButton"
 
@@ -63,17 +61,18 @@ const CreatePostDialog = () => {
               </div>
               <div className="flex flex-col gap-4 pt-6 focus:outline-none">
                 {/* Title input */}
-                <Input
+                <input
                   placeholder="Title"
                   value={title}
                   onChange={handleTitleChange}
-                  className="focus:outline-none"
+                  className="focus:outline-none border rounded-md h-[40px] p-1"
                 />
                 {/* Description input */}
-                <Textarea
+                <textarea
                   placeholder="Type your descriptions of your question here."
                   value={description}
                   onChange={handleDescriptionChange}
+                  className="focus:outline-none border rounded-md h-[80px] p-1"  
                 />
                 <div className="w-full h-[250px] border rounded-md justify-center items-center grid  gap-1.5">
                   {/* File input */}

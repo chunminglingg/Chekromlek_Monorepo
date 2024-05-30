@@ -11,8 +11,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label" ;
 import Image from "next/image";
 
 export function EditCard({onHide}: { onHide: () => void }) {
@@ -22,7 +20,7 @@ export function EditCard({onHide}: { onHide: () => void }) {
         <div>
             <Image
                 alt="option"
-                src={"icons/cancel.svg"}
+                src={"/icons/cancel.svg"}
                 width={20}
                 height={20}
                 className="hover:shadow-2xl hover:border rounded-md "

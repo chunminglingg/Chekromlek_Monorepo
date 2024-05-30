@@ -1,5 +1,6 @@
 import {
   Body,
+  Get,
   Middlewares,
   Path,
   Post,
@@ -53,17 +54,35 @@ export class PostController {
     }
   }
 
+  @SuccessResponse(StatusCode.Found, "Found the post")
+  @Get("/{id}")
+  public async GetPostById(@Path() id: string): Promise<any> {
+    try {
+      const existPost = await this.postService.findPostById(id);
+
+      if (!existPost) {
+        throw new CustomError("Post not found", StatusCode.NotFound);
+      }
+      return {
+        message: "Post found successfully",
+        data: existPost,
+      };
+    } catch (error) {
+      logger.error(`Service method error: ${error}`);
+      throw error;
+    }
+  }
+
   @SuccessResponse(StatusCode.Created, "Created successfully")
   @Post("/:id")
   @Middlewares(validateInput(PostSaveSchema))
   @Middlewares(verificationToken)
   public async UpdatePost(
-    @Request() request: any,
     @Path() id: string,
     @Body() requestBody: postDetail
   ): Promise<any> {
     try {
-      const existPost = await this.postService.findPostById(request.id);
+      const existPost = await this.postService.findPostById(id);
       if (!existPost) {
         throw new CustomError("Post not found", StatusCode.NotFound);
       }

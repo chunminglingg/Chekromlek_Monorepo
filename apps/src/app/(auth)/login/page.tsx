@@ -4,6 +4,8 @@ import Link from "next/link";
 import React, { useState } from "react";
 import "../../globals.css";
 import signupValidation from "@/schema/Auth@Validation";
+import { Button } from "@/components/Atoms/Button/Button";
+import { Typography } from "@/components";
 
 interface dataTypes {
   email: string;
@@ -87,7 +89,7 @@ const Pages = () => {
                 <div className="flex flex-col">
                   <input
                     type="email"
-                    className="w-[400px]  max-sm:w-[290px] h-[60px] border border-[#cccccd] rounded-lg  pl-4"
+                    className="w-[400px]  max-sm:w-[290px] h-[60px] border border-[#cccccd] rounded-lg pl-4 focus:outline-none"
                     placeholder="yourname@example.com"
                     name="email"
                     onChange={handleChange}
@@ -99,7 +101,7 @@ const Pages = () => {
                 <div className="flex flex-col">
                   <input
                     type="password"
-                    className="w-[400px] h-[60px] max-sm:w-[290px] border border-[#cccccd] rounded-lg  pl-4"
+                    className="w-[400px] h-[60px] max-sm:w-[290px] border border-[#cccccd] rounded-lg  pl-4 focus:outline-none"
                     placeholder="Password"
                     name="password"
                     onChange={handleChange}
@@ -123,12 +125,12 @@ const Pages = () => {
                 </div>
 
                 <div className="flex flex-col items-center mt-4">
-                  <button
+                  <Button
                     type="submit"
                     className="w-[400px] h-[60px] bg-[#7B2CBF]  max-sm:w-[290px] hover:text-[#d1b6f6] text-white rounded-lg hover:opacity-[80%]"
                   >
-                    Login
-                  </button>
+                   <Typography fontSize="caption" color="submit">Login</Typography> 
+                  </Button>
                 </div>
 
                 <p className="text-center text-gray-400">

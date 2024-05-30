@@ -30,6 +30,7 @@ const models: TsoaRoute.Models = {
     "postDetail": {
         "dataType": "refObject",
         "properties": {
+            "_id": {"dataType":"string"},
             "userId": {"ref":"mongoose.Types.ObjectId"},
             "username": {"ref":"mongoose.Types.ObjectId"},
             "title": {"dataType":"string"},
@@ -38,6 +39,7 @@ const models: TsoaRoute.Models = {
             "category": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["General Knowledge"]},{"dataType":"enum","enums":["Mental Consultant"]},{"dataType":"enum","enums":["Technology"]},{"dataType":"enum","enums":["Mathematic"]},{"dataType":"enum","enums":["Physical"]},{"dataType":"enum","enums":["Biology"]},{"dataType":"enum","enums":["Chemistry"]},{"dataType":"enum","enums":["Writing"]},{"dataType":"enum","enums":["History"]},{"dataType":"enum","enums":["English"]}]},
             "like": {"dataType":"double"},
             "isSave": {"dataType":"boolean"},
+            "answer": {"dataType":"string"},
             "createdAt": {"dataType":"datetime"},
             "answers": {"dataType":"array","array":{"dataType":"refObject","ref":"IAnswer"},"required":true},
         },
@@ -85,13 +87,46 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+<<<<<<< HEAD
         app.post('/v1/post/:id',
+=======
+        app.get('/v1/post/:id',
+            ...(fetchMiddlewares<RequestHandler>(PostController)),
+            ...(fetchMiddlewares<RequestHandler>(PostController.prototype.GetPostById)),
+
+            async function PostController_GetPostById(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const controller = new PostController();
+
+              await templateService.apiHandler({
+                methodName: 'GetPostById',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 302,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/v1/post/:id',
+>>>>>>> e72183d61f3adc3306821bcfd0bed84c32fa3051
             ...(fetchMiddlewares<RequestHandler>(PostController)),
             ...(fetchMiddlewares<RequestHandler>(PostController.prototype.UpdatePost)),
 
             async function PostController_UpdatePost(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
-                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
                     id: {"in":"path","name":"id","required":true,"dataType":"string"},
                     requestBody: {"in":"body","name":"requestBody","required":true,"ref":"postDetail"},
             };

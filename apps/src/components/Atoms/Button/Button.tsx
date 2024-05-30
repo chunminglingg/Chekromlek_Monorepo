@@ -4,13 +4,20 @@ interface ButtonProps {
   children: ReactNode;
   className?: string;
   size?: "sm" | "md" | "lg";
-  colorScheme?: "primary" | "secondary" | "warning" | "danger" | "success";
+  colorScheme?:
+    | "primary"
+    | "secondary"
+    | "warning"
+    | "danger"
+    | "save"
+    | "success";
   colorOutline?:
     | "none"
     | "primary"
     | "secondary"
     | "warning"
     | "danger"
+    | "save"
     | "success";
   rounded?:
     | "none"
@@ -22,28 +29,28 @@ interface ButtonProps {
     | "2xl"
     | "3xl"
     | "full";
-  onClick?: () => void; // Add onClick event handler
-  type?:  "button" | "submit" | "reset";
+  onClick?: () => void;
+  type?: "button" | "submit" | "reset";
 }
 
 const Button: React.FC<ButtonProps> = ({
   children,
-  className,
+  className = "",
   size = "md",
-  rounded = "base",
+  rounded = "md",
   colorScheme = "",
   colorOutline = "",
-  onClick, // Destructure onClick
+  onClick,
   ...props
 }) => {
   const sizeButton = (size: string) => {
     switch (size) {
       case "sm":
-        return "py-1 px-2 text-xs";
+        return "w-[80px] h-[40px] text-xs";
       case "md":
         return "w-[100px] h-[41px] text-sm";
       case "lg":
-        return "py-3 px-6 text-xl";
+        return "w-[371px] h-[41px] text-xl";
       default:
         return "w-[153px] h-[43px] text-base";
     }
@@ -52,15 +59,17 @@ const Button: React.FC<ButtonProps> = ({
   const getColorSchemeClass = (colorScheme: string) => {
     switch (colorScheme) {
       case "primary":
-        return "bg-[#4B9960]";
+        return "bg-[#7B2CBF]";
       case "secondary":
-        return "bg-[#212529]";
+        return "bg-[#6C757D]";
       case "warning":
         return "bg-[#FFCC00]";
       case "danger":
         return "bg-[#FF3333]";
       case "success":
         return "bg-[#69B77E]";
+      case "save":
+        return "bg-[#00FF00]"; // Added color for "save"
       default:
         return "";
     }
@@ -69,11 +78,11 @@ const Button: React.FC<ButtonProps> = ({
   const buttonOutline = (colorOutline: string) => {
     switch (colorOutline) {
       case "primary":
-        return " border-2 border-[#4B9960]";
+        return "border-2 border-[#4B9960]";
       case "secondary":
         return "border-2 border-[#212529]";
       case "warning":
-        return "border-2 border-[#warning]";
+        return "border-2 border-[#FFCC00]"; // Corrected warning color
       case "danger":
         return "border-2 border-[#dc2626]";
       case "success":
@@ -112,12 +121,13 @@ const Button: React.FC<ButtonProps> = ({
   const getButtonRounded = ButtonRounded(rounded);
 
   return (
-    <div
-      className={`flex justify-center items-center cursor-pointer ${getButtonRounded} ${colorSchemeStyle} ${sizeButtonStyle} ${colorButtonOutline} ${className}`}
-      onClick={onClick} // Add onClick event handler
+    <button
+      className={`flex justify-center items-center cursor-pointer  ${getButtonRounded} ${colorSchemeStyle} ${sizeButtonStyle} ${colorButtonOutline} ${className}`}
+      onClick={onClick}
+      {...props}
     >
       {children}
-    </div>
+    </button>
   );
 };
 

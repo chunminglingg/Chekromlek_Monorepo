@@ -7,6 +7,7 @@ export interface IAnswer {
   likes?: Number;
 }
 export interface postDetail {
+  _id?: string
   userId?: mongoose.Types.ObjectId;
   username?: mongoose.Types.ObjectId;
   title?: string;
@@ -25,6 +26,7 @@ export interface postDetail {
     | "English";
   like?: number;
   isSave?: boolean;
+  answer?: string;
   createdAt?: Date;
   answers: IAnswer[];
 }
