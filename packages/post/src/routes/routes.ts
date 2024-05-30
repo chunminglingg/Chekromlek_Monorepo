@@ -19,8 +19,8 @@ const models: TsoaRoute.Models = {
     "IAnswer": {
         "dataType": "refObject",
         "properties": {
-            "postId": {"ref":"mongoose.Types.ObjectId"},
             "userId": {"ref":"mongoose.Types.ObjectId"},
+            "postId": {"ref":"mongoose.Types.ObjectId"},
             "username": {"ref":"mongoose.Types.ObjectId"},
             "answer": {"dataType":"string"},
         },
@@ -87,9 +87,6 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-<<<<<<< HEAD
-        app.post('/v1/post/:id',
-=======
         app.get('/v1/post/:id',
             ...(fetchMiddlewares<RequestHandler>(PostController)),
             ...(fetchMiddlewares<RequestHandler>(PostController.prototype.GetPostById)),
@@ -120,8 +117,7 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.put('/v1/post/:id',
->>>>>>> e72183d61f3adc3306821bcfd0bed84c32fa3051
+        app.post('/v1/post/:id',
             ...(fetchMiddlewares<RequestHandler>(PostController)),
             ...(fetchMiddlewares<RequestHandler>(PostController.prototype.UpdatePost)),
 
@@ -160,6 +156,7 @@ export function RegisterRoutes(app: Router) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     id: {"in":"path","name":"id","required":true,"dataType":"string"},
                     answer: {"in":"body","name":"answer","required":true,"ref":"IAnswer"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

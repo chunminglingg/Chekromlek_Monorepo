@@ -5,7 +5,7 @@ const AnswerSchema = new mongoose.Schema({
   username: { type: mongoose.Schema.Types.String, ref: "User" },
   postId: { type: mongoose.Schema.Types.ObjectId, ref: "PostModel" },
   answer: { type: String },
-  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  // likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 });
 const PostCard = new mongoose.Schema(
   {

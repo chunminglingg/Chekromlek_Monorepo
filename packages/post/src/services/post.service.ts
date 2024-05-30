@@ -20,7 +20,6 @@ export class PostService {
     }
   }
 
-
   async createAnswer(id: string, answer: IAnswer) {
     try {
       // const postObjectId = new Types.ObjectId(id);
@@ -29,6 +28,7 @@ export class PostService {
       if (!post) {
         throw new CustomError("Post not found", StatusCode.NotFound);
       }
+      
       const updatedPost = await this.postRepo.addAnswerToPost(id, answer);
       if (!updatedPost) {
         throw new CustomError(
