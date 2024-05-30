@@ -1,4 +1,11 @@
 import mongoose from "mongoose";
+export interface IAnswer {
+  userId?: mongoose.Types.ObjectId;
+  postId?: mongoose.Types.ObjectId;
+  username?: mongoose.Types.ObjectId;
+  answer?: string;
+  likes?: Number;
+}
 export interface postDetail {
   _id?: string
   userId?: mongoose.Types.ObjectId;
@@ -21,6 +28,7 @@ export interface postDetail {
   isSave?: boolean;
   answer?: string;
   createdAt?: Date;
+  answers: IAnswer[];
 }
 export enum PostCategory {
   GeneralKnowledge = "General Knowledge",
