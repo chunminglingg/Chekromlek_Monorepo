@@ -1,9 +1,7 @@
 {
   "entryFile": "src/server.ts",
   "noImplicitAdditionalProperties": "throw-on-extras",
-  "controllerPathGlobs": [
-    "src/controllers/*.controller.ts"
-  ],
+  "controllerPathGlobs": ["src/controllers/*.controller.ts"],
   "spec": {
     "outputDirectory": "dist/swagger",
     "specVersion": 3
@@ -14,9 +12,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@post/*": [
-        "src/*"
-      ]
+      "@post/*": ["src/*"]
     }
   }
 }

@@ -12,10 +12,10 @@
 			},
 			"IAnswer": {
 				"properties": {
-					"postId": {
+					"userId": {
 						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
 					},
-					"userId": {
+					"postId": {
 						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
 					},
 					"username": {
@@ -130,9 +130,6 @@
 			}
 		},
 		"/v1/post/{id}": {
-<<<<<<< HEAD
-			"post": {
-=======
 			"get": {
 				"operationId": "GetPostById",
 				"responses": {
@@ -157,8 +154,7 @@
 					}
 				]
 			},
-			"put": {
->>>>>>> e72183d61f3adc3306821bcfd0bed84c32fa3051
+			"post": {
 				"operationId": "UpdatePost",
 				"responses": {
 					"201": {

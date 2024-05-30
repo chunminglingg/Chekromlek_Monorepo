@@ -21,7 +21,11 @@ export class postRepository {
   }
 
   async addAnswerToPost(postId: string, answer: IAnswer) {
-    return await PostModel.findByIdAndUpdate(postId, answer, { new: true });
+    return await PostModel.findByIdAndUpdate(
+      postId,
+      { $push: { answers: answer } },
+      { new: true, useFindAndModify: false }
+    );
   }
   async updatePost(id: string, newUpdate: postDetail) {
     try {

@@ -9,7 +9,7 @@ import {
   SuccessResponse,
 } from "tsoa";
 import validateInput from "@post/middlewares/input-validation";
-import { AnswerSchema, PostSaveSchema } from "@post/schema/post.schema";
+import { PostSaveSchema } from "@post/schema/post.schema";
 import { PostService } from "@post/services/post.service";
 import { StatusCode } from "@post/utils/const";
 import { logger } from "@post/utils/logger";
@@ -98,7 +98,7 @@ export class PostController {
   }
   @SuccessResponse(StatusCode.Created, "Created successfully")
   @Post("/:id/answer")
-  @Middlewares(validateInput(AnswerSchema))
+  // @Middlewares(validateInput(AnswerSchema))
   @Middlewares(verificationToken)
   public async createAnswer(
     @Path() id: string,
@@ -108,17 +108,14 @@ export class PostController {
     try {
       // Debug logging to check the input
       logger.debug(`Received postId: ${id}`);
-      logger.debug(`Received username: ${JSON.stringify(answer.username)}`);
-      logger.debug(`Received userId: ${JSON.stringify(answer.userId)}`);
-
-      // request.likes += 1;
-      // await request.save();
+      logger.debug(`Received username: ${JSON.stringify(request?.username)}`);
+      logger.debug(`Received userId: ${JSON.stringify(request?.userId)}`);
 
       const detailAnswer = {
         ...answer,
-        userId: request?.userId,
-        username: request?.username,
-        postId: answer.postId,
+        userId: request!.userId,
+        username: request!.username,
+        postId: id,
       };
 
       const newAnswer = await this.postService.createAnswer(id, detailAnswer);
