@@ -4,6 +4,7 @@ export interface IAnswer {
   postId?: mongoose.Types.ObjectId;
   username?: mongoose.Types.ObjectId;
   answer?: string;
+  likes?: Number;
 }
 export interface postDetail {
   userId?: mongoose.Types.ObjectId;

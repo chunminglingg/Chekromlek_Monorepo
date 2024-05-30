@@ -92,7 +92,8 @@ export class PostController {
       logger.debug(`Received username: ${JSON.stringify(answer.username)}`);
       logger.debug(`Received userId: ${JSON.stringify(answer.userId)}`);
 
-      // const userId = request.userId;
+      // request.likes += 1;
+      // await request.save();
 
       const detailAnswer = {
         ...answer,

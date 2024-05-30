@@ -2,7 +2,6 @@ import { PostModel } from "../model/post.model";
 import CustomError from "@post/errors/customError";
 import { StatusCode } from "@post/utils/const";
 import { IAnswer, postDetail } from "../@types/post.interface";
-import { Types } from "mongoose";
 
 export class postRepository {
   // Create Post
@@ -17,16 +16,12 @@ export class postRepository {
       throw new CustomError(error.message, StatusCode.BadRequest);
     }
   }
-  async findById(postId: Types.ObjectId) {
-    return PostModel.findById(postId).exec();
+  async findAnswerById(answerId: string) {
+    return PostModel.findById(answerId);
   }
 
   async addAnswerToPost(postId: string, answer: IAnswer) {
-    return await PostModel.findByIdAndUpdate(
-      postId,
-      { $push: { answers: answer } },
-      { new: true }
-    );
+    return await PostModel.findByIdAndUpdate(postId, answer, { new: true });
   }
   async updatePost(id: string, newUpdate: postDetail) {
     try {
