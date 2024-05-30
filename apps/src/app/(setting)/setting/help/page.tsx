@@ -24,7 +24,7 @@ export default function Page() {
   return (
     <div className="flex flex-col lg:gap-2 mt-24">
       {/* User Setting */}
-      <Link href={"http://localhost:3000/setting"}>
+      <Link href={"/setting"}>
             <div className="flex flex-row gap-2 ml-2">
               <Image
                 src={"/icons/arrow-back.svg"}

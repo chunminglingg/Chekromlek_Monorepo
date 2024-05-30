@@ -19,7 +19,7 @@ const Page = () => {
     <>
       <div className="flex flex-col gap-10 lg:gap-6 mt-24 lg:border lg:border-gray-200 lg:p-4 lg:shadow-lg">
         <div>
-          <Link href={"http://localhost:3000/setting/account"}>
+          <Link href={"/setting/account"}>
             <div className="flex flex-row gap-2 ml-2">
               <Image
                 src={"/icons/arrow-back.svg"}

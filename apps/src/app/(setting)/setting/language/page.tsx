@@ -13,7 +13,7 @@ const Language = () => {
   return (
     <div className="flex flex-col w-[40%] max-sm:w-[70%] max-md:w-[60%] min-md:w-[60%] max-lg:w-[60%] lg:gap-2 mt-24 max-sm:gap-3 max-md:gap-3 md:gap-3">
       {/* Language */}
-      <Link href={"http://localhost:3000/setting"}>
+      <Link href={"/setting"}>
         <div className="flex items-end justify-start border-b-2 mt-4 py-2 border-gray-300 gap-2">
           <Image
             src={"/icons/arrow-back.svg"}
