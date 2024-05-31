@@ -45,6 +45,10 @@ const CreatePostDialog: React.FC = () => {
     // Set the uploaded image URL
     setUploadedImageUrl(imageUrl);
   };
+  const handleAttachmentDelete = () => {
+    // Clear the uploaded image URL
+    setUploadedImageUrl("");
+  };
 
   return (
     <>
@@ -78,7 +82,7 @@ const CreatePostDialog: React.FC = () => {
                 <div className="w-full h-[250px] border rounded-md justify-center items-center grid  gap-1.5">
                   {/* File input */}
                   {/* <Input type="file" /> */}
-                  <UploadButton onImageUpload={handleAttachmentUpload} />
+                  <UploadButton onImageUpload={handleAttachmentUpload}  onImageDelete={handleAttachmentDelete} />
                 </div>
               </div>
               <div className="flex justify-end">

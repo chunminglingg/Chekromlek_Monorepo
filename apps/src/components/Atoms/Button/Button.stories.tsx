@@ -3,6 +3,7 @@ import { Button } from "./Button";
 import { action } from "@storybook/addon-actions";
 import { userEvent, within } from "@storybook/testing-library";
 import { expect } from "@storybook/jest";
+import { Typography } from "../Typography";
 
 const meta: Meta<typeof Button> = {
   title: "chekromlek/Components/Atoms/Button",
@@ -61,3 +62,14 @@ export const ClickAction: Story = {
     ).toBeEnabled();
   },
 };
+
+export const Button_Default:Story ={
+  args:{
+   className : "relative",
+   rounded: "xl",
+   colorOutline: "primary",
+   children: <Typography >
+   Answer
+ </Typography>
+  },
+ }

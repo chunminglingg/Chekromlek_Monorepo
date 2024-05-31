@@ -5,6 +5,7 @@ interface ButtonProps {
   className?: string;
   size?: "sm" | "md" | "lg";
   colorScheme?:
+    | "none"
     | "primary"
     | "secondary"
     | "warning"
@@ -69,9 +70,11 @@ const Button: React.FC<ButtonProps> = ({
       case "success":
         return "bg-[#69B77E]";
       case "save":
-        return "bg-[#00FF00]"; // Added color for "save"
+        return "bg-[#00FF00]";
+      case "none":
+        return "bg-[#FFFFFF]";
       default:
-        return "";
+        return "bg-white";
     }
   };
 

@@ -28,6 +28,10 @@ function FormPost() {
     // Set the uploaded image URL
     setUploadedImageUrl(imageUrl);
   };
+  const handleAttachmentDelete = () => {
+    // Clear the uploaded image URL
+    setUploadedImageUrl("");
+  };
 
   return (
     <div className="mt-[1%] max-md:w-[410px] items-center justify-center max-sm:w-[330px]">
@@ -73,9 +77,9 @@ function FormPost() {
             {/* Attachment Upload */}
             {showAttachment && (
               <div className="p-1 flex items-center justify-center">
-                <UploadButton onImageUpload={handleAttachmentUpload} />
+                <UploadButton onImageUpload={handleAttachmentUpload} onImageDelete = {handleAttachmentDelete} />
               </div>
-            )}
+            )} 
           </div>
           {/* Display uploaded image if available */}
           {uploadedImageUrl && (
