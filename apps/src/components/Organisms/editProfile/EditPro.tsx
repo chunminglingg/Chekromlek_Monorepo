@@ -20,10 +20,11 @@ import {
 } from "@/components/ui/select";
 import { UploadPro } from "./UploadPro"; // Ensure correct path
 import { Button } from "@/components/Atoms/Button/Button";
+import { Typography } from "@/components/Atoms/Typography/Typography";
 
 export function EditProfile() {
   const [bio, setBio] = useState("");
-  const [job , setJob] = useState("");
+  const [job, setJob] = useState("");
   const [gender, setGender] = useState("");
   const [image, setImage] = useState(null);
 
@@ -59,10 +60,9 @@ export function EditProfile() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="relative">
-          <div className="absolute inset-0 bg-gradient-to-b from-[#7B2CBF] to-[#D600E8] rounded-xl" />
-          <div className="px-6 py-[9px] bg-white rounded-xl flex flex-row relative group transition duration-200 text-white hover:bg-gray-100">
-            <p className="text-black text-[10px]">EditProfile</p>
+        <Button className=" relative" rounded="3xl" colorOutline="primary">
+          <div>
+            <Typography>EditProfile</Typography>
           </div>
         </Button>
       </DialogTrigger>
@@ -72,9 +72,26 @@ export function EditProfile() {
         </DialogHeader>
         <UploadPro onUpload={handleImageUpload} />{" "}
         {/* Pass the upload handler */}
-
         <div className="flex flex-col iitems-start justify-center gap-1 outline-none">
-          <div className="flex flex-col items-start gap-5 py-4 outline-none w-full">
+          {/* Select Job Title */}
+          <div className="flex flex-col w-full focus:outline-none">
+            <label className="text-left">Job Tittle</label>
+            <Select onValueChange={handleJobSelect}>
+              <SelectTrigger className="w-full focus:outline-none">
+                <SelectValue placeholder="Select a Gender" />
+              </SelectTrigger>
+              <SelectContent className="focus:outline-none">
+                <SelectGroup className="focus:outline-none">
+                  <SelectLabel>Select Job</SelectLabel>
+                  <SelectItem value="student">Student</SelectItem>
+                  <SelectItem value="General">General</SelectItem>
+                  <SelectItem value="developer">Developer</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+          {/* Input Bio */}
+          <div className="flex flex-col items-start py-4 outline-none w-full">
             <label className="text-left">Bio</label>
             <input
               type="text"
@@ -85,23 +102,7 @@ export function EditProfile() {
               className="w-full h-[40px] border rounded-lg p-2 focus:outline-none"
             />
           </div>
-          <div className="flex flex-col w-full focus:outline-none">
-            <label className="text-left">Job Tittle</label>
-            <Select onValueChange={handleJobSelect}>
-              <SelectTrigger className="w-full focus:outline-none">
-                <SelectValue placeholder="Select a Gender" />
-              </SelectTrigger>
-              <SelectContent className="focus:outline-none">
-                <SelectGroup className="focus:outline-none">
-                  <SelectLabel>Select Job</SelectLabel>
-                  <SelectItem value="web dev">Web Dev</SelectItem>
-                  <SelectItem value="app dev">App Dev</SelectItem> 
-                  <SelectItem value="backend">Backend Dev</SelectItem> 
-                  <SelectItem value="fontend">Frontend Dev</SelectItem> 
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
+          {/* Select Gender */}
           <div className="flex flex-col w-full focus:outline-none">
             <label className="text-left">Gender</label>
             <Select onValueChange={handleGenderSelect}>
@@ -121,6 +122,7 @@ export function EditProfile() {
             {`This won't be part of your public profile.`}
           </p>
         </div>
+        {/* Summit */}
         <DialogFooter className="flex items-end justify-center">
           <button
             type="submit"

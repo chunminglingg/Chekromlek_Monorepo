@@ -5,7 +5,7 @@ import { userEvent, within } from "@storybook/testing-library";
 import { expect } from "@storybook/jest";
 
 const meta: Meta<typeof Button> = {
-  title: "Chekromlek/Atoms/Button",
+  title: "chekromlek/Components/Atoms/Button",
   component: Button,
   argTypes: {
     onClick: { action: 'clicked' }

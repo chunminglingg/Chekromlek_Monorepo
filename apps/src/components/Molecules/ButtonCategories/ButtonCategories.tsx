@@ -23,14 +23,14 @@ const ButtonCategories: React.FC<ButtonCategoriesProps> = ({
               height={50}
               className="ml-8"
             />
-            <div className="flex items-start justify-start flex-col">
+            <div className="flex flex-col">
               <Typography
-                fontSize="bold"
-                className=" mt-1 text-[#7B2CBF] text-sm lg:text-base w-full max-w-[270px] whitespace-nowrap line-clamp-1"
-              >
+              align="left"
+                fontSize="title"
+                className=" items-start mt-1 text-[#7B2CBF] text-sm lg:text-base w-full max-w-[270px] whitespace-nowrap line-clamp-1">
                 {title}
               </Typography>
-              <Typography className="text-[10px] text-zinc-500">
+              <Typography className="text-[10px] text-zinc-500" fontSize="caption" align="center">
                 {description}
               </Typography>
             </div>

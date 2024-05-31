@@ -53,7 +53,7 @@ const Page = () => {
   };
   return (
     <>
-      <div className="flex flex-col gap-3 lg:gap-3 mt-24 lg:border lg:border-gray-200 lg:p-4 lg:shadow-lg">
+      <div className="flex flex-col gap-3 lg:gap-3 mt-24 lg:border rounded-md lg:border-gray-200 lg:p-4 lg:shadow-lg">
         <div>
           <Link href={"/setting/account"}>
             <div className="flex flex-row gap-2 ml-2">
@@ -78,7 +78,8 @@ const Page = () => {
                 type="text"
                 name=""
                 id=""
-                className="w-[280px] ml-14 lg:ml-2 lg:w-[350px] h-[50px] border rounded-lg shadow-lg p-2 focus:outline-none"
+                placeholder="current password" 
+                className="w-[280px] ml-14 lg:ml-2 lg:w-[350px] h-[50px] border rounded-lg shadow-sm p-2 focus:outline-none"
                 value={currentPw}
                 onChange={(e) => setCurrentPw(e.target.value)}
               />
@@ -101,7 +102,8 @@ const Page = () => {
                 type="text"
                 name=""
                 id=""
-                className="w-[280px] ml-14 lg:ml-2 lg:w-[350px] h-[50px] border rounded-lg shadow-lg p-2 focus:outline-none"
+                placeholder="new password"
+                className="w-[280px] ml-14 lg:ml-2 lg:w-[350px] h-[50px] border rounded-lg shadow-sm p-2 focus:outline-none"
                 value={newPw}
                 onChange={(e) => setNewPw(e.target.value)}
               />
@@ -124,7 +126,8 @@ const Page = () => {
                 type="text"
                 name=""
                 id=""
-                className="w-[280px] ml-14 lg:ml-2 lg:w-[350px] h-[50px] border rounded-lg shadow-lg p-2 focus:outline-none"
+                placeholder="confirm password"
+                className="w-[280px] ml-14 lg:ml-2 lg:w-[350px] h-[50px] border rounded-lg shadow-sm p-2 focus:outline-none"
                 value={confirmPw}
                 onChange={(e) => setConfirmPw(e.target.value)}
               />
@@ -138,12 +141,12 @@ const Page = () => {
         </div>
         <div className="flex flex-row justify-center items-center lg:justify-end lg:items-end gap-2  ">
           <Button size="sm" onClick={handleSave} colorScheme="primary" className="hover:opacity-80">
-            <Typography fontSize="normal" color="secondary">
+            <Typography fontSize="normal" color="submit">
               Save
             </Typography>
           </Button>
           <Button size="sm" colorScheme="secondary" className="hover:opacity-80">
-            <Typography fontSize="normal" color="secondary">
+            <Typography fontSize="normal" color="submit">
               Cancel
             </Typography>
           </Button>

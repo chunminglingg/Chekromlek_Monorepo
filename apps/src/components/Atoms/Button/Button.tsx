@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 
 interface ButtonProps {
-  children: ReactNode;
+  children?: ReactNode;
   className?: string;
   size?: "sm" | "md" | "lg";
   colorScheme?:
@@ -77,14 +77,14 @@ const Button: React.FC<ButtonProps> = ({
 
   const buttonOutline = (colorOutline: string) => {
     switch (colorOutline) {
-      case "primary":
+      case "danger":
         return "border-2 border-[#4B9960]";
       case "secondary":
         return "border-2 border-[#212529]";
       case "warning":
         return "border-2 border-[#FFCC00]"; // Corrected warning color
-      case "danger":
-        return "border-2 border-[#dc2626]";
+      case "primary":
+        return "border-2 border-[#D600E8]";
       case "success":
         return "border-2 border-[#69B77E]";
       default:

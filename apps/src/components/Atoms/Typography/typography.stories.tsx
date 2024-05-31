@@ -5,7 +5,7 @@ import { Typography } from './Typography'; // Assuming this is the path to your 
 import { StoryObj, Meta } from '@storybook/react';
 
 const meta: Meta<typeof Typography>= {
-  title: 'Chekromlek/Atoms/Typography',
+  title: 'chekromlek/Components/Atoms/Typography',
   component: Typography,
   parameters: {
     // layout: "centered",
@@ -39,6 +39,6 @@ export const Mulish:Story = {
   children: "Typography",
   align:'center',
   fontSize:'normal',
-  Mulish:"Regular 4"
+  Mulish:"Regular 14"
 }
 };
