@@ -8,6 +8,7 @@ import Nav from "@/components/Organisms/navbar/Nav";
 import { Sidebar } from "@/components/Organisms/sidebar/Sidebar";
 import SideRight from "@/components/Molecules/SideRight/SideRight";
 import NavAfter from "@/components/Organisms/navbar/NavAfter";
+import { SideBarLogin } from "@/components/Organisms/sidebar/SieBarLogin";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,7 +31,7 @@ export default function RootLayout({
           {children}
         </div>
         <div className="">
-        <Sidebar />
+        <SideBarLogin />
         </div>
       
       </body>

@@ -5,6 +5,7 @@ import { Sidebar } from "@/components/Organisms/sidebar/Sidebar";
 import NavAfter from "@/components/Organisms/navbar/NavAfter";
 import CardContext from "@/contexts/PostCardContext/PostCardContext";
 import SideRight from "@/components/Molecules/SideRight/SideRight";
+import { SideBarLogin } from "@/components/Organisms/sidebar/SieBarLogin";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -27,7 +28,7 @@ export default function RootLayout({
             <SideRight></SideRight>
           </div>
         </div>
-        <Sidebar />
+        <SideBarLogin />
       </body>
     </html>
   );

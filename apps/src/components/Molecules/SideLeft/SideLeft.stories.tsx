@@ -5,7 +5,7 @@ import SideStyle,{ SideStyleProps }  from "./SideLeft";
 import { userEvent, within } from "@storybook/testing-library";
 
 export default {
-  title: "Components/SideStyle",
+  title: "chekromlek/Components/Molecules/SideStyle",
   component: SideStyle,
   argTypes: {
     isHomeClick: { control: "boolean" },

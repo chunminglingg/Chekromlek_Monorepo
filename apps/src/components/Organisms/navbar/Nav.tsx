@@ -12,7 +12,7 @@ function navbar() {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [searchQuery, setSearchQuery] = useState("");
   return (
-    <nav className="fixed top-0 z-40 w-full bg-white border-b border-gray-20 ">
+    <nav className="fixed  z-40 w-full bg-white border-b border-gray-20 ">
       <div className="px-3 py-3 lg:px-5 lg:pl-10 flex justify-between">
         <div className="flex flex-row gap-4 items-center">
           <Link href={"/"}>

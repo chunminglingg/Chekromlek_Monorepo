@@ -43,14 +43,14 @@ export default function Page() {
       </Link>
   
     {/* Answer */}
-    <form onSubmit={handleSubmit} className="flex flex-col items-center w-auto max-w-md">
-      <p className="text-slate-700 text-sm text-left">
+    <form onSubmit={handleSubmit} className="flex flex-col items-center w-full max-w-md">
+    <Typography align="center">
         You can always reach out if you want us to recommend something.
-      </p>
+    </Typography>
       <input
         type="email"
         placeholder="Input your email"
-        className="border shadow-lg w-full max-w-xs p-2 rounded-lg text-sm mt-3 focus:outline-none"
+        className="border shadow-lg w-full max-w-xs  p-2 rounded-lg text-sm mt-3 focus:outline-none"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />

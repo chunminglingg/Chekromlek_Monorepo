@@ -12,7 +12,7 @@ import { SelectScrollable } from "../Selection/Selection";
 import { HeaderPost } from "../AfterPostHeader";
 import UploadButton from "@/components/Molecules/UploadImage/UploadButton"
 
-const CreatePostDialog = () => {
+const CreatePostDialog: React.FC = () => {
   // Define state variables to store input data
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -39,6 +39,7 @@ const CreatePostDialog = () => {
 
     setTitle("");
     setDescription("");
+    setUploadedImageUrl("");
   };
   const handleAttachmentUpload = (imageUrl:string) => {
     // Set the uploaded image URL
