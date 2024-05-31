@@ -62,7 +62,7 @@ Creating a platform for high school students to collaborate, enhance research sk
 
 ## UI design
 
-* [![Static Badge](https://img.shields.io/badge/Figma-2C2D34?style=for-the-badge&logo=figma&logoColor=fff&color=%232C2D34)](https://www.figma.com/design/Cvvmjfhl1K2c8EkXBRK3OF/Neakhatka?node-id=22-18&t=3YcYKBcPRNFPZCh9-1)
+* [![Static Badge](https://img.shields.io/badge/Figma-2C2D34?style=for-the-badge&logo=figma&logoColor=fff&color=%232C2D34)](https://www.figma.com/design/3bZbAhm0fbpqzRiPGP3uDO/Chekromlek?node-id=1-2&t=EcZKTIAlu3rlZG8J-0)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
