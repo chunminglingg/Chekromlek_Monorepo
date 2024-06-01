@@ -2,7 +2,6 @@
 import { Burger } from "@/components/Atoms"
 import Logo from "@/components/Atoms/Logo/Logo";
 import SearchInput from "@/components/Molecules/Search/SearchInput";
-import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";

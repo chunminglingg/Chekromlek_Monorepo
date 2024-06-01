@@ -6,7 +6,7 @@ import { userEvent, within, waitFor } from '@storybook/testing-library';
 import { expect } from '@storybook/jest';
 
 export default {
-  title: 'Chekromlek/Atoms/AfterLogin',
+  title: 'chekromlek/Components/Atoms/AfterLogin',
   component: AfterLogin,
   parameters: {
     layout: 'centered',

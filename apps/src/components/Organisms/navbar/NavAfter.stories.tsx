@@ -8,7 +8,7 @@ const AfterLogin = ({ name }) => <div>Welcome, {name}</div>;
 const Burger = () => <div>Burger Menu</div>;
 
 export default {
-  title: "Organisms/navbar",
+  title: "chekromlek/Components/Organisms/Navbar",
   component: NavAfter,
   parameters: {
     layout: 'left',

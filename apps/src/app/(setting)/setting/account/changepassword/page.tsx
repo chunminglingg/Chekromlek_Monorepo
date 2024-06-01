@@ -142,12 +142,10 @@ const Page = () => {
         <div className="flex flex-row justify-center items-center lg:justify-end lg:items-end gap-2  ">
           <Button size="sm" onClick={handleSave} colorScheme="primary" className="hover:opacity-80">
             <Typography fontSize="normal" color="submit">
-            <Typography fontSize="normal" color="submit">
               Save
             </Typography>
           </Button>
           <Button size="sm" colorScheme="secondary" className="hover:opacity-80">
-            <Typography fontSize="normal" color="submit">
             <Typography fontSize="normal" color="submit">
               Cancel
             </Typography>
