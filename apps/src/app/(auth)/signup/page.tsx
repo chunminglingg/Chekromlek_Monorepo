@@ -125,6 +125,7 @@ const Pages = () => {
 
 
                 <div className="flex flex-col items-center mt-4">
+                 <Link href={"./verify"} >
                   <button
                     type="submit"
                     className="w-[400px] h-[60px] bg-[#7B2CBF]  max-sm:w-[290px] hover:text-[#d1b6f6] text-white rounded-lg hover:opacity-[80%]"
@@ -132,6 +133,7 @@ const Pages = () => {
                   >
                     Register
                   </button>
+                  </Link>
                 </div>
 
                 <p className="text-center text-gray-400">

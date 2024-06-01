@@ -17,7 +17,7 @@ export default function Page() {
   };
 
   return (
-    <div className="w-[40%] max-sm:w-[70%] max-md:w-[60%] min-md:w-[60%] max-lg:w-[60%] flex-row items-center justify-center  mt-[8%] max-md:mt-[12%] max-sm:mt-[18%] max-lg:mt-[10%] ">
+    <div className="w-[40%] max-sm:w-[70%] max-md:w-[60%] min-md:w-[60%] max-lg:w-[60%] flex-row items-center justify-center  mt-[8%] max-md:mt-[12%] max-sm:mt-[20%] max-lg:mt-[10%] ">
       {/* User Setting */}
       <Link href={"/setting"}>
         <div className="flex items-end justify-start border-b-2 py-2 border-gray-300  gap-2 ">

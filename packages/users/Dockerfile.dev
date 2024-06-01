@@ -1,16 +1,24 @@
 FROM node:21-alpine3.18
 
 WORKDIR /app
+
+# Copy package.json and package-lock.json to ensure exact dependency versions
 COPY package.json ./
+
+# Install dependencies
+RUN npm install
+
+# Install nodemon globally
+RUN npm install -g nodemon
+
+# Copy the rest of the application files
 COPY tsconfig.json ./
 COPY dist ./dist
 COPY src ./src
+COPY private_key.pem ./private_key.pem
 
-# Copy the private key file to /app/private_key.pem in the container
-COPY private_key.pem private_key.pem
-
-RUN npm install && npm install -g nodemon
-
+# Expose the port your app runs on
 EXPOSE 4000
 
+# Command to run the application
 CMD [ "npm", "run", "start:dev" ]

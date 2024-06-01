@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 export interface postDetail {
+  _id?: string
   userId?: mongoose.Types.ObjectId;
   username?: mongoose.Types.ObjectId;
   title?: string;
@@ -18,6 +19,7 @@ export interface postDetail {
     | "English";
   like?: number;
   isSave?: boolean;
+  answer?: string;
   createdAt?: Date;
 }
 export enum PostCategory {

@@ -1,9 +1,13 @@
-import { PostCard } from "@/components/Organisms";
+"use client";
 import { EditProfile } from "@/components/Organisms/editProfile/EditPro";
+import Post from "@/components/Organisms/ProfileUser/Post";
+import SavedPost from "@/components/Organisms/ProfileUser/SavedPost";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 
-const page = () => {
+const Page = () => {
+  const [view, setView] = useState("Post");
+
   return (
     <>
       <div className="content flex flex-col justify-center items-center">
@@ -36,14 +40,16 @@ const page = () => {
           </div>
           <div className="header-right pb-28 pr-8">
             <EditProfile />
-            {/* <button className="px-2 py-2 rounded-2xl text-[#343A40] border border-gray-300 hover:bg-gray-300">
-              Edit profile
-            </button> */}
           </div>
         </div>
         <div className="button-card w-[663px] max-sm:w-[350px] h-[70px] border-b flex flex-row justify-evenly items-center mt-4 ">
-          <div className="left hover:opacity-[60%]">
-            <button className="flex flex-row gap-1">
+          <div
+            className={`left hover:opacity-[60%] ${view === "Post" ? "text-purple-600 font-bold" : ""}`}
+          >
+            <button
+              className="flex flex-row gap-1"
+              onClick={() => setView("Post")}
+            >
               <p>Post</p>
               <Image
                 alt="post"
@@ -54,8 +60,13 @@ const page = () => {
             </button>
           </div>
           <div className="middle w-[0.2px] h-[100%] bg-gray-400"></div>
-          <div className="right hover:opacity-[60%]">
-            <button className="flex flex-row gap-1">
+          <div
+            className={`right hover:opacity-[60%] ${view === "SavedPost" ? "text-purple-600 font-bold" : ""}`}
+          >
+            <button
+              className="flex flex-row gap-1"
+              onClick={() => setView("SavedPost")}
+            >
               <p>Saved</p>
               <Image
                 alt="save"
@@ -67,27 +78,13 @@ const page = () => {
           </div>
         </div>
 
-        {/* postCard */}
-        <div>
-          <div className="flex flex-col gap-2 mt-4">
-            <PostCard
-              profile="/card-svg/avatar.svg"
-              hour={2}
-              username="Kimlang Tieng"
-              caption="Why is it that although China is already the second largest  in the world."
-              postImage="/socialMedia/imageContent.svg"
-            />
-            <PostCard
-              profile="/card-svg/avatar.svg"
-              hour={2}
-              username="Kimlang Tieng"
-              caption="Why is it  s it that although China is already the second largest  in the world..already the second largest  in the worldalready the second largest  in the worldthat although China is already the second largest  in the world"
-            />
-          </div>
+        {/* Conditionally render Post or SavedPost */}
+        <div className="content-section flex flex-col gap-2 mt-4">
+          {view === "Post" ? <Post /> : <SavedPost />}
         </div>
       </div>
     </>
   );
 };
 
-export default page;
+export default Page;

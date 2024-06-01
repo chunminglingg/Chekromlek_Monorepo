@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import * as Yup from "yup";
 import { validationSchema } from "@/schema/Auth@Validation/SavePw";
+import { Typography } from "@/components/Atoms/Typography/Typography";
 type SetSave = Dispatch<SetStateAction<boolean>>; // Assuming 'save' is of type boolean
 
 const Page = () => {
@@ -13,6 +14,8 @@ const Page = () => {
   const [currentPw, setCurrentPw] = useState<string>("");
   const [newPw, setNewPw] = useState<string>("");
   const [confirmPw, setConfirmPw] = useState<string>("");
+  const [alertVisible, setAlertVisible] = useState<boolean>(false);
+  
   const handleSave = async () => {
     try {
       await validationSchema.validate(
@@ -23,6 +26,15 @@ const Page = () => {
       console.log("Current Password:", currentPw);
       console.log("New Password:", newPw);
       console.log("Confirm Password:", confirmPw);
+
+      // Clear validation errors
+      setErrors({});
+
+       // Show success alert
+       setAlertVisible(true);
+      
+       // Hide alert after 3 seconds
+       setTimeout(() => setAlertVisible(false), 5000);
     } catch (error) {
       if (error instanceof Yup.ValidationError && error.inner) {
         // Validation errors found, update the state with the errors
@@ -35,6 +47,9 @@ const Page = () => {
         console.error("Validation error:", error);
       }
     }
+    setCurrentPw("");
+    setNewPw("");
+    setConfirmPw("");
   };
   return (
     <>
@@ -63,7 +78,7 @@ const Page = () => {
                 type="text"
                 name=""
                 id=""
-                className="w-[280px] ml-14 lg:ml-2 lg:w-[350px] h-[50px] border rounded-lg shadow-lg"
+                className="w-[280px] ml-14 lg:ml-2 lg:w-[350px] h-[50px] border rounded-lg shadow-lg p-2 focus:outline-none"
                 value={currentPw}
                 onChange={(e) => setCurrentPw(e.target.value)}
               />
@@ -74,7 +89,7 @@ const Page = () => {
               )}
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row gap-2 lg:justify-center lg:items-center">
+          <div className="flex flex-col lg:flex-row gap-2 lg:justify-center lg:items-center ">
             <label
               htmlFor=""
               className="ml-14 text-sm lg:ml-11 text-[12px] lg:text-sm"
@@ -82,17 +97,19 @@ const Page = () => {
               New Password:
             </label>
             <div className="flex flex-col">
-            <input
-              type="text"
-              name=""
-              id=""
-              className="w-[280px] ml-14 lg:ml-2 lg:w-[350px] h-[50px] border rounded-lg shadow-lg"
-              value={newPw}
-              onChange={(e) => setNewPw(e.target.value)}
-            />
-            {errors.newPw && (
-              <p className="text-red-500 text-sm text-center lg:text-start lg:mt-2 lg:ml-3">{errors.newPw}</p>
-            )}
+              <input
+                type="text"
+                name=""
+                id=""
+                className="w-[280px] ml-14 lg:ml-2 lg:w-[350px] h-[50px] border rounded-lg shadow-lg p-2 focus:outline-none"
+                value={newPw}
+                onChange={(e) => setNewPw(e.target.value)}
+              />
+              {errors.newPw && (
+                <p className="text-red-500 text-sm text-center lg:text-start lg:mt-2 lg:ml-3">
+                  {errors.newPw}
+                </p>
+              )}
             </div>
           </div>
           <div className="flex flex-col lg:flex-row gap-2 lg:justify-center lg:items-center">
@@ -103,34 +120,39 @@ const Page = () => {
               confirm Password:
             </label>
             <div className="flex flex-col">
-            <input
-              type="text"
-              name=""
-              id=""
-              className="w-[280px] ml-14 lg:ml-3 lg:w-[350px] h-[50px] border rounded-lg shadow-lg"
-              value={confirmPw}
-              onChange={(e) => setConfirmPw(e.target.value)}
-            />
-            {errors.confirmPw && (
-              <p className="text-red-500 text-sm text-center lg:text-start lg:mt-2 lg:ml-3g">
-                {errors.confirmPw}
-              </p>
-            )}
+              <input
+                type="text"
+                name=""
+                id=""
+                className="w-[280px] ml-14 lg:ml-2 lg:w-[350px] h-[50px] border rounded-lg shadow-lg p-2 focus:outline-none"
+                value={confirmPw}
+                onChange={(e) => setConfirmPw(e.target.value)}
+              />
+              {errors.confirmPw && (
+                <p className="text-red-500 text-sm text-center lg:text-start lg:mt-2 lg:ml-3">
+                  {errors.confirmPw}
+                </p>
+              )}
             </div>
           </div>
         </div>
         <div className="flex flex-row justify-center items-center lg:justify-end lg:items-end gap-2  ">
-          <Button
-            className="w-[80px]"
-            onClick={handleSave}
-            background="bg-violet-500"
-          >
-            Save
+          <Button size="sm" onClick={handleSave} colorScheme="primary" className="hover:opacity-80">
+            <Typography fontSize="normal" color="secondary">
+              Save
+            </Typography>
           </Button>
-          <Button className=" w-[80px]" background="bg-slate-300">
-            Cancel
+          <Button size="sm" colorScheme="secondary" className="hover:opacity-80">
+            <Typography fontSize="normal" color="secondary">
+              Cancel
+            </Typography>
           </Button>
         </div>
+        {alertVisible && (
+          <div className="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+            Password changed successfully!
+          </div>
+        )}
       </div>
     </>
   );

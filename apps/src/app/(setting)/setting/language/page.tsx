@@ -11,7 +11,7 @@ const Language = () => {
   };
 
   return (
-    <div className="flex flex-col w-[40%] max-sm:w-[70%] max-md:w-[60%] min-md:w-[60%] max-lg:w-[60%] lg:gap-2 mt-24 max-sm:gap-3 max-md:gap-3 md:gap-3">
+    <div className="flex flex-col w-[40%] max-sm:w-[70%] max-md:w-[60%] min-md:w-[60%] max-lg:w-[60%] lg:gap-2 mt-24 max-sm:gap-3 max-md:gap-3 md:gap-3   max-md:mt-[12%] max-sm:mt-[20%] max-lg:mt-[10%] ">
       {/* Language */}
       <Link href={"/setting"}>
         <div className="flex items-end justify-start border-b-2 mt-4 py-2 border-gray-300 gap-2">
@@ -21,7 +21,7 @@ const Language = () => {
             width={25}
             height={25}
           />
-          <p className="items-center justify-center text-[18px] font-semibold text-slate-700">
+          <p className=" items-center justify-center text-[18px] font-semibold text-slate-700">
             Language
           </p>
         </div>
@@ -31,7 +31,7 @@ const Language = () => {
       <div className="flex flex-col gap-2 mt-5">
         <div
           className={`w-auto h-[50px] flex items-center justify-between border rounded-md cursor-pointer ${
-            language === "English" ? "bg-[#A07EBE]" : ""
+            language === "English" ? "bg-gray-100" : ""
           }`}
           onClick={() => handleLanguageChange("English")}
         >
@@ -39,7 +39,7 @@ const Language = () => {
             <Image src={"/icons/eng.svg"} alt="eng" width={35} height={35} />
             <button
               className={`px-4 py-2 rounded-md ${
-                language === "English" ? "text-white" : "text-black"
+                language === "English" ? "text-black" : ""
               }`}
             >
               English
@@ -54,7 +54,7 @@ const Language = () => {
 
         <div
           className={`w-auto h-[50px] flex items-center justify-between border rounded-md cursor-pointer ${
-            language === "Khmer" ? "bg-[#A07EBE]" : ""
+            language === "Khmer" ? "bg-gray-100" : ""
           }`}
           onClick={() => handleLanguageChange("Khmer")}>
             
@@ -62,7 +62,7 @@ const Language = () => {
             <Image src={"/icons/kh.svg"} alt="khmer" width={35} height={35} />
             <button
               className={`px-4 py-2 rounded-md ${
-                language === "Khmer" ? "text-white" : "text-black"
+                language === "Khmer" ? "text-black" : ""
               }`}
             >
               Khmer

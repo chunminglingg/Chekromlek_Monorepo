@@ -3,12 +3,13 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import { Button } from "@/components/Atoms/Button/Button";
+import { Typography } from "@/components/Atoms/Typography/Typography";
 
 export default function Page() {
   const [email, setEmail] = useState("");
   const [question, setQuestion] = useState("");
 
-  const handleSubmit = (e:any) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault(); // Prevents the default form submission behavior
 
     // Gather the data
@@ -19,6 +20,8 @@ export default function Page() {
 
     // Do something with the form data, like sending it to a server
     console.log("Form data:", formData);
+    setEmail("");
+    setQuestion("");
   };
 
   return (
