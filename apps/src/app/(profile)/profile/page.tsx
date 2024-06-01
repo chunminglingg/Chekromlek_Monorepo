@@ -1,5 +1,6 @@
 "use client";
 import { EditProfile } from "@/components/Organisms/editProfile/EditPro";
+import Edit from "@/components/Organisms/postCard/Edit";
 import Post from "@/components/Organisms/ProfileUser/Post";
 import SavedPost from "@/components/Organisms/ProfileUser/SavedPost";
 import Image from "next/image";
@@ -12,7 +13,7 @@ const Page = () => {
     <>
       <div className="content flex flex-col justify-center items-center">
         <div className="h-[90px]"></div>
-        <div className="card-header w-[680px] min-sm:w-[230px] max-sm:w-[380px] h-[186px] shadow-md rounded-2xl flex justify-between items-center relative border">
+        <div className="card-header w-[680px] min-sm:w-[230px] max-sm:w-[380px] h-[186px] shadow-sm rounded-2xl flex justify-between items-center relative border">
           <div className="header-left flex flex-row gap-4 pl-10">
             <div className="user-profile max-sm:mt-2">
               <Image

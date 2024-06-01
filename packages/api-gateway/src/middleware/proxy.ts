@@ -239,7 +239,7 @@ const proxyConfigs: ProxyConfig = {
       },
     },
   },
-  };
+};
 
 const applyProxy = (app: express.Application) => {
   Object.keys(proxyConfigs).forEach((context: string) => {

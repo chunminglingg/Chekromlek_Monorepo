@@ -6,7 +6,7 @@ import { userEvent, within } from "@storybook/testing-library";
 import { url } from "inspector";
 
 export default {
-  title: "Components/SearchInput",
+  title: "chekromlek/Components/Molecules/SearchInput",
   component: SearchInput,
   argTypes: {
     onIconClick: { action: "icon clicked" },

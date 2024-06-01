@@ -76,11 +76,22 @@ const ViewPost: React.FC<ViewPostProps> = ({
               alt="profile"
             />
             {/* Detail */}
-            <div className="ml-2">
-              <p className="font-medium text-[16px] text-gray-900">
+            <div className="ml-2 ">
+              <h3 className="font-medium text-[16px] text-[#343A40]">
                 {username}
-              </p>
-              <p className="text-sm text-gray-500">{hour} hour ago</p>
+              </h3>
+
+              <div className="flex flex-row gap-1">
+                <Image
+                  src={"/icons/time.svg"}
+                  alt="time"
+                  width={13}
+                  height={13}
+                />
+                <p className="font-normal text-[12px] text-[#6C757D]">
+                  {hour} hour ago
+                </p>
+              </div>
             </div>
           </div>
         </div>

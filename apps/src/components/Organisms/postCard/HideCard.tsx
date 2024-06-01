@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog"
 import Image from "next/image";
 
-export function EditCard({onHide}: { onHide: () => void }) {
+export function HideCard({onHide}: { onHide: () => void }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -27,7 +27,7 @@ export function EditCard({onHide}: { onHide: () => void }) {
               />
               </div>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="items-center max-sm:w-[80%] rounded-md">
         <DialogHeader>
           <DialogTitle>Are Sure to hide this Post?</DialogTitle>
           <DialogDescription>
@@ -35,7 +35,7 @@ export function EditCard({onHide}: { onHide: () => void }) {
           </DialogDescription>
         </DialogHeader>
       
-        <DialogFooter className="sm:justify-end">
+        <DialogFooter className="md:justify-end max-sm:items-end">
           <DialogClose asChild>
             <Button type="button" variant="secondary" onClick={onHide}>
               Yes

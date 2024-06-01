@@ -1,5 +1,4 @@
 import SideLeft from "@/components/Molecules/SideLeft/SideLeft";
-
 export const Sidebar = () => {
   return (
     <>

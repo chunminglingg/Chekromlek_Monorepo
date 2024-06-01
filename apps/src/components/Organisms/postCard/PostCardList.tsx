@@ -22,8 +22,12 @@ const PostCardList= ({searchQuery = "" }) => {
           profile={info.profile}
           username={info.username}
           postImage={info.postImage}
-          title={info.title}
-        />
+          title={info.title} 
+          onLike={function (): void {
+            throw new Error('Function not implemented.');
+          } } onSave={function (): void {
+            throw new Error('Function not implemented.');
+          } }        />
       ))}
     </div>
   );
