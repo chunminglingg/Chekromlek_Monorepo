@@ -49,7 +49,6 @@ const Typography: React.FC<TypoProps> = ({
         return "text-gray-500";
       case "submit":
         return "text-white";
-        
       default:
         return "text-black";
     }

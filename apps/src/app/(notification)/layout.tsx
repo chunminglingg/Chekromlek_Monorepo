@@ -4,7 +4,7 @@ import "../globals.css";
 import Link from "next/link";
 import Logo from "@/components/Atoms/Logo/Logo";
 import SideLeft from "@/components/Molecules/SideLeft/SideLeft";
-import Nav from "@/components/Organisms/navbar/Nav";
+import Nav from "@/components/Organisms/navbar/NavBefore";
 import { Sidebar } from "@/components/Organisms/sidebar/Sidebar";
 import NavAfter from "@/components/Organisms/navbar/NavAfter";
 import CardContext from "@/contexts/PostCardContext/PostCardContext";

@@ -9,6 +9,8 @@ const config: StorybookConfig = {
     "@storybook/addon-interactions",
     "@chromatic-com/storybook",
     '@storybook/addon-designs',
+    '@chromaui/storybook',
+    '@storybook/addon-docs',
   ],
   framework: {
     name: "@storybook/nextjs",
@@ -17,5 +19,6 @@ const config: StorybookConfig = {
   docs: {
     autodocs: "tag",
   },
+  staticDirs: ['../public']
 };
 export default config;

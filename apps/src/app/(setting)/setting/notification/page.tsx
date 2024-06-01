@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Typography } from "@/components";
 // import Switch from "@mui/material/Switch";
 
 export default function Page() {
@@ -17,24 +18,22 @@ export default function Page() {
   };
 
   return (
-    <div className="w-[40%] max-sm:w-[70%] max-md:w-[60%] min-md:w-[60%] max-lg:w-[60%] flex-row items-center justify-center  mt-[8%] max-md:mt-[12%] max-sm:mt-[20%] max-lg:mt-[10%] ">
+    <div className="w-[40%] max-sm:w-[70%] max-md:w-[60%] min-md:w-[60%] max-lg:w-[50%] flex-row items-center justify-center mt-[8%] max-md:mt-[12%] max-sm:mt-[20%] max-lg:mt-[10%] ">
       {/* User Setting */}
       <Link href={"/setting"}>
-        <div className="flex items-end justify-start border-b-2 py-2 border-gray-300  gap-2 ">
+        <div className="flex items-end ml-[98px] justify-start border-b-2 py-2 border-gray-300  gap-2 ">
           <Image
             src={"/icons/arrow-back.svg"}
             alt="setting_icon"
-            width={30}
-            height={30}
+            width={24}
+            height={24}
           />
-          <p className="items-center justify-center text-[18px] font-semibold">
-            Notification
-          </p>
+          <Typography fontSize="title" className="items-center justify-center" >Notification</Typography>
         </div>
       </Link>
 
       {/* New Posts */}
-        <button className="mt-[6%] w-full h-[70px] max-sm:h-[60px] flex-row flex items-center justify-between  border rounded-md shadow-md p-2 hover:bg-gray-50">
+        <button className="mt-[6%] lg:ml-[98px] lg:w-[460px] h-[70px] max-sm:h-[60px] flex-row flex items-center justify-between  border rounded-md shadow-md p-2 hover:bg-gray-50">
           <div className="flex items-center justify-start gap-1">
             <Image
               src={"/icons/img_post.svg"}
@@ -46,9 +45,7 @@ export default function Page() {
               <p className="items-start justify-start text-[18px]">
                 New Posts
               </p>
-              <p className="items-center justify-center text-[12px] text-gray-500">
-                These all notification for new post
-              </p>
+              <Typography color="secondary" className="items-center justify-center text-[10px]">These all notification from new post</Typography>
             </div>
           </div>
           {/* <Switch
@@ -59,7 +56,7 @@ export default function Page() {
         </button>
 
       {/* Answer */}
-        <button className="mt-[3%] w-full h-[70px] max-sm:h-[60px] flex-row flex items-center justify-between  border rounded-md shadow-md p-2 hover:bg-gray-50">
+        <button className="mt-[3%] lg:ml-[98px] lg:w-[460px] h-[70px] max-sm:h-[60px] flex-row flex items-center justify-between  border rounded-md shadow-md p-2 hover:bg-gray-50">
           <div className="flex items-center justify-start gap-1">
             <Image
               src={"/icons/chat.svg"}
@@ -69,9 +66,7 @@ export default function Page() {
             />
             <div className="flex flex-col items-start justify-start ms-2">
               <p className="items-start justify-start text-[18px]">Answer</p>
-              <p className="items-center justify-center text-[12px] text-gray-500">
-                These all notification for Answers
-              </p>
+              <Typography color="secondary" className="items-center justify-center text-[10px]">These all notification from new answer</Typography>
             </div>
           </div>
           {/* <Switch
