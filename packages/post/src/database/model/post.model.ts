@@ -45,4 +45,4 @@ const PostSchema = new mongoose.Schema(
   }
 );
 
-export const PostModel = mongoose.model("PostModel", PostSchema);
+export const PostModel = mongoose.model("Post", PostSchema);

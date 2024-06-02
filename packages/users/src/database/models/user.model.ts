@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     profile: { type: String },
     favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
-    questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Question' }],
+    questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
     bio: { type: String },
     gender: { type: String, enum: ['Male', 'Female', 'other'] },
     work: { type: String, default: 'Student' },

@@ -78,6 +78,13 @@ export class UserRepository {
       );
     }
   }
+  async showAllUser() {
+    try {
+      return await UserModel.find();
+    } catch (error: unknown) {
+      throw error;
+    }
+  }
 
   async deleteUser({ id }: { id: string }) {
     try {
