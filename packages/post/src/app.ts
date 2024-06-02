@@ -1,5 +1,4 @@
 import express, { Request, Response, NextFunction } from "express";
-
 import hpp from "hpp";
 import helmet from "helmet";
 import cors from "cors";
@@ -61,4 +60,3 @@ app.use("*", (req: Request, res: Response, _next: NextFunction) => {
     .json({ message: "The endpoint called does not exist." });
 });
 app.use(errorHandler);
-
