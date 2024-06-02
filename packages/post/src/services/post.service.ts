@@ -1,4 +1,4 @@
-import { IAnswer, postDetail } from "@post/database/@types/post.interface";
+import { IAnswer, IPost } from "@post/database/@types/post.interface";
 import { postRepository } from "@post/database/repositories/post.repositories";
 import APIError from "@post/errors/api-error";
 import CustomError from "@post/errors/customError";
@@ -10,9 +10,9 @@ export class PostService {
   constructor() {
     this.postRepo = new postRepository();
   }
-  async createPost(postDetail: postDetail) {
+  async createPost(IPost: IPost) {
     try {
-      const newPost = await this.postRepo.createPost(postDetail);
+      const newPost = await this.postRepo.createPost(IPost);
       return newPost;
     } catch (error) {
       logger.error(`Create() method error in service : ${error}`);
@@ -28,7 +28,7 @@ export class PostService {
       if (!post) {
         throw new CustomError("Post not found", StatusCode.NotFound);
       }
-      
+
       const updatedPost = await this.postRepo.addAnswerToPost(id, answer);
       if (!updatedPost) {
         throw new CustomError(
@@ -43,7 +43,7 @@ export class PostService {
     }
   }
 
-  async updatePost(id: string, newUpdate: postDetail) {
+  async updatePost(id: string, newUpdate: IPost) {
     try {
       const findExistingPost = await this.postRepo.findPost(id);
       if (!findExistingPost) {
@@ -84,6 +84,74 @@ export class PostService {
       return findPostByid;
     } catch (error) {
       logger.error(`findPostbyId() method error: ${error}`);
+      throw error;
+    }
+  }
+  async LikeAnswer(postId: string, answerId: string, userId: string) {
+    try {
+      const updatedPost = await this.postRepo.LikeAnswer(
+        postId,
+        answerId,
+        userId
+      );
+      if (!updatedPost) {
+        throw new CustomError(
+          "Failed to like the answer",
+          StatusCode.InternalServerError
+        );
+      }
+      return updatedPost;
+    } catch (error) {
+      logger.error("Service Like method () error:", error);
+      throw error;
+    }
+  }
+  async UnlikeAnswer(postId: string, answerId: string, userId: string) {
+    try {
+      const updatedPost = await this.postRepo.UnlikeAnswer(
+        postId,
+        answerId,
+        userId
+      );
+      if (!updatedPost) {
+        throw new CustomError(
+          "Failed to unlike the answer",
+          StatusCode.InternalServerError
+        );
+      }
+      return updatedPost;
+    } catch (error) {
+      logger.error("Service Unlike method () error:", error);
+      throw error;
+    }
+  }
+  async LikePost(postId: string, userId: string) {
+    try {
+      const updatedPost = await this.postRepo.LikePost(postId, userId);
+      if (!updatedPost) {
+        throw new CustomError(
+          "Failed to like the post",
+          StatusCode.InternalServerError
+        );
+      }
+      return updatedPost;
+    } catch (error) {
+      logger.error("Service Like post method() error:", error);
+      throw error;
+    }
+  }
+  async UnlikePost(postId: string, userId: string) {
+    try {
+      const updatedPost = await this.postRepo.UnlikePost(postId, userId);
+      if (!updatedPost) {
+        throw new CustomError(
+          "Failed to Unlike the post",
+          StatusCode.InternalServerError
+        );
+      }
+      return updatedPost;
+    } catch (error) {
+      logger.error("Service Unlike post method() error:", error);
       throw error;
     }
   }

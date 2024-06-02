@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema(
     favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
     questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Question' }],
     bio: { type: String },
-    gender: { type: String, enum: ['M', 'F', 'other'] },
+    gender: { type: String, enum: ['Male', 'Female', 'other'] },
     work: { type: String, default: 'Student' },
     answers: { type: Number, default: 0 },
     posts: { type: Number, default: 0 },
