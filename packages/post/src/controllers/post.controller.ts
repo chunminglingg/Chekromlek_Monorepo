@@ -16,8 +16,7 @@ import { logger } from "@post/utils/logger";
 import { verificationToken } from "@post/middlewares/tokenVerify";
 import { IAnswer, postDetail } from "@post/database/@types/post.interface";
 import CustomError from "@post/errors/customError";
-// import Types } from "mongoose";
-// import mongoose from "mongoose";
+
 
 @Route("v1/post")
 export class PostController {
@@ -73,7 +72,7 @@ export class PostController {
     }
   }
 
-  @SuccessResponse(StatusCode.Created, "Created successfully")
+  @SuccessResponse(StatusCode.Created, "Updated successfully")
   @Post("/:id")
   @Middlewares(validateInput(PostSaveSchema))
   @Middlewares(verificationToken)
