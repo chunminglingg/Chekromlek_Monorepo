@@ -1,5 +1,5 @@
 'use client'
-import { AfteLogin, Burger } from "@/components/Atoms";
+import { AfteLogin, BurgerLogin } from "@/components/Atoms";
 import Logo from "@/components/Atoms/Logo/Logo";
 import SearchInput from "@/components/Molecules/Search/SearchInput";
 import InputSearch from "@/components/Molecules/Search/SearchInput";
@@ -33,7 +33,7 @@ function NavAfter() {
           </Link>
         </div>
         <div className="block md:hidden   mt-4 absolute right-5">
-          <Burger/>
+          <BurgerLogin/>
         </div>
       </div>
     </nav>

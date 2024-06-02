@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import React, { useState } from "react";
 
-const Burger = () => {
+const BurgerLogin = () => {
   const [click, setClick] = useState(false);
 
   const handleClick = () => {
@@ -46,9 +46,9 @@ const Burger = () => {
 
               <div className="bg-white w-[270px] h-[370px] rounded-tl-2xl rounded-tr-0 rounded-br-0 rounded-bl-2xl shadow-md border">
                 <div className="flex flex-col gap-2 items-center pt-4">
-                  <Link href={'/login/'}>
+                  <Link href={'/profile/'}>
                   <button className="px-20 py-2 bg-[#7B2CBF] text-white rounded-lg hover:opacity-[60%]">
-                   Login
+                   Profile
                   </button>
                   </Link>
                   <div className="w-[100%] h-[0.5px] bg-gray-200"></div>
@@ -64,4 +64,4 @@ const Burger = () => {
   );
 };
 
-export default Burger;
+export default BurgerLogin;

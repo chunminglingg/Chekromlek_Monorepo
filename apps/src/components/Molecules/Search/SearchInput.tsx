@@ -25,6 +25,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ setSearch, onIconClick, onInp
         height={25}
         className="bg-none"
         onClick={onIconClick}
+        
       />
       <input
         type="text"

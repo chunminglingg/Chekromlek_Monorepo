@@ -116,11 +116,10 @@ const Page = () => {
           </Button>
         </div>
         {success && (
-            <div className="flex flex-col w-auto lg:flex-row gap-2 lg:justify-center lg:items-center max-sm:justify-center max-sm:items-center sm:items-center">
-              <div className="text-sm  text-green-500  p-4 bg-green-100 border border-green-400 rounded">
+              <div className="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
                 {success}
               </div>
-            </div>
+           
           )}
       </div>
     </>

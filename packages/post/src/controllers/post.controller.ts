@@ -14,9 +14,8 @@ import { PostService } from "@post/services/post.service";
 import { StatusCode } from "@post/utils/const";
 import { logger } from "@post/utils/logger";
 import { verificationToken } from "@post/middlewares/tokenVerify";
-import { IAnswer, postDetail } from "@post/database/@types/post.interface";
+import { IAnswer, IPost } from "@post/database/@types/post.interface";
 import CustomError from "@post/errors/customError";
-
 
 @Route("v1/post")
 export class PostController {
@@ -30,7 +29,7 @@ export class PostController {
   @Middlewares(validateInput(PostSaveSchema))
   @Middlewares(verificationToken)
   public async CreatePost(
-    @Body() requestBody: postDetail,
+    @Body() requestBody: IPost,
     @Request() request: any
   ): Promise<any> {
     try {
@@ -78,7 +77,7 @@ export class PostController {
   @Middlewares(verificationToken)
   public async UpdatePost(
     @Path() id: string,
-    @Body() requestBody: postDetail
+    @Body() requestBody: IPost
   ): Promise<any> {
     try {
       const existPost = await this.postService.findPostById(id);
@@ -127,6 +126,105 @@ export class PostController {
       logger.error(`Controller Answer method error: ${error.message}`);
       throw new CustomError(
         `Failed to create answer: ${error.message}`,
+        StatusCode.InternalServerError
+      );
+    }
+  }
+  @SuccessResponse(StatusCode.OK, "Liked successfully")
+  @Post("/:postId/:answerId/like")
+  @Middlewares(verificationToken)
+  public async LikeAnswer(
+    @Path() postId: string,
+    @Path() answerId: string,
+    @Request() request: any
+  ): Promise<any> {
+    try {
+      const userId = request.userId;
+      const updatedPost = await this.postService.LikeAnswer(
+        postId,
+        answerId,
+        userId
+      );
+      return {
+        message: "Answer liked successfully",
+        data: updatedPost,
+      };
+    } catch (error: any) {
+      logger.error(`Controller likeAnswer method error: ${error.message}`);
+      throw new CustomError(
+        `Failed to like answer: ${error.message}`,
+        StatusCode.InternalServerError
+      );
+    }
+  }
+  @SuccessResponse(StatusCode.OK, "Unliked successfully")
+  @Post("/:postId/:answerId/unlike")
+  @Middlewares(verificationToken)
+  public async UnlikeAnswer(
+    @Path() postId: string,
+    @Path() answerId: string,
+    @Request() request: any
+  ): Promise<any> {
+    try {
+      const userId = request.user;
+      const updatedPost = await this.postService.UnlikeAnswer(
+        postId,
+        answerId,
+        userId
+      );
+      return {
+        message: "Answer unliked successfully",
+        data: updatedPost,
+      };
+    } catch (error: any) {
+      logger.error(`Controller unlikeAnswer method error: ${error.message}`);
+      throw new CustomError(
+        `Failed to unlike answer: ${error.message}`,
+        StatusCode.InternalServerError
+      );
+    }
+  }
+  @SuccessResponse(StatusCode.OK, "Liked successfully")
+  @Post("/:postId/likepost")
+  @Middlewares(verificationToken)
+  public async LikePost(
+    @Path() postId: string,
+    @Request() request: any
+  ): Promise<{ message: string; data: any }> {
+    try {
+      const userId = request.userId;
+      const updatedLikePost = await this.postService.LikePost(postId, userId);
+      return {
+        message: "Post liked successfully",
+        data: updatedLikePost,
+      };
+    } catch (error: any) {
+      logger.error("Controller like post method() error:", error);
+      throw new CustomError(
+        `Failed to Like post: ${error.message}`,
+        StatusCode.InternalServerError
+      );
+    }
+  }
+
+  @SuccessResponse(StatusCode.OK, "UnLiked successfully")
+  @Post("/:postId/unlikepost")
+  @Middlewares(verificationToken)
+  public async UnLikePost(
+    @Path() postId: string,
+    @Request() request: any
+  ): Promise<{ message: string; data: any }> {
+    try {
+      const userId = request.userId;
+      const updatedLikePost = await this.postService.UnlikePost(postId, userId);
+      return {
+        message: "Post Unliked successfully",
+        data: updatedLikePost,
+      };
+    } catch (error: any) {
+      logger.error("Controller Unlike post method() error:", error);
+      throw new CustomError(
+        `Failed to UnLike post: ${error.message}`,
         StatusCode.InternalServerError
       );
     }

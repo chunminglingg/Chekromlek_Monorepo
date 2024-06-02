@@ -25,7 +25,7 @@ const ViewPostPage = () => {
             profile="/card-svg/avatar.svg"
             hour={2}
             username="Kimlang Tieng"
-            // postImage='/socialMedia/imageContent.svg'
+            postImage='/socialMedia/imageContent.svg'
             caption=" Why is it that although China is already the second largest  in the world."
           />
         </div>

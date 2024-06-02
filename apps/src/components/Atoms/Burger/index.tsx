@@ -1,2 +1,3 @@
 import Burger from "./Burger";
-export {Burger}
+import BurgerLogin from "./BurgerLogin";
+export {Burger , BurgerLogin}
