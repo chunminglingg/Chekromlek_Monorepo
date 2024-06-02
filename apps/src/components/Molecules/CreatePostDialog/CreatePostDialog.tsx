@@ -1,5 +1,5 @@
-"use client"
-import React, { useState } from "react";
+// CreatePostDialog.tsx
+import React, { useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -7,82 +7,112 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { SelectScrollable } from "../Selection/Selection";
-import { HeaderPost } from "../AfterPostHeader";
-import UploadButton from "@/components/Molecules/UploadImage/UploadButton"
+} from '@/components/ui/dialog';
+import { SelectScrollable } from '../Selection/Selection';
+import { HeaderPost } from '../AfterPostHeader';
+import UploadButton from '@/components/Molecules/UploadImage/UploadButton';
 
-const CreatePostDialog: React.FC = () => {
-  // Define state variables to store input data
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [uploadedImageUrl, setUploadedImageUrl] = useState("");
+interface CreatePostDialogProps {
+  onTitleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onDescriptionChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onSubmit?: () => void;
+  onImageUpload?: (imageUrl: string) => void;
+  onImageDelete?: () => void;
+  onDialogOpen?: () => void;
+  onDialogClose?: () => void;
+}
 
-  // Function to handle title input change
-  const handleTitleChange = (e:any) => {
+const CreatePostDialog: React.FC<CreatePostDialogProps> = ({
+  onTitleChange,
+  onDescriptionChange,
+  onSubmit,
+  onImageUpload,
+  onImageDelete,
+  onDialogOpen,
+  onDialogClose,
+}) => {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [uploadedImageUrl, setUploadedImageUrl] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
+    onTitleChange?.(e);
   };
 
-  // Function to handle description input change
-  const handleDescriptionChange = (e:any) => {
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDescription(e.target.value);
+    onDescriptionChange?.(e);
   };
 
-  // Function to handle form submission
   const handleSubmit = () => {
-    // You can access title and description here to post the data
-    console.log("Title:", title);
-    console.log("Description:", description);
-    console.log("Uploaded Image URL:", uploadedImageUrl);
-
-    // You can perform further actions like posting the data to a server
-
-    setTitle("");
-    setDescription("");
-    setUploadedImageUrl("");
+    console.log('Title:', title);
+    console.log('Description:', description);
+    console.log('Uploaded Image URL:', uploadedImageUrl);
+    onSubmit?.();
+    setTitle('');
+    setDescription('');
+    setUploadedImageUrl('');
   };
-  const handleAttachmentUpload = (imageUrl:string) => {
-    // Set the uploaded image URL
+
+  const handleAttachmentUpload = (imageUrl: string) => {
     setUploadedImageUrl(imageUrl);
+    onImageUpload?.(imageUrl);
+  };
+
+  const handleAttachmentDelete = () => {
+    setUploadedImageUrl('');
+    onImageDelete?.();
+  };
+
+  const openDialog = () => {
+    setIsOpen(true);
+    onDialogOpen?.();
+  };
+
+  const closeDialog = () => {
+    setIsOpen(false);
+    onDialogClose?.();
   };
 
   return (
     <>
-      <Dialog>
-        <DialogTrigger>
-          <HeaderPost />
+      <Dialog open={isOpen} onOpenChange={(open) => open ? openDialog() : closeDialog()}>
+        <DialogTrigger asChild>
+          <button onClick={openDialog}><HeaderPost /></button>
         </DialogTrigger>
-        <DialogContent className="w-[645px]  max-sm:w-[90%] max-sm:rounded-md">
+        <DialogContent className="w-[645px] max-sm:w-[90%] max-sm:rounded-md">
           <DialogHeader className="flex flex-col gap-2">
-            <DialogTitle>Create a Post </DialogTitle>
+            <DialogTitle>Create a Post</DialogTitle>
             <DialogDescription className="flex flex-col gap-2">
               <div className="flex flex-col gap-2">
                 Simplify Your Sharing Experience!
                 <SelectScrollable />
               </div>
               <div className="flex flex-col gap-4 pt-6 focus:outline-none">
-                {/* Title input */}
                 <input
                   placeholder="Title"
                   value={title}
                   onChange={handleTitleChange}
+                  aria-label="title"
                   className="focus:outline-none border rounded-md h-[40px] p-1"
                 />
-                {/* Description input */}
                 <textarea
                   placeholder="Type your descriptions of your question here."
                   value={description}
                   onChange={handleDescriptionChange}
-                  className="focus:outline-none border rounded-md h-[80px] p-1"  
+                  aria-label="description"
+                  className="focus:outline-none border rounded-md h-[80px] p-1"
                 />
-                <div className="w-full h-[250px] border rounded-md justify-center items-center grid  gap-1.5">
-                  {/* File input */}
-                  {/* <Input type="file" /> */}
-                  <UploadButton onImageUpload={handleAttachmentUpload} />
+                <div className="w-full h-[250px] border rounded-md justify-center items-center grid gap-1.5">
+                  <UploadButton
+                    onImageUpload={handleAttachmentUpload}
+                    onImageDelete={handleAttachmentDelete}
+                  />
                 </div>
               </div>
               <div className="flex justify-end">
-                {/* Post button */}
                 <button
                   onClick={handleSubmit}
                   className="px-8 py-2 bg-[#7B2CBF] hover:opacity-[70%] text-white rounded-md"

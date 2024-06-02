@@ -112,12 +112,12 @@ const ViewPost: React.FC<ViewPostProps> = ({
             )}
           </p>
           {postImage && (
-            <div className="w-[320px] h-[320px] flex justify-center items-center">
+            <div className="w-[100%] h-full md:w-[100%] flex justify-center items-center">
               <Image
                 alt="content post"
                 src={postImage}
                 width={320}
-                height={320}
+                height={420}
                 className="rounded-md"
               />
             </div>

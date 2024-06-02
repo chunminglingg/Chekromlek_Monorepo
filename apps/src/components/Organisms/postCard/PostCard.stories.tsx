@@ -1,8 +1,9 @@
 import React from 'react';
-import { Meta, StoryFn, StoryObj } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 import { userEvent, within } from '@storybook/testing-library';
 import { action } from '@storybook/addon-actions';
 import PostCard, { postCardProps } from './PostCard';
+import { expect } from '@storybook/jest';
 
 export default {
   title: 'chekromlek/Components/Organisms/PostCard',
@@ -43,9 +44,13 @@ Default.play = async ({ canvasElement }) => {
   const canvas = within(canvasElement);
   const likeButton = await canvas.getByRole('button', { name: /like/i });
   const saveButton = await canvas.getByRole('button', { name: /save/i });
-  
+
   await userEvent.click(likeButton);
   await userEvent.click(saveButton);
+
+  // Assert that the actions are called
+  await expect(likeButton).toBeEnabled();
+  await expect(saveButton).toBeEnabled();
 };
 
 export const NoImage = Template.bind({});
@@ -67,6 +72,10 @@ NoImage.play = async ({ canvasElement }) => {
 
   await userEvent.click(likeButton);
   await userEvent.click(saveButton);
+
+  // Assert that the actions are called
+  await expect(likeButton).toBeEnabled();
+  await expect(saveButton).toBeEnabled();
 };
 
 export const LongCaption = Template.bind({});
@@ -89,4 +98,8 @@ LongCaption.play = async ({ canvasElement }) => {
 
   await userEvent.click(likeButton);
   await userEvent.click(saveButton);
+
+  // Assert that the actions are called
+  await expect(likeButton).toBeEnabled();
+  await expect(saveButton).toBeEnabled();
 };

@@ -1,3 +1,4 @@
+import { expect } from '@storybook/jest';
 import React, { useState } from "react";
 import { Meta, StoryFn } from "@storybook/react";
 import SearchInput from "./SearchInput";
@@ -37,7 +38,10 @@ Default.play = async ({ canvasElement }) => {
   const input = await canvas.getByPlaceholderText("Search");
 
   // Simulate user typing
-  await userEvent.type(input, "Test Search");
+  await userEvent.type(input, "Test Search", { delay: 100 });
+
+  // Assert that the input value is updated
+  expect(input).toHaveValue("Test Search");
 
   // Simulate clicking on the search icon
   const icon = await canvas.getByRole("img", { name: /search/i });
