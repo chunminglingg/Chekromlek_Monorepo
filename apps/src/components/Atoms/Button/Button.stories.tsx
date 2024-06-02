@@ -69,7 +69,7 @@ export const Button_Default:Story ={
    rounded: "xl",
    colorOutline: "primary",
    children: <Typography >
-   Answer
+   Button
  </Typography>
   },
  }
