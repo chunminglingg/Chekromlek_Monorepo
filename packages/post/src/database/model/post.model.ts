@@ -4,10 +4,10 @@ const AnswerSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   username: { type: mongoose.Schema.Types.String, ref: "User" },
   postId: { type: mongoose.Schema.Types.ObjectId, ref: "PostModel" },
-  answer: { type: String },
-  // likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  answerlikedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  likeCounts: { type: Number, default: 0 },
 });
-const PostCard = new mongoose.Schema(
+const PostSchema = new mongoose.Schema(
   {
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     username: { type: mongoose.Schema.Types.String, ref: "User" },
@@ -29,7 +29,8 @@ const PostCard = new mongoose.Schema(
         "English",
       ],
     },
-    like: { type: Number, default: 0 },
+    postlikedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    likeCounts: { type: Number, default: 0 },
     isSave: { type: Boolean, default: false },
     answers: { type: [AnswerSchema], default: [] },
     createdAt: { type: Date, default: Date.now() },
@@ -44,4 +45,4 @@ const PostCard = new mongoose.Schema(
   }
 );
 
-export const PostModel = mongoose.model("PostModel", PostCard);
+export const PostModel = mongoose.model("PostModel", PostSchema);

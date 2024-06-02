@@ -12,23 +12,27 @@
 			},
 			"IAnswer": {
 				"properties": {
-					"userId": {
-						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-					},
-					"postId": {
-						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-					},
-					"username": {
-						"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-					},
 					"answer": {
 						"type": "string"
+					},
+					"likeCounts": {
+						"type": "number",
+						"format": "double"
+					},
+					"answerlikedBy": {
+						"items": {
+							"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+						},
+						"type": "array"
 					}
 				},
+				"required": [
+					"answerlikedBy"
+				],
 				"type": "object",
 				"additionalProperties": false
 			},
-			"postDetail": {
+			"IPost": {
 				"properties": {
 					"_id": {
 						"type": "string"
@@ -84,9 +88,6 @@
 						"type": "array"
 					}
 				},
-				"required": [
-					"answers"
-				],
 				"type": "object",
 				"additionalProperties": false
 			}
@@ -122,7 +123,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/postDetail"
+								"$ref": "#/components/schemas/IPost"
 							}
 						}
 					}
@@ -182,7 +183,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/postDetail"
+								"$ref": "#/components/schemas/IPost"
 							}
 						}
 					}
@@ -223,6 +224,150 @@
 						}
 					}
 				}
+			}
+		},
+		"/v1/post/{postId}/{answerId}/like": {
+			"post": {
+				"operationId": "LikeAnswer",
+				"responses": {
+					"200": {
+						"description": "Liked successfully",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "postId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "answerId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/post/{postId}/{answerId}/unlike": {
+			"post": {
+				"operationId": "UnlikeAnswer",
+				"responses": {
+					"200": {
+						"description": "Unliked successfully",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "postId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "answerId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/post/{postId}/likepost": {
+			"post": {
+				"operationId": "LikePost",
+				"responses": {
+					"200": {
+						"description": "Liked successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"data": {},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"data",
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "postId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/post/{postId}/unlikepost": {
+			"post": {
+				"operationId": "UnLikePost",
+				"responses": {
+					"200": {
+						"description": "UnLiked successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"data": {},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"data",
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "postId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		}
 	},

@@ -19,15 +19,14 @@ const models: TsoaRoute.Models = {
     "IAnswer": {
         "dataType": "refObject",
         "properties": {
-            "userId": {"ref":"mongoose.Types.ObjectId"},
-            "postId": {"ref":"mongoose.Types.ObjectId"},
-            "username": {"ref":"mongoose.Types.ObjectId"},
             "answer": {"dataType":"string"},
+            "likeCounts": {"dataType":"double"},
+            "answerlikedBy": {"dataType":"array","array":{"dataType":"refAlias","ref":"mongoose.Types.ObjectId"},"required":true},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "postDetail": {
+    "IPost": {
         "dataType": "refObject",
         "properties": {
             "_id": {"dataType":"string"},
@@ -41,7 +40,7 @@ const models: TsoaRoute.Models = {
             "isSave": {"dataType":"boolean"},
             "answer": {"dataType":"string"},
             "createdAt": {"dataType":"datetime"},
-            "answers": {"dataType":"array","array":{"dataType":"refObject","ref":"IAnswer"},"required":true},
+            "answers": {"dataType":"array","array":{"dataType":"refObject","ref":"IAnswer"}},
         },
         "additionalProperties": false,
     },
@@ -62,7 +61,7 @@ export function RegisterRoutes(app: Router) {
 
             async function PostController_CreatePost(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
-                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"postDetail"},
+                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"IPost"},
                     request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
@@ -124,7 +123,7 @@ export function RegisterRoutes(app: Router) {
             async function PostController_UpdatePost(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     id: {"in":"path","name":"id","required":true,"dataType":"string"},
-                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"postDetail"},
+                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"IPost"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -174,6 +173,132 @@ export function RegisterRoutes(app: Router) {
                 next,
                 validatedArgs,
                 successStatus: 201,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/v1/post/:postId/:answerId/like',
+            ...(fetchMiddlewares<RequestHandler>(PostController)),
+            ...(fetchMiddlewares<RequestHandler>(PostController.prototype.LikeAnswer)),
+
+            async function PostController_LikeAnswer(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    postId: {"in":"path","name":"postId","required":true,"dataType":"string"},
+                    answerId: {"in":"path","name":"answerId","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const controller = new PostController();
+
+              await templateService.apiHandler({
+                methodName: 'LikeAnswer',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/v1/post/:postId/:answerId/unlike',
+            ...(fetchMiddlewares<RequestHandler>(PostController)),
+            ...(fetchMiddlewares<RequestHandler>(PostController.prototype.UnlikeAnswer)),
+
+            async function PostController_UnlikeAnswer(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    postId: {"in":"path","name":"postId","required":true,"dataType":"string"},
+                    answerId: {"in":"path","name":"answerId","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const controller = new PostController();
+
+              await templateService.apiHandler({
+                methodName: 'UnlikeAnswer',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/v1/post/:postId/likepost',
+            ...(fetchMiddlewares<RequestHandler>(PostController)),
+            ...(fetchMiddlewares<RequestHandler>(PostController.prototype.LikePost)),
+
+            async function PostController_LikePost(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    postId: {"in":"path","name":"postId","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const controller = new PostController();
+
+              await templateService.apiHandler({
+                methodName: 'LikePost',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/v1/post/:postId/unlikepost',
+            ...(fetchMiddlewares<RequestHandler>(PostController)),
+            ...(fetchMiddlewares<RequestHandler>(PostController.prototype.UnLikePost)),
+
+            async function PostController_UnLikePost(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    postId: {"in":"path","name":"postId","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const controller = new PostController();
+
+              await templateService.apiHandler({
+                methodName: 'UnLikePost',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
               });
             } catch (err) {
                 return next(err);
