@@ -32,7 +32,13 @@ export class UserService {
       throw error;
     }
   }
-
+  async showAllUser() {
+    try {
+      return await this.userRepo.showAllUser();
+    } catch (error: unknown) {
+      throw error;
+    }
+  }
   async getUserById({ id }: { id: string }) {
     try {
       return await this.userRepo.FindUserById({ id });
