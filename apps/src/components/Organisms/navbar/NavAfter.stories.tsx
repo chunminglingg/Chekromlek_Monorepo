@@ -14,7 +14,7 @@ export default {
     layout: 'left',
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/proto/3bZbAhm0fbpqzRiPGP3uDO/Chekromlek?page-id=3498%3A7931&node-id=4156-2613&viewport=1479%2C479%2C0.85&t=e0iDKTScDqiiSHth-1&scaling=min-zoom',
+      url: 'https://www.figma.com/proto/3bZbAhm0fbpqzRiPGP3uDO/Chekromlek?page-id=3498%3A8273&node-id=3498-8344&viewport=436%2C326%2C0.57&t=VUm4kRK4m6NCNR56-1&scaling=scale-down-width',
     },
     tags: ['autodocs'],
   },

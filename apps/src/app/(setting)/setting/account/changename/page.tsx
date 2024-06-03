@@ -1,3 +1,4 @@
+'use client'
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -41,8 +42,8 @@ const Page = () => {
 
   return (
     <>
-      <div className="flex flex-col lg:ml-[164px] gap-10 lg:gap-6 mt-28 lg:border lg:border-gray-200 lg:p-4 lg:shadow-lg">
-        <div className="flex flex-col gap-10 lg:gap-6 mt-28 lg:border rounded-md lg:border-gray-200 lg:p-4 lg:shadow-lg">
+      <div className="flex flex-col lg:ml-[164px] gap-10 lg:gap-6 mt-28 lg:p-4">
+        <div className="flex flex-col gap-10 lg:gap-6 lg:border rounded-md lg:border-gray-200 lg:p-4 lg:shadow-lg">
           <div>
             <Link href={"/setting/account"}>
               <div className="flex flex-row gap-2 ml-2">
@@ -84,13 +85,13 @@ const Page = () => {
             </div>
             {error && (
               <div>
-                <Typography fontSize="normal" color="wearing" align="right">
+                <Typography fontSize="normal" color="wearing" align="right" className="mr-3">
                   {error}
                 </Typography>
               </div>
             )}
             <div className="flex flex-col lg:flex-row gap-2 lg:justify-center lg:items-center">
-              <label htmlFor="" className="ml-14 text-sm lg:ml-12">
+              <label htmlFor="" className="ml-14 text-sm lg:ml-6">
                 Password:
               </label>
               <input
