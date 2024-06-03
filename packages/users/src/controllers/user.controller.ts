@@ -103,7 +103,7 @@ export class UserController {
   }
   @Post('/:id')
   @Middlewares(verificationToken)
-  public async addFavoEvent(
+  public async addFavPost(
     @Request() request: any,
     @Path() id: string,
   ): Promise<any> {
@@ -141,7 +141,7 @@ export class UserController {
   }
   @Post('/:id')
   @Middlewares(verificationToken)
-  public async addFavPost(@Request() request: any): Promise<any> {
+  public async FindFavPost(@Request() request: any): Promise<any> {
     try {
       const user = await this.userService.getUserById(request.id);
       const postId = user?.favorites;

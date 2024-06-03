@@ -26,9 +26,6 @@
 						"type": "array"
 					}
 				},
-				"required": [
-					"answerlikedBy"
-				],
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -67,12 +64,18 @@
 							"English"
 						]
 					},
-					"like": {
+					"isSave": {
+						"type": "boolean"
+					},
+					"likeCounts": {
 						"type": "number",
 						"format": "double"
 					},
-					"isSave": {
-						"type": "boolean"
+					"postlikedBy": {
+						"items": {
+							"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+						},
+						"type": "array"
 					},
 					"answer": {
 						"type": "string"
@@ -131,30 +134,6 @@
 			}
 		},
 		"/v1/post/{id}": {
-			"get": {
-				"operationId": "GetPostById",
-				"responses": {
-					"302": {
-						"description": "Found the post",
-						"content": {
-							"application/json": {
-								"schema": {}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			},
 			"post": {
 				"operationId": "UpdatePost",
 				"responses": {
@@ -291,7 +270,25 @@
 							"type": "string"
 						}
 					}
-				]
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"userId": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"userId"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/v1/post/{postId}/likepost": {
@@ -353,6 +350,66 @@
 									],
 									"type": "object"
 								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "postId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/post/{postId}": {
+			"delete": {
+				"operationId": "DeletePost",
+				"responses": {
+					"200": {
+						"description": "Delete successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "postId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"get": {
+				"operationId": "FindFavo",
+				"responses": {
+					"200": {
+						"description": "Get Favorite successfully",
+						"content": {
+							"application/json": {
+								"schema": {}
 							}
 						}
 					}

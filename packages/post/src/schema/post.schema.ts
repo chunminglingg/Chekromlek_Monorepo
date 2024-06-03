@@ -17,4 +17,6 @@ export const AnswerSchema = z.object({
   userId: z.string().optional(),
   username: z.string().optional(),
   answer: z.string(),
+  answerlikedBy: z.array(z.string()).optional(), // Make it optional
+  likeCounts: z.number().default(0),
 });

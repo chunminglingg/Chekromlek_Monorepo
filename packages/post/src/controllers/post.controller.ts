@@ -6,6 +6,7 @@ import {
   Post,
   Request,
   Route,
+  Delete,
   SuccessResponse,
 } from "tsoa";
 import validateInput from "@post/middlewares/input-validation";
@@ -16,6 +17,7 @@ import { logger } from "@post/utils/logger";
 import { verificationToken } from "@post/middlewares/tokenVerify";
 import { IAnswer, IPost } from "@post/database/@types/post.interface";
 import CustomError from "@post/errors/customError";
+import APIError from "@post/errors/api-error";
 
 @Route("v1/post")
 export class PostController {
@@ -52,24 +54,24 @@ export class PostController {
     }
   }
 
-  @SuccessResponse(StatusCode.Found, "Found the post")
-  @Get("/{id}")
-  public async GetPostById(@Path() id: string): Promise<any> {
-    try {
-      const existPost = await this.postService.findPostById(id);
+  // @SuccessResponse(StatusCode.Found, "Found the post")
+  // @Get("/:postId")
+  // public async GetPostById(@Path() postId: string): Promise<any> {
+  //   try {
+  //     const existPost = await this.postService.findPostById(postId);
 
-      if (!existPost) {
-        throw new CustomError("Post not found", StatusCode.NotFound);
-      }
-      return {
-        message: "Post found successfully",
-        data: existPost,
-      };
-    } catch (error) {
-      logger.error(`Service method error: ${error}`);
-      throw error;
-    }
-  }
+  //     if (!existPost) {
+  //       throw new CustomError("Post not found", StatusCode.NotFound);
+  //     }
+  //     return {
+  //       message: "Post found successfully",
+  //       data: existPost,
+  //     };
+  //   } catch (error) {
+  //     logger.error(`Service method error: ${error}`);
+  //     throw error;
+  //   }
+  // }
 
   @SuccessResponse(StatusCode.Created, "Created successfully")
   @Post("/:id")
@@ -114,6 +116,7 @@ export class PostController {
         userId: request!.userId,
         username: request!.username,
         postId: id,
+        // answerlikedBy: answer.answerlikedBy || [],
       };
 
       const newAnswer = await this.postService.createAnswer(id, detailAnswer);
@@ -166,7 +169,19 @@ export class PostController {
     @Request() request: any
   ): Promise<any> {
     try {
-      const userId = request.user;
+      // Assuming the userId is part of the request object after middleware processing
+      const userId = request.userId;
+
+      // Additional logging to debug
+      console.log(`Decoded user ID: ${userId}`);
+
+      if (!userId) {
+        throw new CustomError(
+          "User ID is missing from request",
+          StatusCode.BadRequest
+        );
+      }
+
       const updatedPost = await this.postService.UnlikeAnswer(
         postId,
         answerId,
@@ -227,6 +242,35 @@ export class PostController {
         `Failed to UnLike post: ${error.message}`,
         StatusCode.InternalServerError
       );
+    }
+  }
+  @SuccessResponse(StatusCode.OK, "Delete successfully")
+  @Middlewares(verificationToken)
+  @Delete("/:postId")
+  public async DeletePost(@Path() postId: string, @Request() request: any) {
+    const existedPost = await this.postService.findPostById(request.userId);
+    if (!existedPost) {
+      throw new APIError("Post Not Found", StatusCode.NotFound);
+    }
+    await this.postService.deletePost(postId);
+    return { message: "Post Delete Successfully" };
+  }
+  @SuccessResponse(StatusCode.OK, "Get Favorite successfully")
+  @Get("/:postId")
+  @Middlewares(verificationToken)
+  public async FindFavo(
+    @Path() postId: string,
+    @Request() request: any
+  ): Promise<any> {
+    try {
+      const existedPost = await this.postService.findPostUser(request.userId);
+      if (!existedPost) {
+        throw new APIError("Post Not Found !!", StatusCode.NotFound);
+      }
+      const post = await this.postService.findPostById(postId);
+      return post;
+    } catch (error) {
+      throw error;
     }
   }
 }
