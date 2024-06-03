@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
 export interface IAnswer {
   answer?: string;
-  // likes?: Number;
+  likeCounts?: number;
+  answerlikedBy: mongoose.Types.ObjectId[];
 }
-export interface postDetail {
+export interface IPost {
   _id?: string;
   userId?: mongoose.Types.ObjectId;
   username?: mongoose.Types.ObjectId;

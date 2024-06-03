@@ -1,6 +1,6 @@
 // Typography.stories.js
 
-import React from 'react';
+import React, { Children } from 'react';
 import { Typography } from './Typography'; // Assuming this is the path to your Typography component
 import { StoryObj, Meta } from '@storybook/react';
 
@@ -39,6 +39,7 @@ export const Mulish:Story = {
   children: "Typography",
   align:'center',
   fontSize:'normal',
-  Mulish:"Regular 14"
+  Mulish:"Regular 4"
 }
 };
+

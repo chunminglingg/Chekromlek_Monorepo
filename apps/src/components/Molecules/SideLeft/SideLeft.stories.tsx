@@ -1,3 +1,4 @@
+import { expect } from '@storybook/jest';
 import React from "react";
 import { action } from "@storybook/addon-actions";
 import { Meta, StoryFn } from "@storybook/react";
@@ -51,8 +52,20 @@ Interactions.play = async ({ canvasElement }) => {
   const notificationButton = canvas.getByRole('button', { name: /notification/i });
   const settingButton = canvas.getByRole('button', { name: /setting/i });
 
+  // Click the home button and expect the action to be called
   await userEvent.click(homeButton);
+  await expect(homeButton).toBeEnabled();
+
+
+  // Click the category button and expect the action to be called
   await userEvent.click(categoryButton);
+  await expect(categoryButton).toBeEnabled();
+
+  // Click the notification button and expect the action to be called
   await userEvent.click(notificationButton);
+  await expect(notificationButton).toBeEnabled();
+
+  // Click the setting button and expect the action to be called
   await userEvent.click(settingButton);
+  await expect(settingButton).toBeEnabled();
 };

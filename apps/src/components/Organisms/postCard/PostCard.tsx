@@ -121,7 +121,7 @@ const PostCard: React.FC<postCardProps> = ({
                   )}
                 </p>
                 {postImage && (
-                  <div className="w-[100%] h-full md:w-[100%] flex  border-b p-2 mb-2 ">
+                  <div className="w-[100%] h-full md:w-[100%] flex  border-b p-2 mb-2">
                     <Image
                       alt="content post"
                       src={postImage}

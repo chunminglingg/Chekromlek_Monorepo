@@ -84,7 +84,7 @@ function NavAfter() {
           </Link>
         </div>
         <div className="block md:hidden   mt-4 absolute right-5">
-          <Burger/>
+          <BurgerLogin/>
         </div>
       </div>
     </nav>

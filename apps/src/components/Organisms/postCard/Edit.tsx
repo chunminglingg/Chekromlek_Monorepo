@@ -18,21 +18,18 @@ const Edit = () => {
     <>
       <div className="relative">
         <button
-          className="flex flex-row gap-2 w-auto items-center justify-center  hover:border rounded-md"
+          className="flex flex-row gap-2 w-auto items-center justify-center  hover:border hover:bg-slate-200 rounded-md"
           onClick={toggleDropdown}
         >
          
-          <Image src={"/icons/edit.svg"} alt="edit" height={24} width={24} />
+          <Image src={"/icons/edit.svg"} alt="edit" height={20} width={20} />
          
         </button>
         {isOpen && (
-          <div className="absolute z-10 w-auto border rounded-md bg-white z-55 pl-1 right-0 ">
-            <ul className="px-2 py-2 flex flex-col">
+          <div className="absolute z-10 w-auto border rounded-md bg-white z-55 right-0 ">
+            <ul className="px-1 py-1 flex flex-col">
               <li>
-                  <HideCard onHide={hideCard} />
-              </li>
-              <li>
-                  <button className="hover:font-bold text-[12px]">Hide</button>
+                  <button className="hover:font-bold text-[12px]">Edit</button>
               </li>
             </ul>
           </div>
