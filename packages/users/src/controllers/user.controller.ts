@@ -5,7 +5,6 @@ import { UserService } from '@users/services/user.service';
 import { StatusCode } from '@users/utils/consts';
 import { logger } from '@users/utils/logger';
 import axios from 'axios';
-import mongoose from 'mongoose';
 import {
   Body,
   Middlewares,
@@ -91,7 +90,7 @@ export class UserController {
   @Get('/:id')
   public async GetUserById(@Path() id: string): Promise<any> {
     try {
-      const user = await this.userService.getUserById({ id });
+      const user = await this.userService.getUserById(id);
       return {
         message: 'Get Successfully',
         data: user,
@@ -101,42 +100,17 @@ export class UserController {
       throw error;
     }
   }
-  @Post('/:id')
-  @Middlewares(verificationToken)
-  public async addFavPost(
+  @Post('{postId}/save')
+  public async toggleFavoritePost(
     @Request() request: any,
-    @Path() id: string,
+    @Path() postId: string,
   ): Promise<any> {
     try {
-      const user = await this.userService.getUserById(request.id);
-      if (!mongoose.Types.ObjectId.isValid(id)) {
-        throw new Error('Invalid event ID format');
-      }
-      const objectId = new mongoose.Types.ObjectId(id);
-      const existingFavoriteIndex = user?.favorites.findIndex((item) =>
-        item.equals(objectId),
-      );
-      console.log(existingFavoriteIndex);
-      if (existingFavoriteIndex !== -1) {
-        // Remove event from favorites
-        user?.favorites.splice(existingFavoriteIndex!, 1);
-        await user?.save();
-
-        return {
-          message: 'Event removed from favorites successfully',
-          data: user,
-        };
-      }
-      user?.favorites.push(objectId);
-      await user?.save();
-
-      return {
-        message: 'Event added to favorites successfully',
-        data: user,
-      };
-    } catch (error) {
-      logger.error('Controller Get User Error:', error);
-      throw error;
+      const userId = request.userId; // Assuming you have user ID in the request (e.g., from authentication middleware)
+      const result = await this.userService.toggleFavoritePost(userId, postId);
+      return result;
+    } catch (error: any) {
+      throw new CustomError(error.message, StatusCode.InternalServerError);
     }
   }
   @Post('/:id')
@@ -144,7 +118,7 @@ export class UserController {
   public async FindFavPost(@Request() request: any): Promise<any> {
     try {
       const user = await this.userService.getUserById(request.id);
-      const postId = user?.favorites;
+      const postId = user?.saves;
       const postPromise = postId!.map(async (id) => {
         try {
           const response = await axios.get(

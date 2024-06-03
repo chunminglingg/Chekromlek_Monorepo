@@ -20,7 +20,7 @@ export class UserRepository {
     }
   }
 
-  async FindUserById({ id }: { id: string }) {
+  async FindUserById(id: string) {
     try {
       const user = await UserModel.findById(id);
       return user;
@@ -43,13 +43,13 @@ export class UserRepository {
     }
   }
 
-  async UpdateUserById({ id, update }: { id: string; update: IUser }) {
+  async UpdateUserById(id: string, update: IUser) {
     try {
       if (!mongoose.Types.ObjectId.isValid(id)) {
         throw new CustomError('Invalid user ID', StatusCode.BadRequest);
       }
 
-      const isExist = await this.FindUserById({ id });
+      const isExist = await this.FindUserById(id);
       if (!isExist) {
         throw new CustomError('User not found', StatusCode.NotFound);
       }

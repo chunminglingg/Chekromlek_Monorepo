@@ -3,6 +3,7 @@ import CustomError from "@post/errors/customError";
 import { StatusCode } from "@post/utils/const";
 import { IAnswer, IPost } from "../@types/post.interface";
 import { logger } from "@post/utils/logger";
+import mongoose from "mongoose";
 
 export class postRepository {
   // Create Post
@@ -160,8 +161,12 @@ export class postRepository {
     if (!post) {
       throw new Error("Post not found");
     }
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      throw new Error("Invalid event ID format");
+    }
+    const objectId = new mongoose.Types.ObjectId(userId);
 
-    if (post.postlikedBy.includes(userId)) {
+    if (post.postlikedBy.includes(objectId)) {
       throw new Error("User has already liked this post");
     }
 
@@ -183,8 +188,12 @@ export class postRepository {
     if (!post) {
       throw new Error("Post not found");
     }
-    
-    if (!post.postlikedBy.includes(userId)) {
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      throw new Error("Invalid event ID format");
+    }
+    const objectId = new mongoose.Types.ObjectId(userId);
+
+    if (!post.postlikedBy.includes(objectId)) {
       throw new Error("User has not liked this post");
     }
 

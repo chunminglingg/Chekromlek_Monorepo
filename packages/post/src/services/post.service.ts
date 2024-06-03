@@ -149,6 +149,7 @@ export class PostService {
   }
   async LikePost(postId: string, userId: string) {
     try {
+      
       const updatedPost = await this.postRepo.LikePost(postId, userId);
       if (!updatedPost) {
         throw new CustomError(
