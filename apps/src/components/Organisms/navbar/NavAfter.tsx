@@ -51,6 +51,7 @@
 // export default NavAfter;
 'use client'
 import { AfterLogin, Burger } from "@/components/Atoms";
+import {BurgerLogin} from "@/components/Atoms";
 import Logo from "@/components/Atoms/Logo/Logo";
 import SearchInput from "@/components/Molecules/Search/SearchInput";
 import InputSearch from "@/components/Molecules/Search/SearchInput";

@@ -1,4 +1,5 @@
 // AfterLogin.stories.tsx
+
 import React from 'react';
 import { StoryFn, Meta } from '@storybook/react';
 import AfterLogin, { AfterLoginProps } from './AfterLogin';
@@ -9,23 +10,34 @@ export default {
   title: 'chekromlek/Components/Atoms/AfterLogin',
   component: AfterLogin,
   parameters: {
-    layout: 'centered',
+    layout: 'centered', // Ensure your component is displayed centered in Storybook
     design: {
       type: 'figma',
       url: 'https://www.figma.com/proto/3bZbAhm0fbpqzRiPGP3uDO/Chekromlek?page-id=3498%3A7931&node-id=4156-2613&viewport=1479%2C479%2C0.85&t=e0iDKTScDqiiSHth-1&scaling=min-zoom',
     },
-    tags: ['autodocs'],
+    
+  },tags: ['autodocs'],
+  argTypes: {
+    name: {
+      description: 'Name of the logged-in user',
+      control: 'text',
+    },
+    onLogout: {
+      description: 'Function to call when the user logs out',
+      action: 'clicked', // Ensure you specify the action type for proper documentation
+    },
   },
 } as Meta;
 
 const Template: StoryFn<AfterLoginProps> = (args) => <AfterLogin {...args} />;
 
+/**
+ * Default state of the AfterLogin component
+ */
 export const Default = Template.bind({});
 Default.args = {
   name: 'John Doe',
 };
-
-
 Default.play = async ({ canvasElement }) => {
   const canvas = within(canvasElement);
   const button = await canvas.findByRole('button');
@@ -38,4 +50,3 @@ Default.play = async ({ canvasElement }) => {
     expect(canvas.getByText('LogOut')).toBeInTheDocument();
   });
 };
-

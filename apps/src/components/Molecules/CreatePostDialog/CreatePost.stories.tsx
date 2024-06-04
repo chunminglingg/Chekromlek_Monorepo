@@ -8,6 +8,13 @@ import { userEvent, within } from '@storybook/testing-library';
 export default {
   title: 'Chekromlek/Components/Molecules/CreatePostDialog',
   component: CreatePostDialog,
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/proto/3bZbAhm0fbpqzRiPGP3uDO/Chekromlek?node-id=3911-2899&t=0i02gzHgTUOS7Agu-1&scaling=min-zoom&page-id=3911%3A2898https://www.figma.com/proto/3bZbAhm0fbpqzRiPGP3uDO/Chekromlek?node-id=3911-2899&t=0i02gzHgTUOS7Agu-1&scaling=contain&page-id=3911%3A2898",
+    },
+    tags: ["autodocs"],
+  },
 } as Meta;
 
 const Template: StoryFn<typeof CreatePostDialog> = (args) => <CreatePostDialog {...args} />;

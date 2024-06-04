@@ -16,14 +16,14 @@ export default {
       type: 'figma',
       url: 'https://www.figma.com/proto/3bZbAhm0fbpqzRiPGP3uDO/Chekromlek?page-id=3498%3A8273&node-id=3498-8344&viewport=436%2C326%2C0.57&t=VUm4kRK4m6NCNR56-1&scaling=scale-down-width',
     },
-    tags: ['autodocs'],
-  },
+
+  },    tags: ['autodocs'],
 } as Meta;
 
 const Template: StoryFn<NavAfterProps> = (args) => <NavAfter {...args} />;
 
-export const Default = Template.bind({});
-Default.args = {
+export const afterLogin = Template.bind({});
+afterLogin.args = {
   AfterLogin,
   Burger,
   Logo: Logo as React.FC<LogoProps>, // Ensure Logo is cast as React.FC<LogoProps>
