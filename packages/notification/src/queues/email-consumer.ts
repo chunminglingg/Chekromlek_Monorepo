@@ -40,7 +40,7 @@ export async function consumeAuthEmailMessages(
           appLink: `${getConfig().clientUrl}`,
           appIcon: ``,
           username,
-          verifyLink: `http://localhost:8000/verify?token=${verifyLink}`,
+          verifyLink: `${getConfig().clientUrl}/signup/verify?token=${verifyLink}`,
           resetLink,
         };
 

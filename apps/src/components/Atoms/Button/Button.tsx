@@ -128,6 +128,7 @@ const Button: React.FC<ButtonProps> = ({
       className={`flex justify-center items-center cursor-pointer  ${getButtonRounded} ${colorSchemeStyle} ${sizeButtonStyle} ${colorButtonOutline} ${className}`}
       onClick={onClick}
       {...props}
+      
     >
       {children}
     </button>

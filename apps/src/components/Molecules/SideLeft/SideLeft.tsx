@@ -6,6 +6,10 @@ import React, { ReactNode, useState } from "react";
 
 interface SideStyleProps {
   // Define props here if you plan to pass any props to SideStyle component
+  isHomeClick: boolean;
+  isCategoryClick: boolean;
+  isNotificationClick: boolean;
+  isSettingClick: boolean;
 }
 const SideStyle = () => {
   const [isHomeClick, setIsHomeClick] = useState(false);
@@ -15,29 +19,17 @@ const SideStyle = () => {
 
   const handleHomeClick = () => {
     setIsHomeClick(true);
-    setIsCategoryClick(false);
-    setIsNotificationClick(false);
-    setIsSettingClick(false);
   };
 
   const handleCategoryClick = () => {
-    setIsHomeClick(false);
     setIsCategoryClick(true);
-    setIsNotificationClick(false);
-    setIsSettingClick(false);
   };
 
   const handleNotificationClick = () => {
-    setIsHomeClick(false);
-    setIsCategoryClick(false);
     setIsNotificationClick(true);
-    setIsSettingClick(false);
   };
 
   const handleSettingClick = () => {
-    setIsHomeClick(false);
-    setIsCategoryClick(false);
-    setIsNotificationClick(false);
     setIsSettingClick(true);
   };
 

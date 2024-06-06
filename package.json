@@ -16,6 +16,7 @@
   },
   "scripts": {
     "start:docker": "docker-compose up --build",
+    "start:deploy": "yarn workspace chekromlek-v1 sst deploy",
     "start:app": "yarn workspace chekromlek-v1 start:dev",
     "start:api-gateway": "yarn workspace api-gateway start:dev",
     "start:auth-service": "yarn workspace backend-chekromlek start:dev",
@@ -30,6 +31,8 @@
     "@storybook/addon-essentials": "^8.1.3",
     "@storybook/addon-links": "^8.1.3",
     "@storybook/react": "^8.1.3",
-    "concurrently": "^8.2.2"
+    "aws-cdk-lib": "^2.144.0",
+    "construct": "^1.0.0",
+    "sst": "^2.43.0"
   }
 }

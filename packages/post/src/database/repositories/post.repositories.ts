@@ -21,6 +21,17 @@ export class postRepository {
     return PostModel.findById(answerId);
   }
 
+  async findAllPost () {
+    try {
+      return await PostModel.find();
+    } catch (error: unknown | any) {
+      if (error instanceof CustomError) {
+        throw error;
+      }
+      throw new CustomError(error.message, StatusCode.BadRequest);
+    }
+  }
+
   async addAnswerToPost(postId: string, answer: IAnswer) {
     try {
       return await PostModel.findByIdAndUpdate(

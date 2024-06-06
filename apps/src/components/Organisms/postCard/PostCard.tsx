@@ -17,8 +17,8 @@ export interface postCardProps {
   title?: string;
   caption?: string;
   postImage?: string | undefined;
-  onLike: () => void;
-  onSave: () => void;
+  onLike?: () => void;
+  onSave?: () => void;
 }
 
 const PostCard: React.FC<postCardProps> = ({

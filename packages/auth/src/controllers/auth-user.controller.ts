@@ -114,7 +114,9 @@ export class UserAuthController {
         throw new APIError(`User not found`, StatusCode.NotFound);
       }
 
-      await axios.post("http://localhost:4000/v1/users/", {
+      // dev: localhost
+      // docker: http://user-profile:4000...
+      await axios.post("http://user-profile:4000/v1/users", {
         authId: userDetail.id,
         username: userDetail.username,
         email: userDetail.email,

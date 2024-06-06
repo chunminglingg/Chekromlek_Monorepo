@@ -1,24 +1,29 @@
+# Use the official Node.js image as a parent image
 FROM node:21-alpine3.18
 
+# Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json to ensure exact dependency versions
+# Copy package.json and tsconfig.json from the host machine
 COPY package.json ./
+COPY tsconfig.json ./
+
+# Copy the source and dist directories, and the private key from the host machine
+COPY src ./src
+COPY dist ./dist
+COPY private_key.pem /app/private_key.pem
+
+# List all files and directories to verify the build directory
+RUN ls -a
 
 # Install dependencies
 RUN npm install
 
-# Install nodemon globally
+# Install nodemon globally for development
 RUN npm install -g nodemon
 
-# Copy the rest of the application files
-COPY tsconfig.json ./
-COPY dist ./dist
-COPY src ./src
-COPY private_key.pem ./private_key.pem
-
-# Expose the port your app runs on
+# Inform Docker that the container will listen on port 3001 at runtime
 EXPOSE 4000
 
-# Command to run the application
-CMD [ "npm", "run", "start:dev" ]
+# Specify the command to run when the container starts
+CMD ["npm", "run", "start:dev"]

@@ -4,7 +4,7 @@ import Link from "next/link";
 import React, { ReactNode, useState } from "react";
 
 
-interface SideStyleProps {
+export interface SideStyleProps {
   // Define props here if you plan to pass any props to SideStyle component
 }
 const SideLeftLogin = () => {

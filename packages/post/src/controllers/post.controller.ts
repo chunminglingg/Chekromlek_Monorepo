@@ -52,6 +52,21 @@ export class PostController {
     }
   }
 
+  @SuccessResponse(StatusCode.Found , "Found all the posts successfully")
+  @Get('/')
+   public async GetAllPosts(): Promise<any> {
+    try {
+      const posts = await this.postService.findAllPost();
+      return {
+        message: "All posts found successfully",
+        data: posts,
+      };
+    } catch (error) {
+      logger.error(`Service method error: ${error}`);
+      throw error;
+    }
+   }
+
   @SuccessResponse(StatusCode.Found, "Found the post")
   @Get("/{id}")
   public async GetPostById(@Path() id: string): Promise<any> {

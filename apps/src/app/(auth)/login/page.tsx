@@ -6,6 +6,7 @@ import "../../globals.css";
 import signupValidation from "@/schema/Auth@Validation";
 import { Button } from "@/components/Atoms/Button/Button";
 import { Typography } from "@/components";
+import axios from "axios";
 
 interface dataTypes {
   email: string;
@@ -15,7 +16,7 @@ interface dataTypes {
 const Pages = () => {
   const [data, setData] = useState<dataTypes>({
     email: "",
-    password: "", 
+    password: "",
   });
   const [errors, setErrors] = useState({
     email: "",
@@ -33,6 +34,19 @@ const Pages = () => {
       await signupValidation.validate(data, { abortEarly: false });
       // Validation successful, proceed with form submission logic (e.g., send data to server)
 
+      // Send a POST request to your login endpoint
+      const response = await axios.post(`http://localhost:3000/v1/auth/login`, {
+        email: data.email,
+        password: data.password,
+      });
+
+      // Check the response to determine if login was successful
+      if (
+        response.data.email !== data.email &&
+        response.data.password !== data.password
+      ) {
+        return alert("Email or Password is incorrect");
+      }
       // Redirect to /afterlogin route
       window.location.href = "/afterlogin"; // This is a simple way to redirect
       console.log("Form data is valid!");
@@ -40,9 +54,13 @@ const Pages = () => {
     } catch (error: any | unknown) {
       const fieldErrors: { [key: string]: string } = {};
       // Error From Yup
-      error.inner.forEach((err: any) => {
-        fieldErrors[err.path] = err.message;
-      });
+      if (Array.isArray(error.inner)) {
+        error.inner.forEach((err: any) => {
+          fieldErrors[err.path] = err.message;
+        });
+      } else {
+        console.error("Unexpected error structure", error);
+      }
       console.log("Field Error", fieldErrors);
       setErrors((prev) => ({
         ...prev,
@@ -94,7 +112,7 @@ const Pages = () => {
                     name="email"
                     onChange={handleChange}
                   />
-                  {errors.email && errors.password  && (
+                  {errors.email && errors.password && (
                     <p className="text-[#EB5757] ">{errors.email}</p>
                   )}
                 </div>
@@ -119,8 +137,7 @@ const Pages = () => {
                         password{" "}
                       </span>{" "}
                       ?
-
-                      </p>
+                    </p>
                   </Link>
                 </div>
 
@@ -128,8 +145,11 @@ const Pages = () => {
                   <Button
                     type="submit"
                     className="w-[400px] h-[60px] bg-[#7B2CBF]  max-sm:w-[290px] hover:text-[#d1b6f6] text-white rounded-lg hover:opacity-[80%]"
+                    colorScheme="primary"
                   >
-                   <Typography fontSize="caption" color="submit">Login</Typography> 
+                    <Typography fontSize="caption" color="submit">
+                      Login
+                    </Typography>
                   </Button>
                 </div>
 

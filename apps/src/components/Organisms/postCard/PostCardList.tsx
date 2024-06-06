@@ -2,10 +2,11 @@
 import React, { useContext } from "react";
 import PostCard from "./PostCard"; // Assuming PostCard component is imported correctly
 import { MyCardContext } from "@/contexts/PostCardContext/PostCardContext"; // Assuming correct path
+import axios from "axios";
 
-const PostCardList = ({ searchQuery = "" }) => {
+const PostCardList = async ({ searchQuery = "" }) => {
   const { CardInfo } = useContext(MyCardContext);
-
+  
   return (
     <div className="space-y-4">
       {CardInfo.filter((info) => {

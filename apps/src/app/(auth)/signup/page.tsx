@@ -31,11 +31,21 @@ const Pages = () => {
     e.preventDefault();
     try {
       await signupVali.validate(data, { abortEarly: false });
-      await axios.post("http://localhost:3000/v1/auth/signup", data);
-      window.location.href = "/afterlogin"; // This is a simple way to redirect
+
+      const response = await axios.post(
+        "http://localhost:3000/v1/auth/signup",
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const token =  response.data.verif_token;
+      window.location.href = `/signup/verify?token=${token}`
     } catch (error: any) {
       const fieldErrors: { [key: string]: string } = {};
-  
+
       // Error From Yup
       if (error.inner) {
         error.inner.forEach((err: any) => {
@@ -50,7 +60,11 @@ const Pages = () => {
       return;
     }
   }
-  
+
+ async function handleFacebookSignUp () {
+  const response = await axios.get(`` , )
+ }
+
   return (
     <>
       <div className="flex justify-between h-screen w-screen">
@@ -68,7 +82,7 @@ const Pages = () => {
         {/* right */}
         <div className="flex w-[35%] justify-center items-center h-screen relative max-lg:w-full">
           <div aria-label="form" className=" flex flex-col items-center ">
-            <Link href={"/"}>
+            <Link href={"#"}>
               <button>
                 {" "}
                 <Image
@@ -123,9 +137,7 @@ const Pages = () => {
                   )}
                 </div>
 
-
                 <div className="flex flex-col items-center mt-4">
-                 <Link href={"./verify"} >
                   <button
                     type="submit"
                     className="w-[400px] h-[60px] bg-[#7B2CBF]  max-sm:w-[290px] hover:text-[#d1b6f6] text-white rounded-lg hover:opacity-[80%]"
@@ -133,7 +145,6 @@ const Pages = () => {
                   >
                     Register
                   </button>
-                  </Link>
                 </div>
 
                 <p className="text-center text-gray-400">
