@@ -21,13 +21,13 @@
 					"profile": {
 						"type": "string"
 					},
-					"favorites": {
+					"saves": {
 						"items": {
 							"type": "string"
 						},
 						"type": "array"
 					},
-					"questions": {
+					"post": {
 						"items": {
 							"type": "string"
 						},
@@ -117,6 +117,21 @@
 						}
 					}
 				}
+			},
+			"get": {
+				"operationId": "ShowAllUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
 			}
 		},
 		"/v1/users/{id}": {
@@ -177,6 +192,21 @@
 						}
 					}
 				]
+			},
+			"post": {
+				"operationId": "FindSavePost",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
 			}
 		},
 		"/v1/users/auth/{authId}": {
@@ -197,6 +227,32 @@
 					{
 						"in": "path",
 						"name": "authId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/users/{postId}/save": {
+			"post": {
+				"operationId": "ToggleSavePost",
+				"responses": {
+					"200": {
+						"description": "Add/Remove Save successfully",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "postId",
 						"required": true,
 						"schema": {
 							"type": "string"

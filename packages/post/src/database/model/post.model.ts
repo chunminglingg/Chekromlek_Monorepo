@@ -31,7 +31,6 @@ const PostSchema = new mongoose.Schema(
     },
     postlikedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     likeCounts: { type: Number, default: 0 },
-    isSave: { type: Boolean, default: false },
     answers: { type: [AnswerSchema], default: [] },
     createdAt: { type: Date, default: Date.now() },
   },

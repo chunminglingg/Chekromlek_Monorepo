@@ -91,7 +91,7 @@ export class UserController {
   @Get('/:id')
   public async GetUserById(@Path() id: string): Promise<any> {
     try {
-      const user = await this.userService.getUserById({ id });
+      const user = await this.userService.getUserById(id);
       return {
         message: 'Get Successfully',
         data: user,
@@ -101,54 +101,73 @@ export class UserController {
       throw error;
     }
   }
-  @Post('/:id')
+  @SuccessResponse(StatusCode.OK, 'Add/Remove Save successfully')
+  @Post('/:postId/save')
   @Middlewares(verificationToken)
-  public async addFavoEvent(
+  public async toggleSavePost(
     @Request() request: any,
-    @Path() id: string,
+    @Path() postId: string,
   ): Promise<any> {
     try {
-      const user = await this.userService.getUserById(request.id);
-      if (!mongoose.Types.ObjectId.isValid(id)) {
-        throw new Error('Invalid event ID format');
+      const userId = request.authId;
+      const token = request.headers.authorization?.split(' ')[1];
+
+      if (!mongoose.Types.ObjectId.isValid(postId)) {
+        throw new Error('Invalid post ID format');
       }
-      const objectId = new mongoose.Types.ObjectId(id);
-      const existingFavoriteIndex = user?.favorites.findIndex((item) =>
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        throw new Error('Invalid user ID format');
+      }
+
+      const objectId = new mongoose.Types.ObjectId(postId);
+
+      const user = await this.userService.getAuthById(userId);
+      if (!user) {
+        throw new Error('User not found');
+      }
+
+      const existingFavoriteIndex = user.saves.findIndex((item) =>
         item.equals(objectId),
       );
-      console.log(existingFavoriteIndex);
+      let isSave: boolean;
       if (existingFavoriteIndex !== -1) {
-        // Remove event from favorites
-        user?.favorites.splice(existingFavoriteIndex!, 1);
-        await user?.save();
-
-        return {
-          message: 'Event removed from favorites successfully',
-          data: user,
-        };
+        // Remove post from favorites
+        user.saves.splice(existingFavoriteIndex, 1);
+        isSave = false;
+      } else {
+        // Add post to favorites
+        user.saves.push(objectId);
+        isSave = true;
       }
-      user?.favorites.push(objectId);
-      await user?.save();
+      await user.save();
+
+      await axios.get(
+        `http://localhost:3005/v1/post/${postId}/save`,
+
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
 
       return {
-        message: 'Event added to favorites successfully',
+        message: `Post ${isSave ? 'added to' : 'removed from'} favorites successfully`,
         data: user,
       };
     } catch (error) {
-      logger.error('Controller Get User Error:', error);
-      throw error;
+      throw new CustomError(`${error}`);
     }
   }
+
   @Post('/:id')
   @Middlewares(verificationToken)
-  public async addFavPost(@Request() request: any): Promise<any> {
+  public async FindSavePost(@Request() request: any): Promise<any> {
     try {
       const user = await this.userService.getUserById(request.id);
-      const postId = user?.favorites;
+      const postId = user?.saves;
       const postPromise = postId!.map(async (id) => {
         try {
           const response = await axios.get(
-            `http://post:3005/v1/post/${postId}`,
+            `http://localhost:3005/v1/post/save`,
           );
 
           return response.data;

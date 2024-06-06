@@ -1,11 +1,11 @@
-import path from 'path';
-import fs from 'fs';
-import { run } from './utils/server';
+import path from "path";
+import fs from "fs";
+import { run } from "./utils/server";
 
 // READ FILE JWT PUBLIC KEY FIRST
 export const privateKey = fs.readFileSync(
-  path.join(__dirname, '../private_key.pem'),
-  'utf-8'
+  path.join(__dirname, "../public_key.pem"),
+  "utf-8"
 );
 
 run();
