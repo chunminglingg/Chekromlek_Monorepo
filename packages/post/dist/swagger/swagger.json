@@ -270,25 +270,7 @@
 							"type": "string"
 						}
 					}
-				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"properties": {
-									"userId": {
-										"type": "string"
-									}
-								},
-								"required": [
-									"userId"
-								],
-								"type": "object"
-							}
-						}
-					}
-				}
+				]
 			}
 		},
 		"/v1/post/{postId}/likepost": {
@@ -419,6 +401,58 @@
 					{
 						"in": "path",
 						"name": "postId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/post/{postId}/save": {
+			"get": {
+				"operationId": "ToggleSavePost",
+				"responses": {
+					"200": {
+						"description": "Add/Remove Save successfully",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "postId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/post/{userId}/posts": {
+			"get": {
+				"operationId": "GetPostsByUserId",
+				"responses": {
+					"302": {
+						"description": "Post Found",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
 						"required": true,
 						"schema": {
 							"type": "string"

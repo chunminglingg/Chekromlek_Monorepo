@@ -21,13 +21,13 @@
 					"profile": {
 						"type": "string"
 					},
-					"favorites": {
+					"saves": {
 						"items": {
 							"type": "string"
 						},
 						"type": "array"
 					},
-					"questions": {
+					"post": {
 						"items": {
 							"type": "string"
 						},
@@ -194,7 +194,7 @@
 				]
 			},
 			"post": {
-				"operationId": "FindFavPost",
+				"operationId": "FindSavePost",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -235,12 +235,12 @@
 				]
 			}
 		},
-		"/v1/users/{postId}/fav": {
+		"/v1/users/{postId}/save": {
 			"post": {
-				"operationId": "ToggleFavoritePost",
+				"operationId": "ToggleSavePost",
 				"responses": {
 					"200": {
-						"description": "Ok",
+						"description": "Add/Remove Save successfully",
 						"content": {
 							"application/json": {
 								"schema": {}

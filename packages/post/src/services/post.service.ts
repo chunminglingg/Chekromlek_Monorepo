@@ -13,6 +13,7 @@ export class PostService {
   async createPost(IPost: IPost) {
     try {
       const newPost = await this.postRepo.createPost(IPost);
+
       return newPost;
     } catch (error) {
       logger.error(`Create() method error in service : ${error}`);
@@ -149,7 +150,6 @@ export class PostService {
   }
   async LikePost(postId: string, userId: string) {
     try {
-      
       const updatedPost = await this.postRepo.LikePost(postId, userId);
       if (!updatedPost) {
         throw new CustomError(
@@ -176,6 +176,21 @@ export class PostService {
     } catch (error) {
       logger.error("Service Unlike post method() error:", error);
       throw error;
+    }
+  }
+  async getPostsByUserId(userId: string) {
+    try {
+      const posts = await this.postRepo.getPostsByUserId(userId);
+      return posts;
+    } catch (error: any) {
+      throw new Error(`Error fetching posts: ${error.message}`);
+    }
+  }
+  async savePost(postId: string) {
+    try {
+      await this.postRepo.updateSaveFlag(postId);
+    } catch (error) {
+      throw new Error(`Failed to save post: ${error}`);
     }
   }
 }

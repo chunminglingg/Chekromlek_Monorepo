@@ -1,7 +1,7 @@
 import { IUser } from '@users/database/models/user.model';
 import { UserRepository } from '@users/database/repositories/user.repo';
 import { logger } from '@users/utils/logger';
-import mongoose from 'mongoose';
+import axios from 'axios';
 
 export class UserService {
   private userRepo: UserRepository;
@@ -40,6 +40,24 @@ export class UserService {
       throw error;
     }
   }
+  async getUserWithPosts(userId: string) {
+    try {
+      const user = await this.userRepo.FindUserById(userId);
+      if (!user) {
+        throw new Error('User not found');
+      }
+
+      // Make an HTTP request to the Post Service
+      const postsResponse = await axios.get(
+        `http://localhost:3005/v1/post/${userId}/posts`,
+      );
+      user.posts = postsResponse.data;
+
+      return user;
+    } catch (error: any) {
+      throw new Error(`Error fetching user with posts: ${error.message}`);
+    }
+  }
   async getUserById(id: string) {
     try {
       return await this.userRepo.FindUserById(id);
@@ -47,38 +65,5 @@ export class UserService {
       logger.error('Get user error:', error);
       throw error;
     }
-  }
-  async toggleFavoritePost(userId: string, postId: string) {
-    if (!mongoose.Types.ObjectId.isValid(postId)) {
-      throw new Error('Invalid post ID format');
-    }
-    const objectId = new mongoose.Types.ObjectId(postId);
-
-    const user = await this.userRepo.FindUserById(userId);
-    if (!user) {
-      throw new Error('User not found');
-    }
-
-    const existingFavoriteIndex = user.saves.findIndex((item) =>
-      item.equals(objectId),
-    );
-
-    if (existingFavoriteIndex !== -1) {
-      // Remove post from favorites
-      user.saves.splice(existingFavoriteIndex, 1);
-      await user.save();
-      return {
-        message: 'Post removed from favorites successfully',
-        data: user,
-      };
-    }
-
-    // Add post to favorites
-    user.saves.push(objectId);
-    await user.save();
-    return {
-      message: 'Post added to favorites successfully',
-      data: user,
-    };
   }
 }

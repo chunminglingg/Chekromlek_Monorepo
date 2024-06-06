@@ -22,7 +22,11 @@ export class UserRepository {
 
   async FindUserById(id: string) {
     try {
+      console.log(`Finding user by ID: ${id}`);
+
       const user = await UserModel.findById(id);
+      console.log(`Found user by ID: ${id}`);
+
       return user;
     } catch (error: any) {
       logger.error(
@@ -85,6 +89,15 @@ export class UserRepository {
       throw error;
     }
   }
+  async addPostToUser(userId: string, postId: string) {
+    try {
+      await UserModel.findByIdAndUpdate(userId, {
+        $push: { post: postId },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
 
   async deleteUser({ id }: { id: string }) {
     try {
@@ -93,6 +106,4 @@ export class UserRepository {
       throw new CustomError('Cannot Find user in Database');
     }
   }
-
-  // Additional methods to handle other operations
 }

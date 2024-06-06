@@ -6,7 +6,7 @@ export interface IUser {
   email?: string;
   profile?: string;
   saves?: string[];
-  questions?: string[];
+  post?: string[];
   bio?: string;
   work?: string;
   answers?: number;
@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     profile: { type: String },
     saves: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
-    questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
+    post: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
     bio: { type: String },
     gender: { type: String, enum: ['Male', 'Female', 'other'] },
     work: { type: String, default: 'Student' },

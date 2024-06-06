@@ -37,11 +37,9 @@ export class PostController {
     try {
       const detailPost = {
         ...requestBody,
-        userId: request.userId, // Accessing req.userId instead of req.id
+        userId: request.userId,
         username: request.username,
       };
-
-      // console.log("req: ", request);
 
       const post = await this.postService.createPost(detailPost);
       return {
@@ -271,6 +269,49 @@ export class PostController {
       return post;
     } catch (error) {
       throw error;
+    }
+  }
+  @SuccessResponse(StatusCode.OK, "Add/Remove Save successfully")
+  @Get("/{postId}/save")
+  @Middlewares(verificationToken)
+  public async toggleSavePost(@Path() postId: string): Promise<any> {
+    try {
+      // Get post information
+      const post = await this.postService.findPostById(postId);
+
+      if (!post) {
+        throw new Error("Post not found");
+      }
+      await this.postService.savePost(postId);
+
+      // Return a success response
+      return {
+        message: "Post saved successfully",
+        data: post, // Optionally, include the post data in the response
+      };
+    } catch (error) {
+      // Handle errors
+      logger.error(`Failed to save post: ${error}`);
+      throw new CustomError(
+        `Failed to save post: ${error}`,
+        StatusCode.InternalServerError
+      );
+    }
+  }
+  @Get("{userId}/posts")
+  @SuccessResponse(StatusCode.Found, "Post Found")
+  @Middlewares(verificationToken)
+  public async getPostsByUserId(@Path() userId: string): Promise<any> {
+    try {
+      const post = await this.postService.getPostsByUserId(userId);
+      if (!post) {
+        throw new CustomError("Post not found", StatusCode.NotFound);
+      }
+    } catch (error: any) {
+      throw new CustomError(
+        `Post not Found ${error}`,
+        StatusCode.InternalServerError
+      );
     }
   }
 }

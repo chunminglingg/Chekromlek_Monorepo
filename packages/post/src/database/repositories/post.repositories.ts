@@ -18,6 +18,14 @@ export class postRepository {
       throw new CustomError(error.message, StatusCode.BadRequest);
     }
   }
+  async getPostsByUserId(userId: string) {
+    try {
+      const posts = await PostModel.find({ author: userId }).exec();
+      return posts;
+    } catch (error: any) {
+      throw new Error(`Unable to fetch posts: ${error.message}`);
+    }
+  }
   async findAnswerById(answerId: string) {
     return PostModel.findById(answerId);
   }
@@ -156,54 +164,69 @@ export class postRepository {
   }
 
   async LikePost(postId: string, userId: string) {
-    const post = await PostModel.findById(postId);
+    try {
+      const post = await PostModel.findById(postId);
 
-    if (!post) {
-      throw new Error("Post not found");
-    }
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
-      throw new Error("Invalid event ID format");
-    }
-    const objectId = new mongoose.Types.ObjectId(userId);
-
-    if (post.postlikedBy.includes(objectId)) {
-      throw new Error("User has already liked this post");
-    }
-
-    return PostModel.findByIdAndUpdate(
-      postId,
-      {
-        $addToSet: { postlikedBy: userId },
-        $inc: { likeCounts: 1 },
-      },
-      {
-        new: true,
+      if (!post) {
+        throw new Error("Post not found");
       }
-    );
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        throw new Error("Invalid event ID format");
+      }
+      const objectId = new mongoose.Types.ObjectId(userId);
+
+      if (post.postlikedBy.includes(objectId)) {
+        throw new Error("User has already liked this post");
+      }
+
+      return PostModel.findByIdAndUpdate(
+        postId,
+        {
+          $addToSet: { postlikedBy: userId },
+          $inc: { likeCounts: 1 },
+        },
+        {
+          new: true,
+        }
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   async UnlikePost(postId: string, userId: string) {
-    const post = await PostModel.findById(postId);
+    try {
+      const post = await PostModel.findById(postId);
 
-    if (!post) {
-      throw new Error("Post not found");
-    }
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
-      throw new Error("Invalid event ID format");
-    }
-    const objectId = new mongoose.Types.ObjectId(userId);
+      if (!post) {
+        throw new Error("Post not found");
+      }
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        throw new Error("Invalid event ID format");
+      }
+      const objectId = new mongoose.Types.ObjectId(userId);
 
-    if (!post.postlikedBy.includes(objectId)) {
-      throw new Error("User has not liked this post");
-    }
+      if (!post.postlikedBy.includes(objectId)) {
+        throw new Error("User has not liked this post");
+      }
 
-    return PostModel.findByIdAndUpdate(
-      postId,
-      {
-        $pull: { postlikedBy: userId },
-        $inc: { likeCounts: -1 },
-      },
-      { new: true }
-    );
+      return PostModel.findByIdAndUpdate(
+        postId,
+        {
+          $pull: { postlikedBy: userId },
+          $inc: { likeCounts: -1 },
+        },
+        { new: true }
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
+  async updateSaveFlag(postId: string) {
+    try {
+      return await PostModel.findByIdAndUpdate(postId);
+    } catch (error) {
+      throw new Error(`Failed to update save flag for post: ${error}`);
+    }
   }
 }

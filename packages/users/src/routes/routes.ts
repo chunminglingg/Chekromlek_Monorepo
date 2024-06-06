@@ -18,8 +18,8 @@ const models: TsoaRoute.Models = {
             "username": {"dataType":"string"},
             "email": {"dataType":"string"},
             "profile": {"dataType":"string"},
-            "favorites": {"dataType":"array","array":{"dataType":"string"}},
-            "questions": {"dataType":"array","array":{"dataType":"string"}},
+            "saves": {"dataType":"array","array":{"dataType":"string"}},
+            "post": {"dataType":"array","array":{"dataType":"string"}},
             "bio": {"dataType":"string"},
             "work": {"dataType":"string"},
             "answers": {"dataType":"double"},
@@ -190,11 +190,11 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/v1/users/:postId/fav',
+        app.post('/v1/users/:postId/save',
             ...(fetchMiddlewares<RequestHandler>(UserController)),
-            ...(fetchMiddlewares<RequestHandler>(UserController.prototype.toggleFavoritePost)),
+            ...(fetchMiddlewares<RequestHandler>(UserController.prototype.toggleSavePost)),
 
-            async function UserController_toggleFavoritePost(request: ExRequest, response: ExResponse, next: any) {
+            async function UserController_toggleSavePost(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     request: {"in":"request","name":"request","required":true,"dataType":"object"},
                     postId: {"in":"path","name":"postId","required":true,"dataType":"string"},
@@ -209,12 +209,12 @@ export function RegisterRoutes(app: Router) {
                 const controller = new UserController();
 
               await templateService.apiHandler({
-                methodName: 'toggleFavoritePost',
+                methodName: 'toggleSavePost',
                 controller,
                 response,
                 next,
                 validatedArgs,
-                successStatus: undefined,
+                successStatus: 200,
               });
             } catch (err) {
                 return next(err);
@@ -223,9 +223,9 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/v1/users/:id',
             ...(fetchMiddlewares<RequestHandler>(UserController)),
-            ...(fetchMiddlewares<RequestHandler>(UserController.prototype.FindFavPost)),
+            ...(fetchMiddlewares<RequestHandler>(UserController.prototype.FindSavePost)),
 
-            async function UserController_FindFavPost(request: ExRequest, response: ExResponse, next: any) {
+            async function UserController_FindSavePost(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
@@ -239,7 +239,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new UserController();
 
               await templateService.apiHandler({
-                methodName: 'FindFavPost',
+                methodName: 'FindSavePost',
                 controller,
                 response,
                 next,

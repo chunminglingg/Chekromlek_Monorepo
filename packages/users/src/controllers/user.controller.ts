@@ -5,6 +5,7 @@ import { UserService } from '@users/services/user.service';
 import { StatusCode } from '@users/utils/consts';
 import { logger } from '@users/utils/logger';
 import axios from 'axios';
+import mongoose from 'mongoose';
 import {
   Body,
   Middlewares,
@@ -100,29 +101,73 @@ export class UserController {
       throw error;
     }
   }
-  @Post('{postId}/save')
-  public async toggleFavoritePost(
+  @SuccessResponse(StatusCode.OK, 'Add/Remove Save successfully')
+  @Post('/:postId/save')
+  @Middlewares(verificationToken)
+  public async toggleSavePost(
     @Request() request: any,
     @Path() postId: string,
   ): Promise<any> {
     try {
-      const userId = request.userId; // Assuming you have user ID in the request (e.g., from authentication middleware)
-      const result = await this.userService.toggleFavoritePost(userId, postId);
-      return result;
-    } catch (error: any) {
-      throw new CustomError(error.message, StatusCode.InternalServerError);
+      const userId = request.authId;
+      const token = request.headers.authorization?.split(' ')[1];
+
+      if (!mongoose.Types.ObjectId.isValid(postId)) {
+        throw new Error('Invalid post ID format');
+      }
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        throw new Error('Invalid user ID format');
+      }
+
+      const objectId = new mongoose.Types.ObjectId(postId);
+
+      const user = await this.userService.getAuthById(userId);
+      if (!user) {
+        throw new Error('User not found');
+      }
+
+      const existingFavoriteIndex = user.saves.findIndex((item) =>
+        item.equals(objectId),
+      );
+      let isSave: boolean;
+      if (existingFavoriteIndex !== -1) {
+        // Remove post from favorites
+        user.saves.splice(existingFavoriteIndex, 1);
+        isSave = false;
+      } else {
+        // Add post to favorites
+        user.saves.push(objectId);
+        isSave = true;
+      }
+      await user.save();
+
+      await axios.get(
+        `http://localhost:3005/v1/post/${postId}/save`,
+
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+
+      return {
+        message: `Post ${isSave ? 'added to' : 'removed from'} favorites successfully`,
+        data: user,
+      };
+    } catch (error) {
+      throw new CustomError(`${error}`);
     }
   }
+
   @Post('/:id')
   @Middlewares(verificationToken)
-  public async FindFavPost(@Request() request: any): Promise<any> {
+  public async FindSavePost(@Request() request: any): Promise<any> {
     try {
       const user = await this.userService.getUserById(request.id);
       const postId = user?.saves;
       const postPromise = postId!.map(async (id) => {
         try {
           const response = await axios.get(
-            `http://post:3005/v1/post/${postId}`,
+            `http://localhost:3005/v1/post/save`,
           );
 
           return response.data;
