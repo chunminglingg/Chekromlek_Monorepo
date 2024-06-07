@@ -119,7 +119,7 @@ const Page = () => {
               htmlFor=""
               className="ml-14 text-[12px] text-sm lg:ml-[22px]"
             >
-              confirm Password:
+              Confirm Password:
             </label>
             <div className="flex flex-col">
               <input

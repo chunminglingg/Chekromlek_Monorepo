@@ -5,7 +5,7 @@ const page = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-2 items-center mt-[8%] max-lg:mt-[8%] max-md:mt-[15%] max-sm:mt-[20%] ">
+      <div className="flex flex-col gap-2 items-center mt-[8%] max-lg:mt-[8%] max-md:mt-[15%] max-sm:mt-[20%] mb-5 ">
           <PostCardList/>
       </div>
     </>

@@ -1,5 +1,4 @@
 "use client";
-
 import NotificationCardList from "@/components/Molecules/Cards/notificationCardList";
 import React, { useState } from "react";
 

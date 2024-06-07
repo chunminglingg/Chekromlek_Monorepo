@@ -15,36 +15,20 @@ const UploadButton: React.FC<UploadButtonProps> = ({ onImageUpload, onImageDelet
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
+
+      // Validate file size
+    const maxSizeInBytes = 1 * 1024 * 1024; // 1 megabyte
+    if (file.size > maxSizeInBytes) {
+      alert('Maximum file size allowed is 1MB');
+      return; // Stop further processing
+    }
       setSelectedFile(file);
       setPreviewImage(URL.createObjectURL(file));
       setSelectedFileName(file.name);
+      onImageUpload(URL.createObjectURL(file)); // Trigger the upload callback
     }
   };
-
-  const handleUpload = () => {
-    if (selectedFile) {
-      const formData = new FormData();
-      formData.append('file', selectedFile);
-
-      fetch('/upload', {
-        method: 'POST',
-        body: formData,
-      })
-        .then((response) => {
-          if (response.ok) {
-            console.log('File uploaded successfully');
-            onImageUpload(URL.createObjectURL(selectedFile));
-          } else {
-            console.error('Error uploading file');
-          }
-        })
-        .catch((error) => {
-          console.error('Error uploading file:', error);
-        });
-    } else {
-      console.error('No file selected');
-    }
-  };
+  
 
   const handleDelete = () => {
     setSelectedFile(null);

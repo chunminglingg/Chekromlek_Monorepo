@@ -20,7 +20,7 @@ export function HideCard({onHide}: { onHide: () => void }) {
         <div className="">
             <Image
                 alt="option"
-                src={"/icons/cancel.svg"}
+                src={"/icons/edit.svg"}
                 width={20}
                 height={20}
                 className="hover:shadow-2xl hover:border hover:bg-slate-200 rounded-md "
