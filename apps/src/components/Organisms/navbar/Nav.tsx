@@ -25,14 +25,14 @@ function navbar() {
           </div>
         
         <div className="hidden md:flex md:flex-row gap-4 items-center pr-8">
-          <Link href={"#"}>
+          {/* <Link href={"#"}>
             <Image
               src={"/icons/lan.svg"}
               alt="languese"
               width={34}
               height={34}
             />
-          </Link>
+          </Link> */}
           <div className="flex flex-row gap-2 items-center">
             <button className="text-[#7B2CBF] text-lg border border-[#7B2CBF] hover:text-white hover:bg-[#7B2CBF] flex flex-row gap-2 px-8 py-2 rounded-lg">
               <Link href={"/login"}>Login</Link>

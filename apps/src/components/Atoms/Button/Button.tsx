@@ -3,7 +3,7 @@ import React, { ReactNode } from "react";
 interface ButtonProps {
   children?: ReactNode;
   className?: string;
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md"|"2md"| "lg";
   colorScheme?:
     | "none"
     | "primary"
@@ -50,8 +50,10 @@ const Button: React.FC<ButtonProps> = ({
         return "w-[80px] h-[40px] text-xs";
       case "md":
         return "w-[100px] h-[41px] text-sm";
+      case "2md":
+        return "w-[153px] h-[43px] text-base";  
       case "lg":
-        return "w-[371px] h-[41px] text-xl";
+        return "w-[400px] h-[60px] text-xl";
       default:
         return "w-[153px] h-[43px] text-base";
     }

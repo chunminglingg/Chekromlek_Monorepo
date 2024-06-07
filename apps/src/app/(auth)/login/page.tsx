@@ -127,6 +127,7 @@ const Pages = () => {
                 <div className="flex flex-col items-center mt-4">
                   <Button
                     type="submit"
+                    colorScheme="primary"
                     className="w-[400px] h-[60px] bg-[#7B2CBF]  max-sm:w-[290px] hover:text-[#d1b6f6] text-white rounded-lg hover:opacity-[80%]"
                   >
                    <Typography fontSize="caption" color="submit">Login</Typography> 

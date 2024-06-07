@@ -17,8 +17,8 @@ export interface postCardProps {
   title?: string;
   caption?: string;
   postImage?: string | undefined;
-  onLike: () => void;
-  onSave: () => void;
+  onLike?: () => void;
+  onSave?: () => void;
 }
 
 const PostCard: React.FC<postCardProps> = ({
@@ -57,7 +57,7 @@ const PostCard: React.FC<postCardProps> = ({
   return (
     <div>
       {isVisible ? (
-        <div className="flex flex-col gap-2 justify-center items-center border rounded-md w-[663px] max-sm:w-[345px]">
+        <div className="flex flex-col gap-2 justify-center items-center border rounded-md w-[663px] max-sm:w-[345px] mb-3">
           <div
             className={`card w-[663px] max-sm:w-[300px] ${cardHeight} flex justify-center items-center rounded-md `}
           >
@@ -95,17 +95,18 @@ const PostCard: React.FC<postCardProps> = ({
                   </div>
                 </div>
                 <div className="flex flex-col h-[20px] items-center gap-1">
-                 <Edit/>
-                 <HideCard onHide={hideCard} />
-                 </div>
-              </div>
-              <div className="card-content flex flex-col gap-2 ">
-              <Link href={`/post/${id}`}>
-                <div className="mt-1 title font-semibold text-[#343A40] text-2xl hover:underline max-sm:text-lg max-sm:font-medium pt-2 hover:cursor-pointer">
-                  <Typography fontSize="title" align="left" className="">
-                    {title}
-                  </Typography>
+                  {/* <Edit/> */}
+                  <HideCard onHide={hideCard} />
                 </div>
+              </div>
+              {/* Little */}
+              <div className="card-content flex flex-col gap-2 ">
+                <Link href={`/post/${id}`}>
+                  <div className="mt-1 title font-semibold text-[#343A40] text-2xl hover:underline max-sm:text-lg max-sm:font-medium pt-2 hover:cursor-pointer">
+                    <Typography fontSize="title" align="left" className="">
+                      {title}
+                    </Typography>
+                  </div>
                 </Link>
                 <p className="text-[14px] text-[#343A40] font-light hover:cursor-pointer">
                   {isCaptionTruncated
@@ -121,7 +122,7 @@ const PostCard: React.FC<postCardProps> = ({
                   )}
                 </p>
                 {postImage && (
-                  <div className="w-[100%] h-full md:w-[100%] flex  border-b p-2 mb-2">
+                <div className="w-[100%] h-full md:w-[100%] flex  border-b p-2 mb-2">
                     <Image
                       alt="content post"
                       src={postImage}
@@ -149,12 +150,14 @@ const PostCard: React.FC<postCardProps> = ({
                   {/* Answer */}
                   <div className="right-item ">
                     <Link href={`/post/${id}`}>
-                      <Button className=" relative" rounded="xl" colorOutline="primary">
-                      <div>
-                        <Typography >
-                          Answer
-                        </Typography>
-                      </div>
+                      <Button
+                        className=" relative"
+                        rounded="xl"
+                        colorOutline="primary"
+                      >
+                        <div>
+                          <Typography>Answer</Typography>
+                        </div>
                       </Button>
                     </Link>
                   </div>

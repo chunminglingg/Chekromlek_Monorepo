@@ -44,7 +44,7 @@ const page = () => {
                 </label>
                 <input
                   type="password"
-                  className="border w-[92%] h-[50px] p-4 rounded-xl"
+                  className="border w-[92%] h-[50px] p-4 rounded-xl focus:outline-none"
                   placeholder="Enter your new password"
                 />
                 <label
@@ -55,7 +55,7 @@ const page = () => {
                 </label>
                 <input
                   type="password"
-                  className="border w-[92%] h-[50px] p-4 rounded-xl"
+                  className="border w-[92%] h-[50px] p-4 rounded-xl focus:outline-none"
                   placeholder="Comfirm your new password"
                 />
               </div>

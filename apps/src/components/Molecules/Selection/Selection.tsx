@@ -10,9 +10,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export function SelectScrollable() {
+interface SelectScrollableProps {
+  onValueChange: (value: string) => void;
+}
+export function SelectScrollable({ onValueChange }: SelectScrollableProps) {
   return (
-    <Select>
+    <Select  onValueChange={onValueChange}>
       <SelectTrigger className="w-[280px] focus:outline-none">
         <SelectValue placeholder="Select a category" />
       </SelectTrigger>
