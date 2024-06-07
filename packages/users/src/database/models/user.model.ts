@@ -5,8 +5,8 @@ export interface IUser {
   username?: string;
   email?: string;
   profile?: string;
-  favorites?: string[];
-  questions?: string[];
+  saves?: string[];
+  post?: string[];
   bio?: string;
   work?: string;
   answers?: number;
@@ -21,8 +21,8 @@ const userSchema = new mongoose.Schema(
     username: { type: String, require: true },
     email: { type: String, required: true, unique: true },
     profile: { type: String },
-    favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
-    questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
+    saves: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
+    post: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
     bio: { type: String },
     gender: { type: String, enum: ['Male', 'Female', 'other'] },
     work: { type: String, default: 'Student' },

@@ -93,7 +93,7 @@ export class UserAuthService {
       throw error;
     }
   }
-  
+
   async SendEmailToken({ userId }: { userId: string }) {
     try {
       const timestamp = new Date();
@@ -123,28 +123,34 @@ export class UserAuthService {
 
   async VerifyEmailToken({ token }: { token: string }) {
     try {
-      const exitedToken = await this.verificationRepo.FindAccountVerificationToken({ token });
-  
+      const exitedToken =
+        await this.verificationRepo.FindAccountVerificationToken({ token });
+
       // Check if the token is invalid
       if (!exitedToken) {
         logger.error(`Verification token is invalid: ${token}`);
-        throw new APIError("Verification token is invalid", StatusCode.BadRequest);
+        throw new APIError(
+          "Verification token is invalid",
+          StatusCode.BadRequest
+        );
       }
-  
-      const user = await this.userRepo.FindUserById({ id: exitedToken.userId.toString() });
-  
+
+      const user = await this.userRepo.FindUserById({
+        id: exitedToken.userId.toString(),
+      });
+
       if (!user) {
         logger.error(`User does not exist for token: ${token}`);
         throw new APIError("User does not exist.", StatusCode.NotFound);
       }
-  
+
       // Change the verify status to true
       user.isVerified = true;
       await user.save();
-  
+
       // After verify success, delete the token
       await this.verificationRepo.deleteAccountVerificationToken({ token });
-  
+
       return user;
     } catch (error: unknown) {
       logger.error(`Error in VerifyEmailToken service method: ${error}`);

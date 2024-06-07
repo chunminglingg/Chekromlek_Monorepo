@@ -20,9 +20,13 @@ export class UserRepository {
     }
   }
 
-  async FindUserById({ id }: { id: string }) {
+  async FindUserById(id: string) {
     try {
+      console.log(`Finding user by ID: ${id}`);
+
       const user = await UserModel.findById(id);
+      console.log(`Found user by ID: ${id}`);
+
       return user;
     } catch (error: any) {
       logger.error(
@@ -43,13 +47,13 @@ export class UserRepository {
     }
   }
 
-  async UpdateUserById({ id, update }: { id: string; update: IUser }) {
+  async UpdateUserById(id: string, update: IUser) {
     try {
       if (!mongoose.Types.ObjectId.isValid(id)) {
         throw new CustomError('Invalid user ID', StatusCode.BadRequest);
       }
 
-      const isExist = await this.FindUserById({ id });
+      const isExist = await this.FindUserById(id);
       if (!isExist) {
         throw new CustomError('User not found', StatusCode.NotFound);
       }
@@ -85,6 +89,15 @@ export class UserRepository {
       throw error;
     }
   }
+  async addPostToUser(userId: string, postId: string) {
+    try {
+      await UserModel.findByIdAndUpdate(userId, {
+        $push: { post: postId },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
 
   async deleteUser({ id }: { id: string }) {
     try {
@@ -93,6 +106,4 @@ export class UserRepository {
       throw new CustomError('Cannot Find user in Database');
     }
   }
-
-  // Additional methods to handle other operations
 }

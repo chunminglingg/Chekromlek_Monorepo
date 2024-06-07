@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 export interface IAnswer {
   answer?: string;
   likeCounts?: number;
-  answerlikedBy: mongoose.Types.ObjectId[];
+  answerlikedBy?: mongoose.Types.ObjectId[];
 }
 export interface IPost {
   _id?: string;
@@ -22,8 +22,9 @@ export interface IPost {
     | "Writing"
     | "History"
     | "English";
-  like?: number;
   isSave?: boolean;
+  likeCounts?: number;
+  postlikedBy?: mongoose.Types.ObjectId[];
   answer?: string;
   createdAt?: Date;
   answers?: IAnswer[];

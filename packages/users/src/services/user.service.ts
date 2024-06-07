@@ -1,6 +1,7 @@
 import { IUser } from '@users/database/models/user.model';
 import { UserRepository } from '@users/database/repositories/user.repo';
 import { logger } from '@users/utils/logger';
+import axios from 'axios';
 
 export class UserService {
   private userRepo: UserRepository;
@@ -18,7 +19,7 @@ export class UserService {
   }
   async UpdateById(id: string, update: IUser) {
     try {
-      return await this.userRepo.UpdateUserById({ id, update: update });
+      return await this.userRepo.UpdateUserById(id, update);
     } catch (error) {
       logger.error('Update error: ', error);
       throw error;
@@ -39,9 +40,27 @@ export class UserService {
       throw error;
     }
   }
-  async getUserById({ id }: { id: string }) {
+  async getUserWithPosts(userId: string) {
     try {
-      return await this.userRepo.FindUserById({ id });
+      const user = await this.userRepo.FindUserById(userId);
+      if (!user) {
+        throw new Error('User not found');
+      }
+
+      // Make an HTTP request to the Post Service
+      const postsResponse = await axios.get(
+        `http://localhost:3005/v1/post/${userId}/posts`,
+      );
+      user.posts = postsResponse.data;
+
+      return user;
+    } catch (error: any) {
+      throw new Error(`Error fetching user with posts: ${error.message}`);
+    }
+  }
+  async getUserById(id: string) {
+    try {
+      return await this.userRepo.FindUserById(id);
     } catch (error) {
       logger.error('Get user error:', error);
       throw error;
