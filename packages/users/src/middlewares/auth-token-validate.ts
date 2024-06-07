@@ -1,24 +1,21 @@
 import { privateKey } from '@users/server';
 import jwt from 'jsonwebtoken';
 
-export const verificationToken = (req: any, _res: any, next: any) => {
+export const verificationToken = (req: any, res: any, next: any) => {
   const token = req.headers.authorization?.split(' ')[1]; // Extract token from Authorization header
-
-  console.log(token)
   if (!token) {
-    throw new Error('Token not provided');
+    return res.status(401).json({ message: 'Token not provided' });
   }
+  console.log('Token', token);
   try {
     const decodedToken = jwt.verify(token, privateKey, {
       algorithms: ['RS256'],
     }) as {
-      authId: string;
+      userId: string;
     };
-
-    req.authId = decodedToken.authId; // Attach userId to the request object
-    
+    req.authId = decodedToken.userId;
     next();
   } catch (error: any) {
-    throw new Error(error.message); // Throw error for invalid token
+    return res.status(401).json({ message: 'Invalid token: ' + error.message });
   }
 };
