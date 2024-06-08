@@ -134,7 +134,7 @@
 			}
 		},
 		"/v1/post/{id}": {
-			"post": {
+			"patch": {
 				"operationId": "UpdatePost",
 				"responses": {
 					"201": {

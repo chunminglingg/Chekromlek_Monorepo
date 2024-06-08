@@ -25,7 +25,11 @@ const userSchema = new mongoose.Schema(
     post: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
     bio: { type: String },
     gender: { type: String, enum: ['Male', 'Female', 'other'] },
-    work: { type: String, default: 'Student' },
+    work: {
+      type: String,
+      default: 'Student',
+      enum: ['Student', 'General', 'Developer'],
+    },
     answers: { type: Number, default: 0 },
     posts: { type: Number, default: 0 },
     createdAt: { type: Date, default: Date.now },

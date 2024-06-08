@@ -12,10 +12,10 @@ import {
   Path,
   Post,
   Get,
-  Put,
   Request,
   Route,
   SuccessResponse,
+  Patch,
 } from 'tsoa';
 
 @Route('v1/users')
@@ -53,15 +53,15 @@ export class UserController {
     }
   }
   @SuccessResponse(StatusCode.OK, 'OK')
-  @Put('/:id')
-  // @Middlewares(validateInput(UserUpdateSchema))
+  @Patch('{userId}')
   @Middlewares(verificationToken)
   public async UpdateProfile(
-    @Path() id: string,
+    @Path() userId: string,
     @Body() reqBody: IUser,
   ): Promise<any> {
     try {
-      const modifiedUser = await this.userService.UpdateById(id, reqBody);
+      console.log(`Received request to update user with ID: ${userId}`);
+      const modifiedUser = await this.userService.UpdateById(userId, reqBody);
 
       return {
         message: 'User profile update successfully',
@@ -87,17 +87,16 @@ export class UserController {
       throw error;
     }
   }
-  @SuccessResponse(StatusCode.OK, 'OK')
-  @Get('/:id')
-  public async GetUserById(@Path() id: string): Promise<any> {
+
+  @Post('/:userId/posts')
+  @Middlewares(verificationToken)
+  public async addPostToUser(
+    @Path() userId: string,
+    @Body() postId: string,
+  ): Promise<any> {
     try {
-      const user = await this.userService.getUserById(id);
-      return {
-        message: 'Get Successfully',
-        data: user,
-      };
+      return await this.userService.updateUserPosts(userId, postId);
     } catch (error) {
-      logger.error('Controller Get Auth Error:', error);
       throw error;
     }
   }
@@ -150,9 +149,56 @@ export class UserController {
       );
 
       return {
-        message: `Post ${isSave ? 'added to' : 'removed from'} favorites successfully`,
+        message: `Post ${isSave ? 'added to' : 'removed from'} save successfully`,
         data: user,
       };
+    } catch (error) {
+      throw new CustomError(`${error}`);
+    }
+  }
+  @SuccessResponse(StatusCode.OK, 'Add/Remove Save successfully')
+  @Patch('/:postId/addpost')
+  @Middlewares(verificationToken)
+  public async AddPost(
+    @Request() request: any,
+    @Path() postId: string,
+  ): Promise<any> {
+    try {
+      const authId = request.authId; // Assuming userId is actually authId
+
+      if (!mongoose.Types.ObjectId.isValid(authId)) {
+        throw new Error('Invalid auth ID format');
+      }
+
+      const user = await this.userService.getAuthById(authId); // Assuming this method retrieves user by authId
+      if (!user) {
+        throw new Error('User not found');
+      }
+
+      const objectId = new mongoose.Types.ObjectId(postId);
+
+      // Check if the post already exists in the user's post array
+      const existingPostIndex = user.post.findIndex((item) =>
+        item.equals(objectId),
+      );
+      if (existingPostIndex === -1) {
+        // If the post does not exist, add it to the user's post array
+        user.post.push(objectId);
+
+        // Save the updated user object
+        await user.save();
+
+        return {
+          message: `Post added successfully`,
+          data: user,
+        };
+      } else {
+        // If the post already exists, return a message indicating it's already added
+        return {
+          message: `Post already added to the user's post array`,
+          data: user,
+        };
+      }
     } catch (error) {
       throw new CustomError(`${error}`);
     }
@@ -160,6 +206,7 @@ export class UserController {
 
   @Post('/:id')
   @Middlewares(verificationToken)
+  @SuccessResponse(StatusCode.Found, 'Found Successfully')
   public async FindSavePost(@Request() request: any): Promise<any> {
     try {
       const user = await this.userService.getUserById(request.id);

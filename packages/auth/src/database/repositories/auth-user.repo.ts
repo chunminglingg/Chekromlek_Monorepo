@@ -1,3 +1,4 @@
+import APIError from "../../errors/api-error";
 import CustomError from "../../errors/custom-erorrs";
 import { StatusCode } from "../../utils/consts";
 import { UserAuthModel } from "../models/authentication-user.models";
@@ -99,6 +100,15 @@ export class UserAuthRpository {
       return userResult;
     } catch (error) {
       throw error;
+    }
+  }
+  async findUserByResetToken({ resetToken }: { resetToken: string }) {
+    try {
+      return await UserAuthModel.findOne({
+        resetPasswordToken: resetToken,
+      });
+    } catch (error: unknown) {
+      throw new APIError("Unable to find user in database");
     }
   }
 }

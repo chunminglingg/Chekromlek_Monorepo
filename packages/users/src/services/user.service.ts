@@ -1,7 +1,8 @@
 import { IUser } from '@users/database/models/user.model';
 import { UserRepository } from '@users/database/repositories/user.repo';
+import APIError from '@users/errors/api-error';
+import { StatusCode } from '@users/utils/consts';
 import { logger } from '@users/utils/logger';
-import axios from 'axios';
 
 export class UserService {
   private userRepo: UserRepository;
@@ -17,14 +18,20 @@ export class UserService {
       throw error;
     }
   }
-  async UpdateById(id: string, update: IUser) {
+  async UpdateById(authId: string, update: IUser) {
     try {
-      return await this.userRepo.UpdateUserById(id, update);
+      const users = this.userRepo.FindAuthById(authId);
+      console.log('user', users);
+      if (!users) {
+        throw new APIError('User not found', StatusCode.NotFound);
+      }
+      return await this.userRepo.UpdateUserById(authId, update);
     } catch (error) {
       logger.error('Update error: ', error);
       throw error;
     }
   }
+
   async getAuthById(authId: string) {
     try {
       return await this.userRepo.FindAuthById(authId);
@@ -40,23 +47,8 @@ export class UserService {
       throw error;
     }
   }
-  async getUserWithPosts(userId: string) {
-    try {
-      const user = await this.userRepo.FindUserById(userId);
-      if (!user) {
-        throw new Error('User not found');
-      }
-
-      // Make an HTTP request to the Post Service
-      const postsResponse = await axios.get(
-        `http://localhost:3005/v1/post/${userId}/posts`,
-      );
-      user.posts = postsResponse.data;
-
-      return user;
-    } catch (error: any) {
-      throw new Error(`Error fetching user with posts: ${error.message}`);
-    }
+  async updateUserPosts(userId: string, postId: string) {
+    return this.userRepo.updateUserPosts(userId, postId);
   }
   async getUserById(id: string) {
     try {
