@@ -13,7 +13,6 @@ export class PostService {
   async createPost(IPost: IPost) {
     try {
       const newPost = await this.postRepo.createPost(IPost);
-
       return newPost;
     } catch (error) {
       logger.error(`Create() method error in service : ${error}`);

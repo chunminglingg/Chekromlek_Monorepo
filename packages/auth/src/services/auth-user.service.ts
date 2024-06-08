@@ -17,6 +17,7 @@ import { publishDirectMessage } from "../queues/auth-producer";
 import { authChannel } from "../utils/server";
 import { UserSignInResult } from "./@types/auth-user.types";
 import DuplicateError from "../errors/duplicate-error";
+import mongoose from "mongoose";
 
 export class UserAuthService {
   private userRepo: UserAuthRpository;
@@ -261,6 +262,67 @@ export class UserAuthService {
       }
       const updatedUser = await this.userRepo.UpdateUserbyId({ id, update });
       return updatedUser;
+    } catch (error: unknown) {
+      throw error;
+    }
+  }
+  async saveForgotPasswordToken({ id }: { id: mongoose.Types.ObjectId }) {
+    try {
+      const user = await this.userRepo.FindUserById({ id: id.toString() });
+
+      user!.resetPasswordToken = await generateEmailVerificationToken();
+      user!.resetPasswordExpires = new Date(
+        new Date().getTime() + 1 * 60 * 1000
+      ); // Adding 2 minutes
+      await user?.save();
+
+      return user;
+    } catch (error: unknown) {
+      throw error;
+    }
+  }
+  async FindUserByResetToken({ token }: { token: string }) {
+    try {
+      const user = await this.userRepo.findUserByResetToken({
+        resetToken: token,
+      });
+
+      if (!user) {
+        throw new APIError("User not found", StatusCode.NotFound);
+      }
+
+      return user;
+    } catch (error: unknown) {
+      throw error;
+    }
+  }
+  async resetPassword({
+    token,
+    password,
+  }: {
+    token: string;
+    password: string;
+  }) {
+    try {
+      const user = await this.userRepo.findUserByResetToken({
+        resetToken: token,
+      });
+
+      if (!user) {
+        throw new APIError("User not found", StatusCode.NotFound);
+      }
+
+      if (new Date() > user.resetPasswordExpires!) {
+        throw new APIError("Token is expired", StatusCode.BadRequest);
+      }
+
+      const hashPass = await generatePassword(password!);
+      user!.password = hashPass;
+      user!.resetPasswordToken = undefined;
+      user!.resetPasswordExpires = undefined;
+      await user?.save();
+
+      return user;
     } catch (error: unknown) {
       throw error;
     }

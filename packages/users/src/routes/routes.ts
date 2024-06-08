@@ -99,13 +99,13 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.put('/v1/users/:id',
+        app.patch('/v1/users/:userId',
             ...(fetchMiddlewares<RequestHandler>(UserController)),
             ...(fetchMiddlewares<RequestHandler>(UserController.prototype.UpdateProfile)),
 
             async function UserController_UpdateProfile(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
-                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    userId: {"in":"path","name":"userId","required":true,"dataType":"string"},
                     reqBody: {"in":"body","name":"reqBody","required":true,"ref":"IUser"},
             };
 
@@ -160,13 +160,14 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/v1/users/:id',
+        app.post('/v1/users/:userId/posts',
             ...(fetchMiddlewares<RequestHandler>(UserController)),
-            ...(fetchMiddlewares<RequestHandler>(UserController.prototype.GetUserById)),
+            ...(fetchMiddlewares<RequestHandler>(UserController.prototype.addPostToUser)),
 
-            async function UserController_GetUserById(request: ExRequest, response: ExResponse, next: any) {
+            async function UserController_addPostToUser(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
-                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    userId: {"in":"path","name":"userId","required":true,"dataType":"string"},
+                    postId: {"in":"body","name":"postId","required":true,"dataType":"string"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -178,12 +179,12 @@ export function RegisterRoutes(app: Router) {
                 const controller = new UserController();
 
               await templateService.apiHandler({
-                methodName: 'GetUserById',
+                methodName: 'addPostToUser',
                 controller,
                 response,
                 next,
                 validatedArgs,
-                successStatus: 200,
+                successStatus: undefined,
               });
             } catch (err) {
                 return next(err);
@@ -221,6 +222,37 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.patch('/v1/users/:postId/addpost',
+            ...(fetchMiddlewares<RequestHandler>(UserController)),
+            ...(fetchMiddlewares<RequestHandler>(UserController.prototype.AddPost)),
+
+            async function UserController_AddPost(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
+                    postId: {"in":"path","name":"postId","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const controller = new UserController();
+
+              await templateService.apiHandler({
+                methodName: 'AddPost',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/v1/users/:id',
             ...(fetchMiddlewares<RequestHandler>(UserController)),
             ...(fetchMiddlewares<RequestHandler>(UserController.prototype.FindSavePost)),
@@ -244,7 +276,7 @@ export function RegisterRoutes(app: Router) {
                 response,
                 next,
                 validatedArgs,
-                successStatus: undefined,
+                successStatus: 302,
               });
             } catch (err) {
                 return next(err);

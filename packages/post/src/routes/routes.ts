@@ -87,7 +87,7 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/v1/post/:id',
+        app.patch('/v1/post/:id',
             ...(fetchMiddlewares<RequestHandler>(PostController)),
             ...(fetchMiddlewares<RequestHandler>(PostController.prototype.UpdatePost)),
 
