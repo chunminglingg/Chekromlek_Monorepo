@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { ReactNode, useState } from "react";
+import { Alert } from "../fix/alert";
 
 
 interface SideStyleProps {
@@ -14,10 +15,11 @@ const SideLeftLogin = () => {
   const [isSettingClick, setIsSettingClick] = useState(false);
 
   const handleHomeClick = () => {
-    setIsHomeClick(true);
-    setIsCategoryClick(false);
-    setIsNotificationClick(false);
-    setIsSettingClick(false);
+    <Alert/>
+    // setIsHomeClick(true);
+    // setIsCategoryClick(false);
+    // setIsNotificationClick(false);
+    // setIsSettingClick(false);
   };
 
   const handleCategoryClick = () => {
