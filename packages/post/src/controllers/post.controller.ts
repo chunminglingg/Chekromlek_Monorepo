@@ -70,24 +70,42 @@ export class PostController {
     }
   }
 
-  // @SuccessResponse(StatusCode.Found, "Found the post")
-  // @Get("/:postId")
-  // public async GetPostById(@Path() postId: string): Promise<any> {
-  //   try {
-  //     const existPost = await this.postService.findPostById(postId);
+  @SuccessResponse(StatusCode.Found, "Found the post")
+  @Get("/getpost/{postId}")
+  public async GetPostById(@Path() postId: string): Promise<any> {
+    try {
+      const existPost = await this.postService.findPostById(postId);
 
-  //     if (!existPost) {
-  //       throw new CustomError("Post not found", StatusCode.NotFound);
-  //     }
-  //     return {
-  //       message: "Post found successfully",
-  //       data: existPost,
-  //     };
-  //   } catch (error) {
-  //     logger.error(`Service method error: ${error}`);
-  //     throw error;
-  //   }
-  // }
+      if (!existPost) {
+        throw new CustomError("Post not found", StatusCode.NotFound);
+      }
+      return {
+        message: "Post found successfully",
+        data: existPost,
+      };
+    } catch (error) {
+      logger.error(`Service method error: ${error}`);
+      throw error;
+    }
+  }
+  @SuccessResponse(StatusCode.Found, "Found the post")
+  @Get("/getpost")
+  public async GetPostAllPost(): Promise<any> {
+    try {
+      const existPost = await this.postService.FindAllPost();
+
+      if (!existPost) {
+        throw new CustomError("Post not found", StatusCode.NotFound);
+      }
+      return {
+        message: "Post found successfully",
+        data: existPost,
+      };
+    } catch (error) {
+      logger.error(`Service method error: ${error}`);
+      throw error;
+    }
+  }
 
   @SuccessResponse(StatusCode.Created, "Created successfully")
   @Patch("/:id")
@@ -312,22 +330,6 @@ export class PostController {
       logger.error(`Failed to save post: ${error}`);
       throw new CustomError(
         `Failed to save post: ${error}`,
-        StatusCode.InternalServerError
-      );
-    }
-  }
-  @Get("{userId}/posts")
-  @SuccessResponse(StatusCode.Found, "Post Found")
-  @Middlewares(verificationToken)
-  public async getPostsByUserId(@Path() userId: string): Promise<any> {
-    try {
-      const post = await this.postService.getPostsByUserId(userId);
-      if (!post) {
-        throw new CustomError("Post not found", StatusCode.NotFound);
-      }
-    } catch (error: any) {
-      throw new CustomError(
-        `Post not Found ${error}`,
         StatusCode.InternalServerError
       );
     }
