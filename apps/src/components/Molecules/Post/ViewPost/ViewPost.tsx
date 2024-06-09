@@ -47,7 +47,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
   // Event handler for input submission
   const handleInputSubmit = () => {
     // Perform your desired action with the input value
-    console.log("Input value submitted:", inputValue);
+    console.log("answer:", inputValue);
     // Set the button click state to true
     setIsButtonClicked(true);
     // Clear the input after submission if desired

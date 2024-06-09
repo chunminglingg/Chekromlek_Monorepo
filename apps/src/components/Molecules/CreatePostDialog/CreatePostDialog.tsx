@@ -11,7 +11,7 @@ import {
 import { SelectScrollable } from '../Selection/Selection';
 import { HeaderPost } from '../AfterPostHeader';
 import UploadButton from '@/components/Molecules/UploadImage/UploadButton';
-import CreatePostDialogSkeleton from './CreatePostSkeleton';
+
 
 interface CreatePostDialogProps {
   onTitleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -98,12 +98,9 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({
     <>
       <Dialog open={isOpen} onOpenChange={(open) => open ? openDialog() : closeDialog()}>
         <DialogTrigger asChild>
-          <button onClick={openDialog}><HeaderPost /></button>
+          <button onClick={openDialog}><HeaderPost/></button>
         </DialogTrigger>
         <DialogContent className="w-[645px] max-sm:w-[90%] max-sm:rounded-md">
-          {loading ? (
-            <CreatePostDialogSkeleton /> // Render skeleton while loading
-          ) : (
             <DialogHeader className="flex flex-col gap-2">
               <DialogTitle>Create a Post</DialogTitle>
               <DialogDescription className="flex flex-col gap-2">
@@ -143,7 +140,6 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({
                 </div>
               </DialogDescription>
             </DialogHeader>
-          )}
         </DialogContent>
       </Dialog>
     </>

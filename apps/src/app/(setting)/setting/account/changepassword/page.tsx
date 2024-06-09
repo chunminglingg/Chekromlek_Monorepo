@@ -15,6 +15,7 @@ const Page = () => {
   const [newPw, setNewPw] = useState<string>("");
   const [confirmPw, setConfirmPw] = useState<string>("");
   const [alertVisible, setAlertVisible] = useState<boolean>(false);
+ 
   
   const handleSave = async () => {
     try {
@@ -99,7 +100,7 @@ const Page = () => {
             </label>
             <div className="flex flex-col">
               <input
-                type="text"
+                type="password"
                 name=""
                 id=""
                 placeholder="new password"
@@ -123,7 +124,7 @@ const Page = () => {
             </label>
             <div className="flex flex-col">
               <input
-                type="text"
+                type="password"
                 name=""
                 id=""
                 placeholder="confirm password"

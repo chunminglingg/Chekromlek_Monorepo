@@ -167,7 +167,7 @@ const PostCard: React.FC<postCardProps> = ({
           </div>
         </div>
       ) : (
-        <div className="text-center text-[14px] text-[#6C757D] m-4 border rounded-md h-[20%] bg-slate-200">
+        <div className="text-center text-[15px] text-[#6C757D] m-2 p-1 border rounded-md bg-slate-200">
           <p>This card has been hidden.</p>
         </div>
       )}

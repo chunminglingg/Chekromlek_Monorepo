@@ -95,6 +95,7 @@ const Page = () => {
             <input
               name=""
               id=""
+              type="password"
               placeholder="input password for confirm"
               className=" w-[280px] lg:w-[350px] h-[50px] md:w-[330px] text-sm p-3 ml-14 lg:ml-0 border rounded-lg shadow-lg focus:outline-none"
               value={password}

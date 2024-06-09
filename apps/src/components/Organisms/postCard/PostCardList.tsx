@@ -93,7 +93,7 @@ const PostCardList = ({ searchQuery = "" }) => {
       {!hasMore && (
         <div className="text-center text-[14px] text-[#6C757D] m-4 border rounded-md h-[20%] bg-slate-200">No more cards</div>
       )}
-      <div ref={loadMoreRef} className="text-center text-[14px] text-[#6C757D] m-4 border rounded-md h-[20%] bg-slate-200">Loading...</div>
+      <div ref={loadMoreRef} className="text-center text-[20px] text-[#6C757D] m-4 border rounded-md h-[35%] bg-slate-200">Loading...</div>
     </div>
   );
 };
