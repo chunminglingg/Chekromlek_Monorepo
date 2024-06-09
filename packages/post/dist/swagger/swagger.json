@@ -131,14 +131,53 @@
 						}
 					}
 				}
+			},
+			"get": {
+				"operationId": "GetAllPosts",
+				"responses": {
+					"302": {
+						"description": "Found all the posts successfully",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
 			}
 		},
 		"/v1/post/{id}": {
+			"get": {
+				"operationId": "GetPostById",
+				"responses": {
+					"302": {
+						"description": "Found the post",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
 			"post": {
 				"operationId": "UpdatePost",
 				"responses": {
 					"201": {
-						"description": "Created successfully",
+						"description": "Updated successfully",
 						"content": {
 							"application/json": {
 								"schema": {}
@@ -353,8 +392,8 @@
 			"delete": {
 				"operationId": "DeletePost",
 				"responses": {
-					"200": {
-						"description": "Delete successfully",
+					"204": {
+						"description": "Deleted successfully",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -383,12 +422,14 @@
 						}
 					}
 				]
-			},
+			}
+		},
+		"/v1/post/{postId}/favorite": {
 			"get": {
-				"operationId": "FindFavo",
+				"operationId": "FindFavorite",
 				"responses": {
 					"200": {
-						"description": "Get Favorite successfully",
+						"description": "Favorite retrieved successfully",
 						"content": {
 							"application/json": {
 								"schema": {}
@@ -414,7 +455,7 @@
 				"operationId": "ToggleSavePost",
 				"responses": {
 					"200": {
-						"description": "Add/Remove Save successfully",
+						"description": "Saved successfully",
 						"content": {
 							"application/json": {
 								"schema": {}
@@ -440,7 +481,7 @@
 				"operationId": "GetPostsByUserId",
 				"responses": {
 					"302": {
-						"description": "Post Found",
+						"description": "Posts found",
 						"content": {
 							"application/json": {
 								"schema": {}

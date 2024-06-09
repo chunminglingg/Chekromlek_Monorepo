@@ -41,8 +41,12 @@ const Pages = () => {
           },
         }
       );
-      const token =  response.data.verif_token;
-      window.location.href = `/signup/verify?token=${token}`
+      if (response.status === 409) {
+        console.log("Email is already registered");
+        
+      }
+      return response.status;
+      window.location.href = `/signup/verify-email`
     } catch (error: any) {
       const fieldErrors: { [key: string]: string } = {};
 
@@ -51,6 +55,13 @@ const Pages = () => {
         error.inner.forEach((err: any) => {
           fieldErrors[err.path] = err.message;
         });
+      }
+
+      // error from backend server
+      if (error.response){
+        if (error.response.message === "A user with this email already exists. Please login.") {
+         fieldErrors.email = "user already exists" 
+        }
       }
       console.log("Field Error", fieldErrors);
       setErrors((prev) => ({
@@ -61,9 +72,11 @@ const Pages = () => {
     }
   }
 
- async function handleFacebookSignUp () {
-  const response = await axios.get(`` , )
- }
+//  async function handleFacebookSignUp () {
+//   const response = await axios.get(`` , )
+//  }
+
+  // async function handleGoogleSignUp () {}
 
   return (
     <>

@@ -6,6 +6,9 @@ import { logger } from "@post/utils/logger";
 import mongoose from "mongoose";
 
 export class postRepository {
+  findAllPost() {
+    throw new Error("Method not implemented.");
+  }
   // Create Post
   async createPost(postInterface: IPost) {
     try {

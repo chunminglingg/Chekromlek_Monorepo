@@ -9,48 +9,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 export default async function verify() {
-  const searchParams = useSearchParams();
-  const token = searchParams.get("token");
-
-  const [verificationStatus, setVerificationStatus] = useState<string | null>(
-    null
-  );
-
-  const handleVerifyEmail = async () => {
-    if (token) {
-      setVerificationStatus("verifying");
-      const status = await verifyEmailToken(token);
-      console.log("status: ", status);
-      if (status == "error") {
-        setVerificationStatus(status);
-      } else {
-        setVerificationStatus("success");
-        window.location.href = "/afterlogin";
-      }
-    } else {
-      setVerificationStatus("no-token");
-    }
-  };
-
-  const verifyEmailToken = async (token: string) => {
-    try {
-      console.log("token : ", token);
-      const response = await axios.get(
-        `http://localhost:3000/v1/auth/verify?token=${token}`,
-        { withCredentials: true }
-      );
-      return response.data.status;
-    } catch (error) {
-      console.error("Error verifying email:", error);
-      return "error";
-    }
-  };
-
-  useEffect(() => {
-    handleVerifyEmail();
-  }, []);
-  
-
+ 
   return (
     <div className="flex items-center justify-center  h-screen w-screen">
       <div className="flex flex-col items-center justify-center gap-4">
@@ -86,7 +45,7 @@ export default async function verify() {
           type="submit"
           className=" hover:opacity-90"
         >
-          <Link href={"https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox"}>
+          <Link href={"https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox"} target="_blank">
             {" "}
             <Typography color="submit">Go to email</Typography>
           </Link>
