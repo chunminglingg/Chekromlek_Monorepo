@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import { Typography } from "@/components";
 import { Button } from "@/components/Atoms/Button/Button";
 import Link from "next/link";

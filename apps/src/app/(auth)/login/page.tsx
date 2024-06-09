@@ -7,64 +7,65 @@ import signupValidation from "@/schema/Auth@Validation";
 import { Button } from "@/components/Atoms/Button/Button";
 import { Typography } from "@/components";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import { decodeToken } from "@/utils/decodeTokenUsername";
 
 interface dataTypes {
   email: string;
   password: string;
 }
 
-const Pages = () => {
-  const [data, setData] = useState<dataTypes>({
-    email: "",
-    password: "",
-  });
-  const [errors, setErrors] = useState({
-    email: "",
-    password: "",
-  });
+const Pages: React.FC = () => {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setData({ ...data, [e.target.name]: e.target.value });
-    setErrors((prev) => ({ ...prev, [e.target.name]: "" }));
+    const { name, value } = e.target;
+    if (name === 'email') setEmail(value);
+    if (name === 'password') setPassword(value);
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  async function handleSubmit(e: React.FormEvent) {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Submitting data:", data);
+    const data: dataTypes = { email, password };
+
     try {
       await signupValidation.validate(data, { abortEarly: false });
-      // Validation successful, proceed with form submission logic (e.g., send data to server)
 
-      // Send a POST request to your login endpoint
       const response = await axios.post(`http://localhost:3000/v1/auth/login`, data, {
         headers: { 'Content-Type': 'application/json' },
       });
 
-      // Check the response to determine if login was successful
-      if (!response.data.success) {
-        return alert("Email or Password is incorrect");
-      }
+      const { token } = response.data;
+      if (!token) throw new Error('Token is undefined');
+      
+      const decodedToken = decodeToken(token);
+      console.log(decodedToken);
+      
+      localStorage.setItem('token', token);
 
-      // Redirect to /afterlogin route
-      window.location.href = "/afterlogin"; // This is a simple way to redirect
+      router.push("/afterlogin");
       console.log("Form data is valid!");
     } catch (error: any) {
       const fieldErrors: { [key: string]: string } = {};
-      // Error From Yup
       if (error.inner) {
         error.inner.forEach((err: any) => {
           fieldErrors[err.path] = err.message;
         });
+      } else if (error.response) {
+        // Handling server-side error
+        setError(error.response.data.message || "Something went wrong. Please try again.");
       } else {
         console.error("Unexpected error structure", error);
       }
       console.log("Field Error", fieldErrors);
-      setErrors((prev) => ({
-        ...prev,
-        ...fieldErrors,
-      }));
+      setErrors(fieldErrors);
     }
-  }
+  };
 
   return (
     <div className="flex justify-between h-screen w-screen">
@@ -146,13 +147,17 @@ const Pages = () => {
                 </Button>
               </div>
 
+              {error && (
+                <p className="text-[#EB5757] mt-2">{error}</p>
+              )}
+
               <p className="text-center text-gray-400">
                 _____________________
                 <span className="text-[#7b2cbf]">or</span>
                 _______________________
               </p>
               <p className="text-center text-[#434A4F]">
-                {" Don't have account ?"}{" "}
+                {" Don't have an account? "}
                 <Link
                   href={"/signup"}
                   className="text-[#9747FF] hover:text-[#d1b6f6]"
@@ -168,7 +173,7 @@ const Pages = () => {
                     width={32}
                     height={32}
                   />
-                  <div className="text-[#434A4F]">Continues with Facebook</div>
+                  <div className="text-[#434A4F]">Continue with Facebook</div>
                 </button>
                 <button className="flex flex-row items-center gap-2 w-[370px] h-[64px] border justify-center rounded-lg hover:opacity-[80%] max-sm:w-[290px]">
                   <Image
@@ -177,7 +182,7 @@ const Pages = () => {
                     width={32}
                     height={32}
                   />
-                  <div className="text-[#434A4F]">Continues with Google</div>
+                  <div className="text-[#434A4F]">Continue with Google</div>
                 </button>
               </div>
             </form>

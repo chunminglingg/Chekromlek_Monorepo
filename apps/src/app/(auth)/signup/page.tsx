@@ -11,6 +11,7 @@ interface dataTypes {
   email: string;
   password: string;
 }
+
 const Pages = () => {
   const [data, setData] = useState<dataTypes>({
     username: "",
@@ -22,12 +23,13 @@ const Pages = () => {
     email: "",
     password: "",
   });
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setData({ ...data, [e.target.name]: e.target.value });
     setErrors((prev) => ({ ...prev, [e.target.name]: "" }));
   };
 
-  async function handleSubmit(e: any) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
       await signupVali.validate(data, { abortEarly: false });
@@ -41,11 +43,9 @@ const Pages = () => {
           },
         }
       );
-      if (response.status === 409) {
-        console.log("Email is already registered");
-      }
-      return response.status;
+
       window.location.href = `/signup/verify-email`;
+      return response.status;
     } catch (error: any) {
       const fieldErrors: { [key: string]: string } = {};
 
@@ -56,15 +56,16 @@ const Pages = () => {
         });
       }
 
-      // error from backend server
+      // Error from backend server
       if (error.response) {
         if (
-          error.response.message ===
+          error.response.data.message ===
           "A user with this email already exists. Please login."
         ) {
-          fieldErrors.email = "user already exists";
+          fieldErrors.password = "A user with this email already exists. Please login.";
         }
       }
+
       console.log("Field Error", fieldErrors);
       setErrors((prev) => ({
         ...prev,
@@ -74,11 +75,25 @@ const Pages = () => {
     }
   }
 
-  //  async function handleFacebookSignUp () {
-  //   const response = await axios.get(`` , )
-  //  }
+  async function handleFacebookSignUp() {
+    try {
+      const response = await axios.get("http://localhost:3000/v1/auth/facebook");
+      const url = response.data.url;
+      window.location.href = `${url}`;
+    } catch (error) {
+      console.error("Facebook Signup Error", error);
+    }
+  }
 
-  // async function handleGoogleSignUp () {}
+  async function handleGoogleSignUp() {
+    try {
+      const response = await axios.get("http://localhost:3000/v1/auth/google");
+      const url = response.data.url;
+      window.location.href = `${url}`;
+    } catch (error) {
+      console.error("Google Signup Error", error);
+    }
+  }
 
   return (
     <>
@@ -176,7 +191,12 @@ const Pages = () => {
                   </Link>
                 </p>
                 <div className="flex flex-col items-center justify-center mt-2 gap-2  ">
-                  <button className="flex flex-row items-center gap-2 w-[370px] h-[64px] border justify-center rounded-lg hover:opacity-[80%]  max-sm:w-[290px]">
+                  <button
+                    type="button"
+                    onClick={handleFacebookSignUp}
+                    formMethod="GET"
+                    className="flex flex-row items-center gap-2 w-[370px] h-[64px] border justify-center rounded-lg hover:opacity-[80%]  max-sm:w-[290px]"
+                  >
                     <Image
                       src={"socialMedia/facebook.svg"}
                       alt="facebook"
@@ -187,7 +207,12 @@ const Pages = () => {
                       Continues with Facebook
                     </div>
                   </button>
-                  <button className="flex flex-row items-center gap-2 w-[370px] h-[64px] border justify-center rounded-lg hover:opacity-[80%] max-sm:w-[290px] ">
+                  <button
+                    type="button"
+                    onClick={handleGoogleSignUp}
+                    formMethod="GET"
+                    className="flex flex-row items-center gap-2 w-[370px] h-[64px] border justify-center rounded-lg hover:opacity-[80%] max-sm:w-[290px] "
+                  >
                     <Image
                       src={"socialMedia/google.svg"}
                       alt="google"
