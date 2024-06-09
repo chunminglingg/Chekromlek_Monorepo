@@ -4,6 +4,7 @@ import { StatusCode } from "@post/utils/const";
 import { IAnswer, IPost } from "../@types/post.interface";
 import { logger } from "@post/utils/logger";
 import mongoose from "mongoose";
+import APIError from "@post/errors/api-error";
 
 export class postRepository {
   findAllPost() {
@@ -21,17 +22,25 @@ export class postRepository {
       throw new CustomError(error.message, StatusCode.BadRequest);
     }
   }
-  async getPostsByUserId(userId: string) {
+  async getPostsByUserId({ id }: { id: string }) {
     try {
-      const posts = await PostModel.find({ author: userId }).exec();
+      if (!id) {
+        throw new Error("ID is required");
+      }
+      const posts = await PostModel.findById(id);
+      if (!posts) {
+        throw new Error(`No posts found for ID: ${id}`);
+      }
       return posts;
     } catch (error: any) {
+      logger.error("FindPostById repository method() error:", error.message);
       throw new Error(`Unable to fetch posts: ${error.message}`);
     }
   }
   async findAnswerById(answerId: string) {
     return PostModel.findById(answerId);
   }
+
   async FindPostUser(id: string) {
     try {
       return await PostModel.findOne({ id });
@@ -230,6 +239,14 @@ export class postRepository {
       return await PostModel.findByIdAndUpdate(postId);
     } catch (error) {
       throw new Error(`Failed to update save flag for post: ${error}`);
+    }
+  }
+  public async FindAllPost() {
+    try {
+      return await PostModel.find();
+    } catch (error) {
+      console.error("Error fetching posts from database:", error);
+      throw new APIError("Database query failed");
     }
   }
 }

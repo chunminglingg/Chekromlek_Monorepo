@@ -87,42 +87,13 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/v1/post',
-            ...(fetchMiddlewares<RequestHandler>(PostController)),
-            ...(fetchMiddlewares<RequestHandler>(PostController.prototype.GetAllPosts)),
-
-            async function PostController_GetAllPosts(request: ExRequest, response: ExResponse, next: any) {
-            const args: Record<string, TsoaRoute.ParameterSchema> = {
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({ args, request, response });
-
-                const controller = new PostController();
-
-              await templateService.apiHandler({
-                methodName: 'GetAllPosts',
-                controller,
-                response,
-                next,
-                validatedArgs,
-                successStatus: 302,
-              });
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/v1/post/:id',
+        app.get('/v1/post/getpost/:postId',
             ...(fetchMiddlewares<RequestHandler>(PostController)),
             ...(fetchMiddlewares<RequestHandler>(PostController.prototype.GetPostById)),
 
             async function PostController_GetPostById(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
-                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    postId: {"in":"path","name":"postId","required":true,"dataType":"string"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -146,7 +117,36 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/v1/post/:id',
+        app.get('/v1/post/getpost',
+            ...(fetchMiddlewares<RequestHandler>(PostController)),
+            ...(fetchMiddlewares<RequestHandler>(PostController.prototype.GetPostAllPost)),
+
+            async function PostController_GetPostAllPost(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const controller = new PostController();
+
+              await templateService.apiHandler({
+                methodName: 'GetPostAllPost',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 302,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.patch('/v1/post/:id',
             ...(fetchMiddlewares<RequestHandler>(PostController)),
             ...(fetchMiddlewares<RequestHandler>(PostController.prototype.UpdatePost)),
 
@@ -421,36 +421,6 @@ export function RegisterRoutes(app: Router) {
                 next,
                 validatedArgs,
                 successStatus: 200,
-              });
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/v1/post/:userId/posts',
-            ...(fetchMiddlewares<RequestHandler>(PostController)),
-            ...(fetchMiddlewares<RequestHandler>(PostController.prototype.getPostsByUserId)),
-
-            async function PostController_getPostsByUserId(request: ExRequest, response: ExResponse, next: any) {
-            const args: Record<string, TsoaRoute.ParameterSchema> = {
-                    userId: {"in":"path","name":"userId","required":true,"dataType":"string"},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({ args, request, response });
-
-                const controller = new PostController();
-
-              await templateService.apiHandler({
-                methodName: 'getPostsByUserId',
-                controller,
-                response,
-                next,
-                validatedArgs,
-                successStatus: 302,
               });
             } catch (err) {
                 return next(err);

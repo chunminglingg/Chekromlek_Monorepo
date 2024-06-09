@@ -131,12 +131,40 @@
 						}
 					}
 				}
-			},
+			}
+		},
+		"/v1/post/getpost/{postId}": {
 			"get": {
-				"operationId": "GetAllPosts",
+				"operationId": "GetPostById",
 				"responses": {
 					"302": {
-						"description": "Found all the posts successfully",
+						"description": "Found the post",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "postId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/post/getpost": {
+			"get": {
+				"operationId": "GetPostAllPost",
+				"responses": {
+					"302": {
+						"description": "Found the post",
 						"content": {
 							"application/json": {
 								"schema": {}
@@ -468,32 +496,6 @@
 					{
 						"in": "path",
 						"name": "postId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/v1/post/{userId}/posts": {
-			"get": {
-				"operationId": "GetPostsByUserId",
-				"responses": {
-					"302": {
-						"description": "Posts found",
-						"content": {
-							"application/json": {
-								"schema": {}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "userId",
 						"required": true,
 						"schema": {
 							"type": "string"

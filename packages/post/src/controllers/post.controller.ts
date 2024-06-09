@@ -71,26 +71,30 @@ export class PostController {
     }
   }
 
-  @SuccessResponse(StatusCode.Found, "Found all the posts successfully")
-  @Get('/')
-  public async GetAllPosts(): Promise<any> {
+  @SuccessResponse(StatusCode.Found, "Found the post")
+  @Get("/getpost/{postId}")
+  public async GetPostById(@Path() postId: string): Promise<any> {
     try {
-      const posts = await this.postService.findAllPost();
+      const existPost = await this.postService.findPostById(postId);
+
+      if (!existPost) {
+        throw new CustomError("Post not found", StatusCode.NotFound);
+      }
       return {
-        message: "All posts found successfully",
-        data: posts,
+        message: "Post found successfully",
+        data: existPost,
       };
     } catch (error) {
       logger.error(`Service method error: ${error}`);
       throw error;
     }
   }
-
   @SuccessResponse(StatusCode.Found, "Found the post")
-  @Get("/{id}")
-  public async GetPostById(@Path() id: string): Promise<any> {
+  @Get("/getpost")
+  public async GetPostAllPost(): Promise<any> {
     try {
-      const existPost = await this.postService.findPostById(id);
+      const existPost = await this.postService.FindAllPost();
+
       if (!existPost) {
         throw new CustomError("Post not found", StatusCode.NotFound);
       }
@@ -335,28 +339,6 @@ export class PostController {
       logger.error(`Failed to save post: ${error}`);
       throw new CustomError(
         `Failed to save post: ${error}`,
-        StatusCode.InternalServerError
-      );
-    }
-  }
-
-  @Get("/{userId}/posts")
-  @SuccessResponse(StatusCode.Found, "Posts found")
-  @Middlewares(verificationToken)
-  public async getPostsByUserId(@Path() userId: string): Promise<any> {
-    try {
-      const post = await this.postService.getPostsByUserId(userId);
-      if (!post) {
-        throw new CustomError("Posts not found", StatusCode.NotFound);
-      }
-      return {
-        message: "Posts found successfully",
-        data: post,
-      };
-    } catch (error: any) {
-      logger.error(`Controller getPostsByUserId method error: ${error.message}`);
-      throw new CustomError(
-        `Failed to get posts by user: ${error.message}`,
         StatusCode.InternalServerError
       );
     }
