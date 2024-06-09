@@ -7,6 +7,7 @@ import { logger } from '@notifications/utils/logger';
 export async function createQueueConnection(): Promise<Channel | undefined> {
   try {
     console.log("Hello from RabbitMQ")
+   
     const connection: Connection = await client.connect(
       `${getConfig().rabbitMQ}`
     );
@@ -15,6 +16,7 @@ export async function createQueueConnection(): Promise<Channel | undefined> {
     closeQueueConnection();
     return channel;
   } catch (error) {
+    logger.debug(getConfig().rabbitMQ);
     console.log("Error creating queue connection : ", error);
     
     logger.error(

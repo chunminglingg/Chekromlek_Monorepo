@@ -26,7 +26,7 @@ app.use(hpp());
 app.use(helmet());
 app.use(
   cors({
-    origin: [`${config.apiGatewayUrl}`, `${config.authServiceUrl}`],
+    origin: config.apiGatewayUrl,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   }),

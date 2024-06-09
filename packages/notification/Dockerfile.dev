@@ -1,20 +1,19 @@
+# Use the official Node.js image as a parent image
 FROM node:21-alpine3.18
 
-## create the directory
+# Set the working directory
 WORKDIR /app
 
-# copy package from host machine
+# Copy package.json and tsconfig.json from the host machine
 COPY package.json ./
 COPY tsconfig.json ./
 COPY src ./src
 
-# List all files and directories to verify the build directory
+# Install dependencies and nodemon globally
 RUN npm install && npm install -g nodemon
 
-# listening port 3002
+# Inform Docker that the container will listen on port 3002 at runtime
 EXPOSE 3002
-# run application
+
+# Specify the command to run when the container starts
 CMD ["npm", "run", "start:dev"]
-
-
-

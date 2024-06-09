@@ -5,7 +5,7 @@ interface TypoProps {
   className?: string;
   align?: "left" | "center" | "right";
   fontSize?: "header" | "title" | "caption" | "normal";
-  color?: "primary" | "secondary" | "submit"| "wearing"| "categories"| "maintenance"; 
+  color?: "primary" | "secondary" | "submit"| "wearing" | "success" ;
   Inter?: "inter 28" | "inter 24" | "inter 20" | "inter 16" | "inter 14";
   Mulish?: "Regular 1" | "Regular 2" | "Regular 3" | "Regular 4";
 }
@@ -44,17 +44,15 @@ const Typography: React.FC<TypoProps> = ({
   const TypographyColor = (color: string) => {
     switch (color) {
       case "primary":
-        return "text-black";
+        return "text-[#343a40]";
       case "secondary":
         return "text-gray-500";
       case "submit":
         return "text-white";
       case "wearing":
-        return "text-red-500";  
-      case "categories":
-        return "text-purple-600"  
-      case "maintenance":
-        return "text-yellow-500";  
+        return "text-red-500"; 
+      case "success":
+        return "text-green-500"; 
       default:
         return "text-black";
     }

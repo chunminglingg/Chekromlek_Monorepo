@@ -14,7 +14,7 @@ import EmailSender from '@notifications/utils/email-sender';
 // 6. Consumer: Send Email When there is a message from Queue
 
 export async function consumeAuthEmailMessages(
-  channel: Channel
+  channel: Channel,
 ): Promise<void> {
   try {
     if (!channel) {
@@ -33,14 +33,14 @@ export async function consumeAuthEmailMessages(
       await channel.bindQueue(queue.queue, exchangeName, routingKey);
 
       channel.consume(queue.queue, async (msg: ConsumeMessage | null) => {
-        const { receiverEmail, username, resetLink, template , verifyLink} =
+        const { receiverEmail, username, resetLink, template, verifyLink } =
           JSON.parse(msg!.content.toString());
 
         const locals: IEmailLocals = {
           appLink: `${getConfig().clientUrl}`,
           appIcon: ``,
           username,
-          verifyLink: `http://localhost:8000/verify?token=${verifyLink}`,
+          verifyLink: `${getConfig().clientUrl}/signup/get-verified?token=${verifyLink}`,
           resetLink,
         };
 
@@ -53,7 +53,7 @@ export async function consumeAuthEmailMessages(
   } catch (error) {
     logger.error('Channel is undefined in consumeAuthEmailMessages');
     logger.error(
-      `NotificationService EmailConsumer consumeAuthEmailMessages() method error: ${error}`
+      `NotificationService EmailConsumer consumeAuthEmailMessages() method error: ${error}`,
     );
   }
 }

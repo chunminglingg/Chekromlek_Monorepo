@@ -15,7 +15,7 @@ const AfteLogin = () => {
     <>
       <div className="relative">
         <button
-          className="flex flex-row gap-2 w-auto px-4 h-[50px] items-center justify-center rounded-xl shadow-md  hover:border-[#D9D9D9] hover:border"
+          className="flex flex-row gap-2 w-auto px-4 h-[50px] items-center justify-center rounded-xl shadow-sm  hover:border-[#D9D9D9] hover:border"
           onClick={toggleDropdown}
         >
           Welcome, { nameUser.length > 6 ? nameUser.substring(0, 7) : nameUser }

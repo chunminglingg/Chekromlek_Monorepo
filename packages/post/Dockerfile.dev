@@ -1,29 +1,29 @@
-# Use Node.js version 21 on Alpine Linux 3.18 as the base image
+# Use the official Node.js image as a parent image
 FROM node:21-alpine3.18
 
-# Set the working directory inside the container
+# Set the working directory
 WORKDIR /app
 
-# Copy package.json to the working directory
+# Copy package.json and tsconfig.json from the host machine
 COPY package.json ./
-
-# Copy tsconfig.json to the working directory
 COPY tsconfig.json ./
 
-# Copy the source code to /app/src in the container
+# Copy the source and dist directories, and the private key from the host machine
 COPY src ./src
-
-# Copy the public folder to the working directory
 COPY dist ./dist
+COPY public_key.pem /app/public_key.pem
 
-# Copy the private key file to /app/private_key.pem in the container
-COPY private_key.pem /app/private_key.pem
+# List all files and directories to verify the build directory
+RUN ls -a
 
-# Install dependencies specified in package.json and nodemon globally
-RUN npm install && npm install -g nodemon
+# Install dependencies
+RUN npm install
 
-# Expose port 3005 from the container to the host system
+# Install nodemon globally for development
+RUN npm install -g nodemon
+
+# Inform Docker that the container will listen on port 3001 at runtime
 EXPOSE 3005
 
 # Specify the command to run when the container starts
-CMD [ "npm", "run", "start:dev" ]
+CMD ["npm", "run", "start:dev"]

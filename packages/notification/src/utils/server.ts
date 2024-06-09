@@ -5,9 +5,13 @@ import { logInit, logger } from './logger';
 import NodemailerEmailApi from './nodemailer-email-api';
 import { app } from '../app';
 import { startQueue } from '@notifications/queues/connection';
+import { initSocket } from './socket-sender';
+import http from 'http';
 
 export async function run() {
+
   try {
+    const servers = http.createServer(app)
     const config = getConfig();
 
     // Activate Logger
@@ -17,6 +21,9 @@ export async function run() {
     const emailSender = EmailSender.getInstance();
     emailSender.activate();
     emailSender.setEmailApi(new NodemailerEmailApi());
+
+    // Activate socket 
+    initSocket(servers)
 
     // Activate RabbitMQ
     await startQueue();
