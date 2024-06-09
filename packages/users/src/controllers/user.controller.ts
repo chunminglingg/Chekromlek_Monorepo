@@ -52,6 +52,7 @@ export class UserController {
       throw error;
     }
   }
+  
   @SuccessResponse(StatusCode.OK, 'OK')
   @Patch('{userId}')
   @Middlewares(verificationToken)
