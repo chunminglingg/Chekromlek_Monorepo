@@ -19,14 +19,9 @@ export class UserRepository {
       throw error;
     }
   }
-
-  async FindUserById(id: string) {
+  async FindUserById(userId: string) {
     try {
-      console.log(`Finding user by ID: ${id}`);
-
-      const user = await UserModel.findById(id);
-      console.log(`Found user by ID: ${id}`);
-
+      const user = await UserModel.findById(userId);
       return user;
     } catch (error: any) {
       logger.error(
@@ -82,6 +77,7 @@ export class UserRepository {
       );
     }
   }
+
   async showAllUser() {
     try {
       return await UserModel.find();
@@ -89,14 +85,12 @@ export class UserRepository {
       throw error;
     }
   }
-  async addPostToUser(userId: string, postId: string) {
-    try {
-      await UserModel.findByIdAndUpdate(userId, {
-        $push: { post: postId },
-      });
-    } catch (error) {
-      throw error;
-    }
+  async updateUserPosts(userId: string, postId: string) {
+    return await UserModel.findByIdAndUpdate(
+      userId,
+      { $push: { post: postId } },
+      { new: true },
+    );
   }
 
   async deleteUser({ id }: { id: string }) {

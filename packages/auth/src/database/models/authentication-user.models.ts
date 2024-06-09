@@ -18,6 +18,12 @@ const userAuthSchema = new mongoose.Schema(
       type: Date,
       default: new Date(),
     },
+    resetPasswordToken: {
+      type: String,
+    },
+    resetPasswordExpires: {
+      type: Date,
+    },
     googleId: {
       type: String,
       unique: true,

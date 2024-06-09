@@ -5,6 +5,8 @@ export interface userAuthTypes extends AuthUserTypeDoc {
   facebookId?: string;
   googleId?: string;
   profile?: string;
+  resetPasswordToken?: string;
+  resetPasswordExpires?: Date;
   createdAt?: Date;
   updatedAt?: Date;
 }
