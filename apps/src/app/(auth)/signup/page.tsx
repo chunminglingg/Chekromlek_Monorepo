@@ -43,10 +43,9 @@ const Pages = () => {
       );
       if (response.status === 409) {
         console.log("Email is already registered");
-        
       }
       return response.status;
-      window.location.href = `/signup/verify-email`
+      window.location.href = `/signup/verify-email`;
     } catch (error: any) {
       const fieldErrors: { [key: string]: string } = {};
 
@@ -58,9 +57,12 @@ const Pages = () => {
       }
 
       // error from backend server
-      if (error.response){
-        if (error.response.message === "A user with this email already exists. Please login.") {
-         fieldErrors.email = "user already exists" 
+      if (error.response) {
+        if (
+          error.response.message ===
+          "A user with this email already exists. Please login."
+        ) {
+          fieldErrors.email = "user already exists";
         }
       }
       console.log("Field Error", fieldErrors);
@@ -72,9 +74,9 @@ const Pages = () => {
     }
   }
 
-//  async function handleFacebookSignUp () {
-//   const response = await axios.get(`` , )
-//  }
+  //  async function handleFacebookSignUp () {
+  //   const response = await axios.get(`` , )
+  //  }
 
   // async function handleGoogleSignUp () {}
 
@@ -86,7 +88,7 @@ const Pages = () => {
           <div>
             <Image
               alt="panel"
-              src={"login/pandel1.svg"}
+              src={"/login/pandel1.svg"}
               width={680}
               height={360}
             />
@@ -97,10 +99,9 @@ const Pages = () => {
           <div aria-label="form" className=" flex flex-col items-center ">
             <Link href={"#"}>
               <button>
-                {" "}
                 <Image
-                  alt="panel"
-                  src={"login/logo.svg"}
+                  alt="logo"
+                  src={"/login/logo.svg"}
                   width={150}
                   height={80}
                 />

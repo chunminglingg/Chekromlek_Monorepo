@@ -64,7 +64,7 @@ const page = () => {
                   </button>
                 </Link> */}
                 <Link href={"/login/newpass"}>
-                  <Button className="px-6 py-3 bg-[#7B2CBF] text-white rounded-xl hover:opacity-[90%]">
+                  <Button className="px-6 py-3 bg-[#7B2CBF] text-white rounded-xl hover:opacity-[90%]" colorScheme="primary">
                    <Typography color="submit">Search</Typography>
                   </Button>
                 </Link>

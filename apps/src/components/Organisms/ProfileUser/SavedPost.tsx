@@ -12,6 +12,12 @@ export default function savedPost() {
           caption="Why is it that although China is already the second largest  in the world."
           postImage="/socialMedia/imageContent.svg"
           id={"1"}
+          onLike={function (): void {
+            throw new Error("Function not implemented.");
+          }}
+          onSave={function (): void {
+            throw new Error("Function not implemented.");
+          }}
         />
       </div>
     </div>

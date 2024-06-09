@@ -5,10 +5,10 @@ import Link from "next/link";
 const SideRight = () => {
   return (
     <>
-      <div className="flex flex-col gap-4  max-sm:hidden max-md:hidden mr-5 ">
+      <div className="flex flex-col gap-4  max-sm:hidden max-md:hidden mr-3 ">
         <main>
           <h2 className="text-[#ACACAC] mb-[5%]">Suggest for you</h2>
-          <div className="flex flex-col gap-2 ">
+          <div className="flex flex-col gap-2 ms-5">
             <Link href={"/categories/math"}>
               <ButtonRightSide>Mathematic</ButtonRightSide>
             </Link>

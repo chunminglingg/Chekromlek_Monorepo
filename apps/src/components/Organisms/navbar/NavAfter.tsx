@@ -22,14 +22,14 @@ function NavAfter() {
       <div className="hidden md:flex md:flex-row gap-4 items-center pr-8">
        
           <AfteLogin/>
-          <Link href={"#"}>
+          {/* <Link href={"#"}>
             <Image
               src={"/icons/lan.svg"}
               alt="languese"
               width={34}
               height={34}
             />
-          </Link>
+          </Link> */}
         </div>
         <div className="block md:hidden   mt-4 absolute right-5">
           <BurgerLogin/>

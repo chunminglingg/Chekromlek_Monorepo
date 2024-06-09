@@ -24,7 +24,7 @@ export default function RootLayout({
         <Nav />
         <div className="flex justify-center items-center h-full ">
           <CardContext>{children}</CardContext>
-          <div className="absolute right-0 top-32 hidden lg:block">
+          <div className="absolute right-0 top-28 hidden lg:block">
             <SideRight></SideRight>
           </div>
         </div>

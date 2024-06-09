@@ -36,7 +36,7 @@ const SideStyle = () => {
   return (
     <>
       <div className="home">
-        <Link href={"/"}>
+        <Link href={"/signup"}>
           <button
             onClick={handleHomeClick}
             className={`flex flex-row gap-2 items-${
@@ -56,7 +56,7 @@ const SideStyle = () => {
         </Link>
       </div>
       <div className="category">
-        <Link href={"/categories"}>
+        <Link href={"/signup"}>
           <button
             onClick={handleCategoryClick}
             className={`flex flex-row gap-2 items-${
@@ -78,7 +78,7 @@ const SideStyle = () => {
         </Link>
       </div>
       <div className="notification">
-        <Link href={"/notification"}>
+        <Link href={"/signup"}>
           <button
             onClick={handleNotificationClick}
             className={`flex flex-row gap-2 items-${
@@ -102,7 +102,7 @@ const SideStyle = () => {
         </Link>
       </div>
       <div className="setting">
-        <Link href={"/setting"}>
+        <Link href={"/signup"}>
           <button
             onClick={handleSettingClick}
             className={`flex flex-row gap-2 items-${

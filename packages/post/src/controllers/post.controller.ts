@@ -3,6 +3,7 @@ import {
   Get,
   Middlewares,
   Path,
+  Patch,
   Post,
   Request,
   Route,
@@ -18,6 +19,7 @@ import { verificationToken } from "@post/middlewares/tokenVerify";
 import { IAnswer, IPost } from "@post/database/@types/post.interface";
 import CustomError from "@post/errors/customError";
 import APIError from "@post/errors/api-error";
+import axios from "axios";
 
 @Route("v1/post")
 export class PostController {
@@ -43,6 +45,22 @@ export class PostController {
       };
 
       const post = await this.postService.createPost(detailPost);
+      const postId = post._id;
+      const token = request.headers.authorization?.split(" ")[1]; // Extract token from Authorization header
+      console.log(
+        `Updating user with ID: ${request.userId} and Post ID: ${postId}`
+      );
+
+      await axios.patch(
+        `http://localhost:4000/v1/users/${postId}/addpost`,
+        {
+          authId: request.userId,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
       return {
         message: "Post created successfully",
         data: post,

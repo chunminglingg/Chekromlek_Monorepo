@@ -11,6 +11,13 @@ export default function Post() {
           username="Kimlang Tieng"
           caption="Why is it  s it that although China is already the second largest  in the world..already the second largest  in the worldalready the second largest  in the worldthat although China is already the second largest  in the world"
           id={"1"}
+          title="HELLO"
+          onLike={function (): void {
+            throw new Error("Function not implemented.");
+          }}
+          onSave={function (): void {
+            throw new Error("Function not implemented.");
+          }}
         />
         <PostCard
           profile="/card-svg/avatar.svg"
@@ -20,6 +27,12 @@ export default function Post() {
           caption="Why is it that although China is already the second largest  in the world."
           postImage="/socialMedia/imageContent.svg"
           id={"2"}
+          onLike={function (): void {
+            throw new Error("Function not implemented.");
+          }}
+          onSave={function (): void {
+            throw new Error("Function not implemented.");
+          }}
         />
         <PostCard
           profile="/card-svg/avatar.svg"
@@ -28,6 +41,12 @@ export default function Post() {
           caption="Why is it that although China is already the second largest  in the world."
           postImage="/socialMedia/imageContent.svg"
           id={"3"}
+          onLike={function (): void {
+            throw new Error("Function not implemented.");
+          }}
+          onSave={function (): void {
+            throw new Error("Function not implemented.");
+          }}
         />
       </div>
     </div>

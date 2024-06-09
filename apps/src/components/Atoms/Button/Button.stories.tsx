@@ -27,10 +27,10 @@ type Story = StoryObj<typeof Button>;
 export const Default: Story = {
   args: {
     children: "Click Button",
-    colorScheme: "primary",
+    colorScheme: "none",
     size: "md",
-    colorOutline: "none",
-    rounded: "none",
+    colorOutline: "primary",
+    rounded: "md",
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);

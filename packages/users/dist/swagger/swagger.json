@@ -134,8 +134,8 @@
 				"parameters": []
 			}
 		},
-		"/v1/users/{id}": {
-			"put": {
+		"/v1/users/{userId}": {
+			"patch": {
 				"operationId": "UpdateProfile",
 				"responses": {
 					"200": {
@@ -151,7 +151,7 @@
 				"parameters": [
 					{
 						"in": "path",
-						"name": "id",
+						"name": "userId",
 						"required": true,
 						"schema": {
 							"type": "string"
@@ -168,45 +168,6 @@
 						}
 					}
 				}
-			},
-			"get": {
-				"operationId": "GetUserById",
-				"responses": {
-					"200": {
-						"description": "OK",
-						"content": {
-							"application/json": {
-								"schema": {}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			},
-			"post": {
-				"operationId": "FindSavePost",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": []
 			}
 		},
 		"/v1/users/auth/{authId}": {
@@ -235,6 +196,42 @@
 				]
 			}
 		},
+		"/v1/users/{userId}/posts": {
+			"post": {
+				"operationId": "AddPostToUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/v1/users/{postId}/save": {
 			"post": {
 				"operationId": "ToggleSavePost",
@@ -259,6 +256,49 @@
 						}
 					}
 				]
+			}
+		},
+		"/v1/users/{postId}/addpost": {
+			"patch": {
+				"operationId": "AddPost",
+				"responses": {
+					"200": {
+						"description": "Add/Remove Save successfully",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "postId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/users/{id}": {
+			"post": {
+				"operationId": "FindSavePost",
+				"responses": {
+					"302": {
+						"description": "Found Successfully",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
 			}
 		}
 	},
