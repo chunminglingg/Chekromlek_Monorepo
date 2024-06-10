@@ -113,12 +113,19 @@ export class PostController {
   @Middlewares(verificationToken)
   public async UpdatePost(
     @Path() id: string,
-    @Body() requestBody: IPost
+    @Body() requestBody: IPost,
+    @Request() request: any
   ): Promise<any> {
     try {
       const existPost = await this.postService.findPostById(id);
       if (!existPost) {
         throw new CustomError("Post not found", StatusCode.NotFound);
+      }
+      const userId = request.userId;
+      const postOwnerId = existPost.userId ? existPost.userId.toString() : null;
+
+      if (!postOwnerId || postOwnerId !== userId) {
+        throw new CustomError("Unauthorized access ", StatusCode.Forbidden);
       }
       const post = await this.postService.updatePost(id, requestBody);
       return {
@@ -282,9 +289,16 @@ export class PostController {
   @Middlewares(verificationToken)
   @Delete("/:postId")
   public async DeletePost(@Path() postId: string, @Request() request: any) {
-    const existedPost = await this.postService.findPostById(request.userId);
+    const existedPost = await this.postService.findPostById(postId);
     if (!existedPost) {
       throw new APIError("Post Not Found", StatusCode.NotFound);
+    }
+    const userId = request.userId.toString(); // Ensure userId is a string
+    const postOwnerId = existedPost.userId
+      ? existedPost.userId.toString()
+      : null;
+    if (!postOwnerId || postOwnerId !== userId) {
+      throw new CustomError("Unauthorized access ", StatusCode.Forbidden);
     }
     await this.postService.deletePost(postId);
     return { message: "Post Delete Successfully" };

@@ -97,6 +97,7 @@ export class PostService {
       throw error;
     }
   }
+
   async FindAllPost() {
     try {
       return await this.postRepo.FindAllPost();
@@ -117,6 +118,7 @@ export class PostService {
       throw error;
     }
   }
+  // async findPostCategory(category: string){}
   async LikeAnswer(postId: string, answerId: string, userId: string) {
     try {
       const updatedPost = await this.postRepo.LikeAnswer(

@@ -19,6 +19,7 @@ export class postRepository {
       throw new CustomError(error.message, StatusCode.BadRequest);
     }
   }
+  //get post by userId
   async getPostsByUserId({ id }: { id: string }) {
     try {
       if (!id) {
@@ -34,10 +35,11 @@ export class postRepository {
       throw new Error(`Unable to fetch posts: ${error.message}`);
     }
   }
+  //find answer by id
   async findAnswerById(answerId: string) {
     return PostModel.findById(answerId);
   }
-
+  //find post user
   async FindPostUser(id: string) {
     try {
       return await PostModel.findOne({ id });
@@ -45,6 +47,35 @@ export class postRepository {
       throw error;
     }
   }
+  //find all post
+  public async FindAllPost() {
+    try {
+      return await PostModel.find();
+    } catch (error) {
+      console.error("Error fetching posts from database:", error);
+      throw new APIError("Database query failed");
+    }
+  }
+  //find post by Category
+  public async findPostsByCategory(category: string) {
+    try {
+      return PostModel.find({ category });
+    } catch (error) {
+      throw new APIError("Database query failed");
+    }
+  }
+  async findPost(id: string) {
+    try {
+      const findPostById = await PostModel.findById(id);
+      return findPostById;
+    } catch (error: unknown | any) {
+      if (error instanceof CustomError) {
+        throw error;
+      }
+      throw new CustomError(error.message, StatusCode.BadRequest);
+    }
+  }
+  //add  answer to post
   async addAnswerToPost(postId: string, answer: IAnswer) {
     try {
       return await PostModel.findByIdAndUpdate(
@@ -57,6 +88,7 @@ export class postRepository {
       throw error;
     }
   }
+  //delete post
   async deletePost(postId: string) {
     try {
       return await PostModel.findByIdAndDelete(postId);
@@ -64,7 +96,7 @@ export class postRepository {
       throw error;
     }
   }
-
+  //update post
   async updatePost(id: string, newUpdate: IPost) {
     try {
       const updatedPost = await PostModel.findByIdAndUpdate(id, newUpdate, {
@@ -79,18 +111,9 @@ export class postRepository {
       }
     }
   }
+  //find post by id
 
-  async findPost(id: string) {
-    try {
-      const findPostById = await PostModel.findById(id);
-      return findPostById;
-    } catch (error: unknown | any) {
-      if (error instanceof CustomError) {
-        throw error;
-      }
-      throw new CustomError(error.message, StatusCode.BadRequest);
-    }
-  }
+  //like answer
   async LikeAnswer(postId: string, answerId: string, userId: string) {
     try {
       logger.debug(
@@ -127,6 +150,7 @@ export class postRepository {
       throw error;
     }
   }
+  //unlike answer
   async UnlikeAnswer(postId: string, answerId: string, userId: string) {
     try {
       // Check if the post, answer, and userId condition are met
@@ -171,7 +195,7 @@ export class postRepository {
       throw error;
     }
   }
-
+  //like post
   async LikePost(postId: string, userId: string) {
     try {
       const post = await PostModel.findById(postId);
@@ -202,7 +226,7 @@ export class postRepository {
       throw error;
     }
   }
-
+  //unlike post
   async UnlikePost(postId: string, userId: string) {
     try {
       const post = await PostModel.findById(postId);
@@ -236,14 +260,6 @@ export class postRepository {
       return await PostModel.findByIdAndUpdate(postId);
     } catch (error) {
       throw new Error(`Failed to update save flag for post: ${error}`);
-    }
-  }
-  public async FindAllPost() {
-    try {
-      return await PostModel.find();
-    } catch (error) {
-      console.error("Error fetching posts from database:", error);
-      throw new APIError("Database query failed");
     }
   }
 }
