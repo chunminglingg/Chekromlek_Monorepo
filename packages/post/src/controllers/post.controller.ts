@@ -16,7 +16,11 @@ import { PostService } from "@post/services/post.service";
 import { StatusCode } from "@post/utils/const";
 import { logger } from "@post/utils/logger";
 import { verificationToken } from "@post/middlewares/tokenVerify";
-import { IAnswer, IPost } from "@post/database/@types/post.interface";
+import {
+  IAnswer,
+  IPost,
+  PostCategory,
+} from "@post/database/@types/post.interface";
 import CustomError from "@post/errors/customError";
 import APIError from "@post/errors/api-error";
 import axios from "axios";
@@ -24,7 +28,6 @@ import axios from "axios";
 @Route("v1/post")
 export class PostController {
   private postService: PostService;
-  
   constructor() {
     this.postService = new PostService();
   }
@@ -107,19 +110,42 @@ export class PostController {
       throw error;
     }
   }
+  @SuccessResponse(StatusCode.Found, "Found the posts")
+  @Get("category/{category}")
+  public async getPostsByCategory(@Path() category: string): Promise<any> {
+    try {
+      const validCategories = Object.values(PostCategory);
+      if (!validCategories.includes(category as PostCategory)) {
+        return { message: "Invalid category", data: [] };
+      }
 
+      const posts = await this.postService.getPostsByCategory(
+        category as PostCategory
+      );
+      return { message: "Posts found successfully", data: posts };
+    } catch (error) {
+      return { message: "Internal Server Error", data: [] };
+    }
+  }
   @SuccessResponse(StatusCode.Created, "Updated successfully")
-  @Post("/:id")
+  @Patch("/:id")
   @Middlewares(validateInput(PostSaveSchema))
   @Middlewares(verificationToken)
   public async UpdatePost(
     @Path() id: string,
-    @Body() requestBody: IPost
+    @Body() requestBody: IPost,
+    @Request() request: any
   ): Promise<any> {
     try {
       const existPost = await this.postService.findPostById(id);
       if (!existPost) {
         throw new CustomError("Post not found", StatusCode.NotFound);
+      }
+      const userId = request.userId;
+      const postOwnerId = existPost.userId ? existPost.userId.toString() : null;
+
+      if (!postOwnerId || postOwnerId !== userId) {
+        throw new CustomError("Unauthorized access ", StatusCode.Forbidden);
       }
       const post = await this.postService.updatePost(id, requestBody);
       return {
@@ -281,21 +307,20 @@ export class PostController {
   @SuccessResponse(StatusCode.NoContent, "Deleted successfully")
   @Middlewares(verificationToken)
   @Delete("/:postId")
-  public async DeletePost(@Path() postId: string, @Request() _request: any) {
-    try {
-      const existedPost = await this.postService.findPostById(postId);
-      if (!existedPost) {
-        throw new APIError("Post Not Found", StatusCode.NotFound);
-      }
-      await this.postService.deletePost(postId);
-      return { message: "Post deleted successfully" };
-    } catch (error: any) {
-      logger.error(`Controller deletePost method error: ${error.message}`);
-      throw new CustomError(
-        `Failed to delete post: ${error.message}`,
-        StatusCode.InternalServerError
-      );
+  public async DeletePost(@Path() postId: string, @Request() request: any) {
+    const existedPost = await this.postService.findPostById(postId);
+    if (!existedPost) {
+      throw new APIError("Post Not Found", StatusCode.NotFound);
     }
+    const userId = request.userId.toString(); // Ensure userId is a string
+    const postOwnerId = existedPost.userId
+      ? existedPost.userId.toString()
+      : null;
+    if (!postOwnerId || postOwnerId !== userId) {
+      throw new CustomError("Unauthorized access ", StatusCode.Forbidden);
+    }
+    await this.postService.deletePost(postId);
+    return { message: "Post Delete Successfully" };
   }
 
   @SuccessResponse(StatusCode.OK, "Favorite retrieved successfully")

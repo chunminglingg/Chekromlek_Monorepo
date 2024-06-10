@@ -2,10 +2,10 @@ import z from "zod";
 
 export const PostSaveSchema = z.object({
   userId: z.string().optional(),
-  title: z.string(),
-  description: z.string(),
+  title: z.string().optional(),
+  description: z.string().optional(),
   postImage: z.string().optional(),
-  category: z.string(),
+  category: z.string().optional(),
   createdAt: z.date().optional(),
 });
 
