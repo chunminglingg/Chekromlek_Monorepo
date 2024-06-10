@@ -7,9 +7,6 @@ import mongoose from "mongoose";
 import APIError from "@post/errors/api-error";
 
 export class postRepository {
-  findAllPost() {
-    throw new Error("Method not implemented.");
-  }
   // Create Post
   async createPost(postInterface: IPost) {
     try {
