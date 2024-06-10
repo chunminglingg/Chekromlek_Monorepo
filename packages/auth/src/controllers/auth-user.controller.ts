@@ -59,6 +59,7 @@ export class UserAuthController {
         email,
         password,
       });
+      
       const verificationToken = await this.userService.SendEmailToken({
         userId: newUser._id.toString(),
       });
@@ -142,7 +143,10 @@ export class UserAuthController {
         userId: user._id,
         username: user.username,
       });
-
+      console.log({
+        message: "User verified email successfully",
+        token: jwtToken,
+      });
       return { message: "User verified email successfully", token: jwtToken };
     } catch (error) {
       logger.error(`Error verifying email token: ${error}`);

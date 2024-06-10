@@ -5,7 +5,7 @@ import applyProxy from "./middleware/proxy";
 import { applyRateLimit } from "./middleware/rate-limit";
 import cookieSession from "cookie-session";
 import hpp from "hpp";
-import compression from "compression";
+// import compression from "compression";
 import { logger } from "./utils/logger";
 import { StatusCode } from "./utils/consts";
 import { errorHandler } from "./middleware/error-handler";
@@ -21,7 +21,7 @@ const config = getConfig();
 // Security Middleware
 // ===================
 app.set("trust proxy", 1);
-app.use(compression());
+// app.use(compression());
 app.use(
   cookieSession({
     name: "session",
@@ -43,10 +43,13 @@ app.use(hpp());
 // - Prevent XSS, etc.
 app.use(helmet());
 
-// Only Allow Specific Origin to Access API Gateway (Frontend)
+// Only Allow Specific Origin to Access API Gateway (Frontend)!
 app.use(
   cors({
-    origin: config.env === "development" ? "*" : [config.clientUrl as string],
+    origin:
+      config.env === "development"
+        ? ["http://localhost:9000"]
+        : ["https://domain.com"],
     credentials: true, // attach token from client
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],

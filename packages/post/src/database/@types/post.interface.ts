@@ -41,3 +41,12 @@ export enum PostCategory {
   History = "History",
   English = "English",
 }
+
+export interface QueryParams {
+  id?: string;
+  username?: string;
+  category?: string;
+  title?: string;
+  page: string;
+  limit: string;
+}

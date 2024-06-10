@@ -59,12 +59,14 @@ const proxyConfigs: ProxyConfig = {
               return res.status(proxyRes.statusCode!).json(responseBody);
             }
 
-            // Store JWT in session
+            // Store JWT in session!
             if (responseBody.token) {
               (req as Request).session!.jwt = responseBody.token as string;
             }
 
             const filteredResponseBody = { ...responseBody };
+
+            logger.info("Proxy Response: ", filteredResponseBody);
             // Remove the jwt property if it exists
             if ("token" in filteredResponseBody) {
               delete filteredResponseBody.token;
@@ -73,6 +75,7 @@ const proxyConfigs: ProxyConfig = {
             // Modify response to send only the message to the client
             res.status(proxyRes.statusCode!).json(filteredResponseBody);
           } catch (error) {
+            logger.error(`Proxy Response Error: ${error}`);
             return res.status(500).json({ message: "Error parsing response" });
           }
         });
@@ -213,6 +216,7 @@ const proxyConfigs: ProxyConfig = {
 
             return res.status(proxyRes.statusCode!).json(responseBody);
           } catch (error) {
+            console.log("Error:", error);
             return res.status(500).json({ message: "Error parsing response" });
           }
         });
