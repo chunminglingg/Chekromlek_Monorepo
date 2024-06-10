@@ -109,7 +109,7 @@ export class PostController {
   }
 
   @SuccessResponse(StatusCode.Created, "Updated successfully")
-  @Post("/:id")
+  @Patch("/:id")
   @Middlewares(validateInput(PostSaveSchema))
   @Middlewares(verificationToken)
   public async UpdatePost(

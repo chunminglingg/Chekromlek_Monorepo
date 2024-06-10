@@ -44,8 +44,24 @@ const Pages = () => {
         }
       );
 
-      window.location.href = `/signup/verify-email`;
-      return response.status;
+      // Error from backend server
+      if (response) {
+        const { message, statusCode } = response.data;
+        if (
+          statusCode === 409 &&
+          message === "A user with this email already exists. Please login."
+        ) {
+          setErrors((prev) => ({
+            ...prev,
+            email: "A user with this email already exists. Please login.",
+          }));
+        }
+        else {
+          console.log("response form signup successful", response);
+          window.location.href = `/signup/verify-email`;
+        }
+      } 
+   
     } catch (error: any) {
       const fieldErrors: { [key: string]: string } = {};
 
@@ -56,17 +72,6 @@ const Pages = () => {
         });
       }
 
-      // Error from backend server
-      if (error.response) {
-        if (
-          error.response.data.message ===
-          "A user with this email already exists. Please login."
-        ) {
-          fieldErrors.password = "A user with this email already exists. Please login.";
-        }
-      }
-
-      console.log("Field Error", fieldErrors);
       setErrors((prev) => ({
         ...prev,
         ...fieldErrors,
@@ -77,7 +82,9 @@ const Pages = () => {
 
   async function handleFacebookSignUp() {
     try {
-      const response = await axios.get("http://localhost:3000/v1/auth/facebook");
+      const response = await axios.get(
+        "http://localhost:3000/v1/auth/facebook"
+      );
       const url = response.data.url;
       window.location.href = `${url}`;
     } catch (error) {
