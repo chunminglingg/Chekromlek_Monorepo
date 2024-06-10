@@ -6,9 +6,9 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import "../../../globals.css";
 import { useSearchParams } from "next/navigation";
-import axios from "axios"
+import axios from "axios";
 
-const page = () => {
+const Page = () => {
   const [isError, setIsError] = useState(false);
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
@@ -22,7 +22,8 @@ const page = () => {
       setVerificationStatus("verifying");
       const status = await verifyEmailToken(token);
       console.log("status: ", status);
-      if (status == "error") {
+      if (status === "error") {
+        setIsError(true);
         setVerificationStatus(status);
       } else {
         setVerificationStatus("success");
@@ -41,7 +42,6 @@ const page = () => {
       );
       console.log("response : ", response.data.status);
       return response.data.status;
-      
     } catch (error) {
       console.error("Error verifying email:", error);
       return "error";
@@ -51,6 +51,7 @@ const page = () => {
   useEffect(() => {
     handleVerifyEmail();
   }, []);
+
   return (
     <div className="flex flex-col items-center justify-center h-screen w-screen">
       {/* Logo */}
@@ -124,7 +125,7 @@ const page = () => {
             type="submit"
             className="hover:opacity-90"
           >
-            <Link href="/afterlogin" >
+            <Link href="/afterlogin">
               <Typography color="submit">Homepage</Typography>
             </Link>
           </Button>
@@ -134,4 +135,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
