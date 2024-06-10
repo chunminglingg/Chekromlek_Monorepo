@@ -35,7 +35,6 @@ const page = () => {
 
   const verifyEmailToken = async (token: string) => {
     try {
-      console.log("token : ", token);
       const response = await axios.get(
         `http://localhost:3000/v1/auth/verify?token=${token}`,
         { withCredentials: true }
