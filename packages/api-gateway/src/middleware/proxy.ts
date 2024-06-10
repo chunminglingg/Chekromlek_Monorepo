@@ -213,6 +213,7 @@ const proxyConfigs: ProxyConfig = {
 
             return res.status(proxyRes.statusCode!).json(responseBody);
           } catch (error) {
+            console.log("Error:", error);
             return res.status(500).json({ message: "Error parsing response" });
           }
         });

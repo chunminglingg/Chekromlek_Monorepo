@@ -5,7 +5,7 @@ import applyProxy from "./middleware/proxy";
 import { applyRateLimit } from "./middleware/rate-limit";
 import cookieSession from "cookie-session";
 import hpp from "hpp";
-import compression from "compression";
+// import compression from "compression";
 import { logger } from "./utils/logger";
 import { StatusCode } from "./utils/consts";
 import { errorHandler } from "./middleware/error-handler";
@@ -21,7 +21,7 @@ const config = getConfig();
 // Security Middleware
 // ===================
 app.set("trust proxy", 1);
-app.use(compression());
+// app.use(compression());
 app.use(
   cookieSession({
     name: "session",
