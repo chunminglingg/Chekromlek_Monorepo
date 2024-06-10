@@ -54,7 +54,7 @@ const Typography: React.FC<TypoProps> = ({
       case "categories":
         return "text-purple-600"  
       case "maintenance":
-        return "text-yellow-500";  
+        return "text-yellow-500"; 
       default:
         return "text-black";
     }

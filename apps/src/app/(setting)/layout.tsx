@@ -4,6 +4,7 @@ import "../globals.css";
 import Nav from "@/components/Organisms/navbar/Nav";
 import { Sidebar } from "@/components/Organisms/sidebar/Sidebar";
 import NavAfter from "@/components/Organisms/navbar/NavAfter";
+import { SideBarLogin } from "@/components/Organisms/sidebar/SieBarLogin";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,7 +26,7 @@ export default function RootLayout({
           <div className="h-[300px]"></div>
           {children}
         </div>
-        <Sidebar />
+        <SideBarLogin />
       </body>
     </html>
   );

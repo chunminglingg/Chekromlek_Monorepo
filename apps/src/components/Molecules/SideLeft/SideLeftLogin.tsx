@@ -15,11 +15,10 @@ const SideLeftLogin = () => {
   const [isSettingClick, setIsSettingClick] = useState(false);
 
   const handleHomeClick = () => {
-    <Alert/>
-    // setIsHomeClick(true);
-    // setIsCategoryClick(false);
-    // setIsNotificationClick(false);
-    // setIsSettingClick(false);
+    setIsHomeClick(true);
+    setIsCategoryClick(false);
+    setIsNotificationClick(false);
+    setIsSettingClick(false);
   };
 
   const handleCategoryClick = () => {

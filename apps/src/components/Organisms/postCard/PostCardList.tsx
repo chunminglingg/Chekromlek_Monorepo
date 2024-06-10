@@ -1,8 +1,8 @@
 "use client";
 import React, { useContext, useState, useEffect, useRef } from "react";
-import PostCard, { postCardProps } from "./PostCard"; // Assuming PostCard component is imported correctly
-import PostCardSkeleton from "./CardSkeleton"; // Importing the Skeleton component
-import { MyCardContext } from "@/contexts/PostCardContext/PostCardContext"; // Assuming correct path
+import PostCard, { postCardProps } from "./PostCard";
+import PostCardSkeleton from "./CardSkeleton";
+import { MyCardContext } from "@/contexts/PostCardContext/PostCardContext";
 
 const PostCardList = ({ searchQuery = "" }) => {
   const { CardInfo, nextToken, fetchMoreCards } = useContext(MyCardContext); // Updated context to include nextToken and fetchMoreCards
