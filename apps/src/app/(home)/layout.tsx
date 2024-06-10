@@ -5,6 +5,7 @@ import Nav from "@/components/Organisms/navbar/Nav";
 import { Sidebar } from "@/components/Organisms/sidebar/Sidebar";
 import CardContext from "@/contexts/PostCardContext/PostCardContext";
 import SideRight from "@/components/Molecules/SideRight/SideRight";
+import { KhFont } from "@/utils/font";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -19,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={KhFont.className}>
         <Nav />
         <div className="flex justify-center items-center h-full ">
           <CardContext>{children}</CardContext>

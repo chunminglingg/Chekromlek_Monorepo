@@ -6,7 +6,7 @@ const HeaderPost = ({profile = "/card-svg/avatar.svg"} : {profile?: string}) => 
  
   return (
     <>
-        <div className='flex flex-row gap-4 w-[663px] max-sm:w-[350px] h-[60px] items-center justify-between p-6 border border-slate-3000  shadow-md rounded-xl mb-4'>
+        <div className='flex flex-row gap-4 w-[663px] max-sm:w-[350px] h-[60px] items-center justify-between p-6 border border-slate-3000  shadow-sm rounded-xl mb-4'>
             <div className=''>
                <Image alt='profile' src={profile} width={50} height={40} className='rounded-full object-cover p-0 m-0' />
             </div>

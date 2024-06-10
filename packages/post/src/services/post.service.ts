@@ -72,6 +72,14 @@ export class PostService {
       throw error;
     }
   }
+
+  async findAllPost () {
+    try {
+      return await this.postRepo.findAllPost();
+    } catch (error) {
+      throw error;
+    }
+  }
   async findAnswerById(postId: string, answerId: string): Promise<any> {
     try {
       // Find the answer within the post
@@ -95,6 +103,14 @@ export class PostService {
       return await this.postRepo.FindPostUser(id);
     } catch (error) {
       throw error;
+    }
+  }
+  async FindAllPost() {
+    try {
+      return await this.postRepo.FindAllPost();
+    } catch (error) {
+      console.error("Error fetching posts from database:", error);
+      throw new APIError("Database query failed");
     }
   }
   async findPostById(id: string) {
@@ -177,19 +193,12 @@ export class PostService {
       throw error;
     }
   }
-  async getPostsByUserId(userId: string) {
-    try {
-      const posts = await this.postRepo.getPostsByUserId(userId);
-      return posts;
-    } catch (error: any) {
-      throw new Error(`Error fetching posts: ${error.message}`);
-    }
-  }
+
   async savePost(postId: string) {
     try {
       await this.postRepo.updateSaveFlag(postId);
     } catch (error) {
-      throw new Error(`Failed to save post: ${error}`);
+      throw new APIError(`Failed to save post: ${error}`);
     }
   }
 }
