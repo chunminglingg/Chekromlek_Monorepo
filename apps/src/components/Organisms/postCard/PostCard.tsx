@@ -15,7 +15,7 @@ export interface postCardProps {
   username: string;
   hour: number;
   title?: string;
-  caption?: string;
+  description?: string;
   postImage?: string | undefined;
   onLike?: () => void;
   onSave?: () => void;
@@ -26,7 +26,7 @@ const PostCard: React.FC<postCardProps> = ({
   profile,
   username,
   hour,
-  caption,
+  description,
   title,
   postImage,
 }) => {
@@ -110,9 +110,9 @@ const PostCard: React.FC<postCardProps> = ({
                 </Link>
                 <p className="text-[14px] text-[#343A40] font-light hover:cursor-pointer">
                   {isCaptionTruncated
-                    ? truncateCaption(caption || "", maxCaptionLength)
-                    : caption}
-                  {caption && caption.length > maxCaptionLength && (
+                    ? truncateCaption(description || "", maxCaptionLength)
+                    : description}
+                  {description && description.length > maxCaptionLength && (
                     <button
                       className="text-[14px] text-[#6d8fd2] font-medium underline cursor-pointer ml-1"
                       onClick={toggleCaptionTruncation}

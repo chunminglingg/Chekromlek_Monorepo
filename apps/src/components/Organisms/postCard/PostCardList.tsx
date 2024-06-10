@@ -61,8 +61,8 @@ const PostCardList = ({ searchQuery = "" }) => {
     return searchQuery.trim() === ""
       ? info
       : info.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          (info.caption !== undefined &&
-            info.caption.toLowerCase().includes(searchQuery.toLowerCase())) ||
+          (info.description !== undefined &&
+            info.description.toLowerCase().includes(searchQuery.toLowerCase())) ||
           (info.title !== undefined &&
             info.title.toLowerCase().includes(searchQuery.toLowerCase()));
   });
@@ -74,7 +74,7 @@ const PostCardList = ({ searchQuery = "" }) => {
           key={info.id}
           id={info.id}
           hour={info.hour}
-          caption={info.caption}
+          description={info.description}
           profile={info.profile}
           username={info.username}
           postImage={info.postImage}
