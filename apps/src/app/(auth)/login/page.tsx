@@ -16,40 +16,42 @@ interface dataTypes {
 }
 
 const Pages: React.FC = () => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [emailClient, setEmailClient] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (name === 'email') setEmail(value);
-    if (name === 'password') setPassword(value);
+    if (name === "email") setEmailClient(value);
+    if (name === "password") setPassword(value);
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const data: dataTypes = { email, password };
-
+    const data: dataTypes = { email: emailClient, password: password };
     try {
       await signupValidation.validate(data, { abortEarly: false });
 
-      const response = await axios.post(`http://localhost:3000/v1/auth/login`, data, {
-        headers: { 'Content-Type': 'application/json' },
-      });
-
-      const { token } = response.data;
-      if (!token) throw new Error('Token is undefined');
-      
-      const decodedToken = decodeToken(token);
-      console.log(decodedToken);
-      
-      localStorage.setItem('token', token);
-
-      router.push("/afterlogin");
-      console.log("Form data is valid!");
+      const response = await axios.post(
+        `http://localhost:3000/v1/auth/login`,
+        data,
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+      if (response) {
+        const { email, passwords } = response.data;
+        if (email !== emailClient && passwords !== password) {
+          setError("your email and password is incorrect! please try again");
+        } else {
+          router.push("/afterlogin");
+          console.log("Form data is valid!");
+        }
+      }
     } catch (error: any) {
       const fieldErrors: { [key: string]: string } = {};
       if (error.inner) {
@@ -58,7 +60,9 @@ const Pages: React.FC = () => {
         });
       } else if (error.response) {
         // Handling server-side error
-        setError(error.response.data.message || "Something went wrong. Please try again.");
+        setError(
+            "Something went wrong. Please try again."
+        );
       } else {
         console.error("Unexpected error structure", error);
       }
@@ -147,9 +151,7 @@ const Pages: React.FC = () => {
                 </Button>
               </div>
 
-              {error && (
-                <p className="text-[#EB5757] mt-2">{error}</p>
-              )}
+              {error && <p className="text-[#EB5757] mt-2">{error}</p>}
 
               <p className="text-center text-gray-400">
                 _____________________

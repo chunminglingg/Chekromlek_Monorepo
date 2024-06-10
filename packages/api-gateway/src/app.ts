@@ -43,10 +43,13 @@ app.use(hpp());
 // - Prevent XSS, etc.
 app.use(helmet());
 
-// Only Allow Specific Origin to Access API Gateway (Frontend)
+// Only Allow Specific Origin to Access API Gateway (Frontend)!
 app.use(
   cors({
-    origin: config.env === "development" ? "*" : [config.clientUrl as string],
+    origin:
+      config.env === "development"
+        ? ["http://localhost:9000"]
+        : ["https://domain.com"],
     credentials: true, // attach token from client
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
