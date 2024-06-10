@@ -17,7 +17,7 @@ const PostSchema = new mongoose.Schema(
     category: {
       type: String,
       enum: [
-        "Genaral Knowledge",
+        "General Knowledge",
         "Mental Consultant",
         "Technology",
         "Mathematic",

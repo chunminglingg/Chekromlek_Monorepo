@@ -1,4 +1,8 @@
-import { IAnswer, IPost } from "@post/database/@types/post.interface";
+import {
+  IAnswer,
+  IPost,
+  PostCategory,
+} from "@post/database/@types/post.interface";
 import { postRepository } from "@post/database/repositories/post.repositories";
 import APIError from "@post/errors/api-error";
 import CustomError from "@post/errors/customError";
@@ -72,10 +76,13 @@ export class PostService {
       throw error;
     }
   }
-
-  async findAllPost () {
+  async getPostsByCategory(category: PostCategory) {
     try {
-      return await this.postRepo.findAllPost();
+      if (!category) {
+        throw new Error("Category is required");
+      }
+
+      return await this.postRepo.findPostsByCategory(category);
     } catch (error) {
       throw error;
     }
@@ -105,6 +112,7 @@ export class PostService {
       throw error;
     }
   }
+
   async FindAllPost() {
     try {
       return await this.postRepo.FindAllPost();
@@ -125,6 +133,7 @@ export class PostService {
       throw error;
     }
   }
+  // async findPostCategory(category: string){}
   async LikeAnswer(postId: string, answerId: string, userId: string) {
     try {
       const updatedPost = await this.postRepo.LikeAnswer(
