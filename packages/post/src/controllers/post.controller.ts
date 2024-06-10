@@ -16,7 +16,11 @@ import { PostService } from "@post/services/post.service";
 import { StatusCode } from "@post/utils/const";
 import { logger } from "@post/utils/logger";
 import { verificationToken } from "@post/middlewares/tokenVerify";
-import { IAnswer, IPost } from "@post/database/@types/post.interface";
+import {
+  IAnswer,
+  IPost,
+  PostCategory,
+} from "@post/database/@types/post.interface";
 import CustomError from "@post/errors/customError";
 import APIError from "@post/errors/api-error";
 import axios from "axios";
@@ -107,7 +111,23 @@ export class PostController {
       throw error;
     }
   }
+  @SuccessResponse(StatusCode.Found, "Found the posts")
+  @Get("category/{category}")
+  public async getPostsByCategory(@Path() category: string): Promise<any> {
+    try {
+      const validCategories = Object.values(PostCategory);
+      if (!validCategories.includes(category as PostCategory)) {
+        return { message: "Invalid category", data: [] };
+      }
 
+      const posts = await this.postService.getPostsByCategory(
+        category as PostCategory
+      );
+      return { message: "Posts found successfully", data: posts };
+    } catch (error) {
+      return { message: "Internal Server Error", data: [] };
+    }
+  }
   @SuccessResponse(StatusCode.Created, "Updated successfully")
   @Patch("/:id")
   @Middlewares(validateInput(PostSaveSchema))
