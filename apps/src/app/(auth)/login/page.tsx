@@ -8,14 +8,13 @@ import { Button } from "@/components/Atoms/Button/Button";
 import { Typography } from "@/components";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { decodeToken } from "@/utils/decodeTokenUsername";
 
-interface dataTypes {
+interface DataTypes {
   email: string;
   password: string;
 }
 
-const Pages: React.FC = () => {
+const LoginPage: React.FC = () => {
   const [emailClient, setEmailClient] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -31,7 +30,7 @@ const Pages: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const data: dataTypes = { email: emailClient, password: password };
+    const data: DataTypes = { email: emailClient, password: password };
     try {
       await signupValidation.validate(data, { abortEarly: false });
 
@@ -43,26 +42,25 @@ const Pages: React.FC = () => {
           withCredentials: true,
         }
       );
-      if (response) {
-        const { email, passwords } = response.data;
-        if (email !== emailClient && passwords !== password) {
-          setError("your email and password is incorrect! please try again");
-        } else {
-          router.push("/afterlogin");
-          console.log("Form data is valid!");
-        }
-      }
+
+      // Handle success response
+      router.push("/afterlogin");
+      console.log("Form data is valid!");
     } catch (error: any) {
       const fieldErrors: { [key: string]: string } = {};
+
       if (error.inner) {
         error.inner.forEach((err: any) => {
           fieldErrors[err.path] = err.message;
         });
       } else if (error.response) {
         // Handling server-side error
-        setError(
-            "Something went wrong. Please try again."
-        );
+        const { status, data } = error.response;
+        if (status === 401 || status === 400) {
+          setError(data.message || "Invalid email or password. Please try again.");
+        } else {
+          setError("Something went wrong. Please try again.");
+        }
       } else {
         console.error("Unexpected error structure", error);
       }
@@ -195,4 +193,4 @@ const Pages: React.FC = () => {
   );
 };
 
-export default Pages;
+export default LoginPage;
