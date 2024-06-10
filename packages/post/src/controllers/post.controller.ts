@@ -24,7 +24,7 @@ import axios from "axios";
 @Route("v1/post")
 export class PostController {
   private postService: PostService;
-  
+
   constructor() {
     this.postService = new PostService();
   }
