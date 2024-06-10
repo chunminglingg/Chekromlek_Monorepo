@@ -9,6 +9,7 @@ import {
   Route,
   Delete,
   SuccessResponse,
+  Queries,
 } from "tsoa";
 import validateInput from "@post/middlewares/input-validation";
 import { PostSaveSchema } from "@post/schema/post.schema";
@@ -20,6 +21,7 @@ import {
   IAnswer,
   IPost,
   PostCategory,
+  QueryParams,
 } from "@post/database/@types/post.interface";
 import CustomError from "@post/errors/customError";
 import APIError from "@post/errors/api-error";
@@ -71,6 +73,17 @@ export class PostController {
     } catch (error) {
       logger.error(`Service method error: ${error}`);
       throw error;
+    }
+  }
+  @Get("/")
+  public async FindPostByQueries(
+    @Queries() queryParam: QueryParams
+  ): Promise<any> {
+    try {
+      console.log(queryParam);
+      return this.postService.findPostByQueries(queryParam);
+    } catch (error: unknown) {
+      throw new APIError("Post Not Found !!", StatusCode.NotFound);
     }
   }
 

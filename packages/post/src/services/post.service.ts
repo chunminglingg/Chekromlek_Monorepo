@@ -2,6 +2,7 @@ import {
   IAnswer,
   IPost,
   PostCategory,
+  QueryParams,
 } from "@post/database/@types/post.interface";
 import { postRepository } from "@post/database/repositories/post.repositories";
 import APIError from "@post/errors/api-error";
@@ -112,7 +113,13 @@ export class PostService {
       throw error;
     }
   }
-
+  async findPostByQueries(queryParams: QueryParams) {
+    try {
+      return await this.postRepo.FindPostByQueries(queryParams);
+    } catch (error: unknown) {
+      throw error;
+    }
+  }
   async FindAllPost() {
     try {
       return await this.postRepo.FindAllPost();

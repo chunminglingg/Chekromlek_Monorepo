@@ -1,7 +1,7 @@
 import { PostModel } from "../model/post.model";
 import CustomError from "@post/errors/customError";
 import { StatusCode } from "@post/utils/const";
-import { IAnswer, IPost } from "../@types/post.interface";
+import { IAnswer, IPost, QueryParams } from "../@types/post.interface";
 import { logger } from "@post/utils/logger";
 import mongoose from "mongoose";
 import APIError from "@post/errors/api-error";
@@ -47,10 +47,33 @@ export class postRepository {
       throw error;
     }
   }
-  //find all post
-  public async FindAllPost() {
+  async FindAllPost() {
     try {
       return await PostModel.find();
+    } catch (error: unknown) {
+      throw error;
+    }
+  }
+  //find all post
+  public async FindPostByQueries(queryParams: QueryParams) {
+    try {
+      const { id, username, category, title, page, limit } = queryParams;
+      const query: { [key: string]: any } = {};
+      if (username) query.username = { $regex: username, $options: "i" };
+      if (title) query.title = { $regex: title, $options: "i" };
+      if (category) query.category = category;
+      if (id) query._id = id;
+
+      console.log(page, limit);
+      const Page = parseInt(page);
+      const sizePage = parseInt(limit);
+      const startIndex = (Page - 1) * sizePage;
+      const endIndex = Page * sizePage;
+      console.log(startIndex, endIndex);
+
+      const post = await PostModel.find(query ? query : {});
+      const paginatedProducts = post.slice(startIndex, endIndex);
+      return paginatedProducts;
     } catch (error) {
       console.error("Error fetching posts from database:", error);
       throw new APIError("Database query failed");
@@ -111,7 +134,6 @@ export class postRepository {
       }
     }
   }
-  //find post by id
 
   //like answer
   async LikeAnswer(postId: string, answerId: string, userId: string) {
