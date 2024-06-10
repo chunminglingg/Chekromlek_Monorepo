@@ -159,69 +159,6 @@ export class UserAuthService {
     }
   }
 
-  // async VerifyEmailToken({ token }: { token: string }) {
-  //   const isTokenExisting =
-  //     await this.verificationRepo.FindAccountVerificationToken({ token });
-
-  //   // 1. find token is the token exist or not
-  //   // if (isTokenExisting) {
-  //   //   const user = await this.userRepo.FindUserById({
-  //   //     id: isTokenExisting.userId.toString(),
-  //   //   });
-
-  //   //   // 2. find user is the user exist or not
-  //   //   if (user) {
-  //   //     user.isVerified = true;
-  //   //     await user.save();
-  //   //     await this.verificationRepo.deleteAccountVerificationToken({
-  //   //       token,
-  //   //     });
-  //   //     return user;
-  //   //   } else {
-  //   //     throw new APIError("User does not exist", StatusCode.NotFound);
-  //   //   }
-  //   // } else {
-  //   //   throw new APIError("Token is expired or not exist!", StatusCode.NotFound);
-  //   // }
-
-  //   if (!isTokenExisting) {
-  //     throw new APIError(
-  //       "Verification token is invalid",
-  //       StatusCode.BadRequest
-  //     );
-  //   }
-  //   const user = await this.userRepo.FindUserById({
-  //     id: isTokenExisting.userId.toString(),
-  //   });
-  //   if (!user) {
-  //     throw new APIError("User does not exist", StatusCode.NotFound);
-  //   }
-  //   user.isVerified = true;
-  //   await user.save();
-  //   await this.verificationRepo.deleteAccountVerificationToken({
-  //     token,
-  //   });
-  //   return user;
-  // }
-  // async VerifyEmailToken({ token }: { token: string }) {
-  //   const isTokenExisting = await this.verificationRepo.FindAccountVerificationToken({ token });
-  //   console.log("Token:" , isTokenExisting);
-
-  //   if (!isTokenExisting) {
-  //     throw new APIError("Verification token is invalid", StatusCode.BadRequest);
-  //   }
-
-  //   const user = await this.userRepo.FindUserById({ id: isTokenExisting.userId.toString() });
-  //   if (!user) {
-  //     throw new APIError("User does not exist", StatusCode.NotFound);
-  //   }
-
-  //   user.isVerified = true;
-  //   await user.save();
-  //   await this.verificationRepo.deleteAccountVerificationToken({ token });
-  //   return user;
-  // }
-
   async Login(userDetail: UserSignInSchemaType) {
     const auth = await this.userRepo.FindUser({ email: userDetail.email });
     if (!auth) {

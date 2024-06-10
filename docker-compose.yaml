@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.8"
 services:
   # 1. RabbitMQ - A messaging service
   rabbitmq:
@@ -31,6 +31,9 @@ services:
       - DOCKER_ENV=true # Indicate that it's a Docker environment
       - AUTH_SERVICE_URL=http://auth:3001 # URL for the Auth service
       - USER_SERVICE_URL=http://user-profile:4000 # URL for the User Profile service
+      - NOTIFICATION_SERVICE_URL=http://notification:3002 # URL for the Notification service
+      - POST_SERVICE_URL=http://post:3005 
+      - CLIENT_URL=http://localhost:9000
     secrets:
       - jwt_public_key # Use JWT public key secret
     volumes:
@@ -51,9 +54,10 @@ services:
     secrets:
       - jwt_private_key # Use JWT private key secret
     depends_on:
-      - rabbitmq # Wait for RabbitMQ to start before starting this service
+      - rabbitmq
     volumes:
       - ./packages/auth/src:/app/src # Mount the auth service code directory
+      - ./packages/auth/dist:/app/dist
 
   # 4. User Profile - User profile service
   user-profile:
@@ -67,7 +71,8 @@ services:
     env_file: ./packages/users/configs/.env # Environment variables file
     volumes:
       - ./packages/users/src:/app/src # Mount the user profile service code directory
-
+      - ./packages/users/dist:/app/dist
+   
   # 5. Notification - Notification sending service
   notification:
     container_name: notification_container
@@ -81,6 +86,9 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
+    environment:
+      - DOCKER_ENV=true # Indicate that it's a Docker environment
+      - API_GATEWAY=http://gatway:3000 # URL for the Auth service
     volumes:
       - ./packages/notification/src:/app/src # Mount the notification service code directory
 
@@ -96,6 +104,7 @@ services:
     env_file: ./packages/post/configs/.env # Environment variables file
     volumes:
       - ./packages/post/src:/app/src # Mount the post service code directory
+      - ./packages/post/dist:/app/dist
 
 # Secrets - Securely store sensitive data
 secrets:

@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../globals.css";
-import { Sidebar } from "@/components/Organisms/sidebar/Sidebar";
 import NavAfter from "@/components/Organisms/navbar/NavAfter";
 import CardContext from "@/contexts/PostCardContext/PostCardContext";
 import SideRight from "@/components/Molecules/SideRight/SideRight";
 import { SideBarLogin } from "@/components/Organisms/sidebar/SieBarLogin";
+import { KhFont } from "@/utils/font";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={KhFont.className}>
         <NavAfter />
         <div className="flex justify-center items-center h-full max-sm:w-full md:w-full">
         <CardContext>{children}</CardContext>

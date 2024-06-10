@@ -72,6 +72,14 @@ export class PostService {
       throw error;
     }
   }
+
+  async findAllPost () {
+    try {
+      return await this.postRepo.findAllPost();
+    } catch (error) {
+      throw error;
+    }
+  }
   async findAnswerById(postId: string, answerId: string): Promise<any> {
     try {
       // Find the answer within the post

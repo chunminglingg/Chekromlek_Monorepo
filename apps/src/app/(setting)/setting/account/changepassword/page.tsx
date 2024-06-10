@@ -8,9 +8,15 @@ import * as Yup from "yup";
 import { validationSchema } from "@/schema/Auth@Validation/SavePw";
 import { Typography } from "@/components/Atoms/Typography/Typography";
 type SetSave = Dispatch<SetStateAction<boolean>>; // Assuming 'save' is of type boolean
+interface Errors {
+  currentPw?: string;
+  newPw?: string;
+  confirmPw?: string;
+}
+
 
 const Page = () => {
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<Errors>({});
   const [currentPw, setCurrentPw] = useState<string>("");
   const [newPw, setNewPw] = useState<string>("");
   const [confirmPw, setConfirmPw] = useState<string>("");
@@ -39,9 +45,11 @@ const Page = () => {
     } catch (error) {
       if (error instanceof Yup.ValidationError && error.inner) {
         // Validation errors found, update the state with the errors
-        const newErrors = {};
+        const newErrors: { [key: string]: string } = {};
         error.inner.forEach((e) => {
-          newErrors[e.path] = e.message;
+          if (e.path) { // Ensure e.path is not undefined
+            newErrors[e.path] = e.message;
+          }
         });
         setErrors(newErrors);
       } else {
