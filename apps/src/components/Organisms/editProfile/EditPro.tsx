@@ -114,7 +114,7 @@ export function EditProfile() {
                 </SelectGroup>
               </SelectContent>
             </Select>
-            {errors.job && <p className="text-red-500 text-sm">Job is required.</p>}
+            {/* {errors.job && <p className="text-red-500 text-sm">Job is required.</p>} */}
           </div>
           {/* Input Bio */}
           <div className="flex flex-col items-start py-4 outline-none w-full">
@@ -127,7 +127,7 @@ export function EditProfile() {
               placeholder="Description"
               className="w-full h-[40px] border rounded-lg p-2 focus:outline-none"
             />
-            {errors.bio && <p className="text-red-500 text-sm">Bio is required.</p>}
+            {/* {errors.bio && <p className="text-red-500 text-sm">Bio is required.</p>} */}
           </div>
           {/* Select Gender */}
           <div className="flex flex-col w-full focus:outline-none">
@@ -144,7 +144,7 @@ export function EditProfile() {
                 </SelectGroup>
               </SelectContent>
             </Select>
-            {errors.gender && <p className="text-red-500 text-sm">Gender is required.</p>}
+            {/* {errors.gender && <p className="text-red-500 text-sm">Gender is required.</p>} */}
           </div>
           <p className="text-[10px] text-left flex items-start justify-start ">
             {`This won't be part of your public profile.`}
@@ -158,7 +158,7 @@ export function EditProfile() {
             className="flex items-center justify-center border w-[100px] h-[40px] rounded-lg bg-violet-700 hover:opacity-50 text-white"
             disabled={loading}
           >
-            {loading ? "Sending..." : "Submit"}
+            {loading ? "Sending..." : "Edit"}
           </button>
         </DialogFooter>
         {success && (
