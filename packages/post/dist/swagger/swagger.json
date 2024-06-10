@@ -93,6 +93,34 @@
 				},
 				"type": "object",
 				"additionalProperties": false
+			},
+			"QueryParams": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"username": {
+						"type": "string"
+					},
+					"category": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"page": {
+						"type": "string"
+					},
+					"limit": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"page",
+					"limit"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -131,6 +159,70 @@
 						}
 					}
 				}
+			},
+			"get": {
+				"operationId": "FindPostByQueries",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "id",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "username",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "category",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "title",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "page",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/v1/post/getpost/{postId}": {
@@ -176,12 +268,12 @@
 				"parameters": []
 			}
 		},
-		"/v1/post/{id}": {
+		"/v1/post/category/{category}": {
 			"get": {
-				"operationId": "GetPostById",
+				"operationId": "GetPostsByCategory",
 				"responses": {
 					"302": {
-						"description": "Found the post",
+						"description": "Found the posts",
 						"content": {
 							"application/json": {
 								"schema": {}
@@ -193,15 +285,17 @@
 				"parameters": [
 					{
 						"in": "path",
-						"name": "id",
+						"name": "category",
 						"required": true,
 						"schema": {
 							"type": "string"
 						}
 					}
 				]
-			},
-			"post": {
+			}
+		},
+		"/v1/post/{id}": {
+			"patch": {
 				"operationId": "UpdatePost",
 				"responses": {
 					"201": {
