@@ -69,6 +69,7 @@ export class UserAuthController {
         template: "verifyEmail",
       };
       await publishDirectMessage(
+        
         authChannel,
         "chekromlek-email-notification",
         "auth-email",
