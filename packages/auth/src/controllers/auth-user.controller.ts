@@ -59,7 +59,7 @@ export class UserAuthController {
         email,
         password,
       });
-      
+
       const verificationToken = await this.userService.SendEmailToken({
         userId: newUser._id.toString(),
       });
@@ -69,7 +69,6 @@ export class UserAuthController {
         template: "verifyEmail",
       };
       await publishDirectMessage(
-        
         authChannel,
         "chekromlek-email-notification",
         "auth-email",
@@ -168,21 +167,23 @@ export class UserAuthController {
   @Middlewares(validateInput(AuthUserSignInSchema))
   public async LoginWithEmail(
     @Body() requestBody: LoginRequestBody
-  ): Promise<{ token: string }> {
+  ): Promise<any> {
     try {
       const { email, password } = requestBody;
       // Call the userService to perform the login operation
-      const jwtToken = await this.userService.Login({ email, password });
-      if (!jwtToken) {
+      const user = await this.userService.Login({ email, password });
+      if (!user) {
         // Handle failed login with a specific error
         throw new CustomError(
           "email or password is incorrect",
           StatusCode.Unauthorized
         );
       }
-      // Return the JWT token in the response
+      const token = await generateSignature({ userId: user._id });
+
       return {
-        token: jwtToken,
+        message: "Login successful.",
+        token: token,
       };
     } catch (error: unknown) {
       // Handle specific error types
@@ -337,6 +338,7 @@ export class UserAuthController {
     }
   }
   @Post("/forgot-password")
+  @SuccessResponse(StatusCode.OK, "OK")
   async ForgotPassword(@Body() requestBody: { email: string }): Promise<any> {
     try {
       const { email } = requestBody;
@@ -400,12 +402,12 @@ export class UserAuthController {
       const messageDetails = {
         username: user.username,
         receiverEmail: user.email,
-        template: "resetPasswordSuccess",
+        template: "resetPassword",
       };
 
       await publishDirectMessage(
         authChannel,
-        "smackchet-email-notification",
+        "chekromlek-email-notification",
         "auth-email",
         JSON.stringify(messageDetails),
         "Reset password message has been sent to notification service"

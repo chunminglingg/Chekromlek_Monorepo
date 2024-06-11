@@ -36,15 +36,48 @@ export async function consumeAuthEmailMessages(
         const { receiverEmail, username, resetLink, template, verifyLink } =
           JSON.parse(msg!.content.toString());
 
-        const locals: IEmailLocals = {
-          appLink: `${getConfig().clientUrl}`,
-          appIcon: ``,
-          username,
-          verifyLink: `${getConfig().clientUrl}/signup/get-verified?token=${verifyLink}`,
-          resetLink,
-        };
+        // const locals: IEmailLocals = {
+        //   appLink: `${getConfig().clientUrl}`,
+        //   appIcon: ``,
+        //   username,
+        //   verifyLink: `${getConfig().clientUrl}/signup/get-verified?token=${verifyLink}`,
+        //   resetLink,
+        // };
+
+        let locals: IEmailLocals;
+        switch (template) {
+          case 'verifyEmail':
+            locals = {
+              token: verifyLink,
+              appLink: `${getConfig().clientUrl}`,
+              appIcon: ``,
+              username,
+              verifyLink: `${getConfig().clientUrl}/signup/get-verified?token=${verifyLink}`,
+              resetLink,
+            };
+            break;
+          case 'forgotPassword':
+            locals = {
+              appLink: `${getConfig().clientUrl}`,
+              appIcon: ``,
+              username,
+              resetLink: `http://localhost:3001/v1/auth/reset-password/token?token=${verifyLink}`,
+            };
+            break;
+          case 'resetPassword':
+            locals = {
+              appLink: `${getConfig().clientUrl}`,
+              appIcon: ``,
+              username,
+            };
+            break;
+          default:
+            logger.error(`Unknown template: ${template}`);
+            return;
+        }
 
         const emailUserSender = EmailSender.getInstance();
+
         await emailUserSender.sendEmail(template, receiverEmail, locals);
 
         channel.ack(msg!);

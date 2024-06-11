@@ -64,21 +64,26 @@ export class postRepository {
       if (category) query.category = category;
       if (id) query._id = id;
 
-      console.log(page, limit);
       const Page = parseInt(page);
       const sizePage = parseInt(limit);
       const startIndex = (Page - 1) * sizePage;
       const endIndex = Page * sizePage;
       console.log(startIndex, endIndex);
 
-      const post = await PostModel.find(query ? query : {});
-      const paginatedProducts = post.slice(startIndex, endIndex);
-      return paginatedProducts;
+      const post = await PostModel.find(query ? query : {})
+        .skip(startIndex)
+        .limit(sizePage);
+      if (post.length === 0) {
+        throw new APIError("No more posts available", StatusCode.NotFound);
+      }
+
+      return post;
     } catch (error) {
       console.error("Error fetching posts from database:", error);
-      throw new APIError("Database query failed");
+      throw error;
     }
   }
+
   //find post by Category
   public async findPostsByCategory(category: string) {
     try {

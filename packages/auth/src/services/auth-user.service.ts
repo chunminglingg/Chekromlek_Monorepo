@@ -2,11 +2,7 @@ import VerificationModel from "../database/models/verification-request.model";
 import { UserAuthRpository } from "../database/repositories/auth-user.repo";
 import CustomError from "../errors/custom-erorrs";
 import { StatusCode } from "../utils/consts";
-import {
-  generatePassword,
-  generateSignature,
-  validationPassword,
-} from "../utils/jwt";
+import { generatePassword, validationPassword } from "../utils/jwt";
 import { generateEmailVerificationToken } from "../utils/verification-token";
 // import { VerificationService } from "./verification.service";
 import { UserSignInSchemaType } from "../schemas/@types/auth.types";
@@ -170,18 +166,20 @@ export class UserAuthService {
         StatusCode.BadRequest
       );
     }
-    const isPwdCorrect = await validationPassword({
-      enterPassword: userDetail.password,
-      savedPassword: auth.password as string,
-    });
+    const isPwdCorrect =
+      auth.password &&
+      (await validationPassword({
+        enterPassword: userDetail.password,
+        savedPassword: auth.password,
+      }));
+
     if (!isPwdCorrect) {
       throw new CustomError(
         "Email or Password is incorrect",
         StatusCode.BadRequest
       );
     }
-    const token = await generateSignature({ userId: auth._id });
-    return token;
+    return auth;
   }
   async FindUserByEmail({ email }: { email: string }) {
     try {
