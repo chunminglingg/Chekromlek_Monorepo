@@ -1,15 +1,17 @@
 "use client";
 
 import React, { useState } from "react";
-import BeforeLogin from "./BeforLogin";
-import handleLogin from "./BeforLogin";
 import Link from "next/link";
 import { SideLeft } from "@/components/Molecules";
+import axios from 'axios'
 
 const AfteLogin = () => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleDropdown = () => setIsOpen(!isOpen);
+  
   const nameUser = "Kimlang Tieng"
+
+  const response = axios.get(`http://localhost:3000/users`)
 
   return (
     <>
