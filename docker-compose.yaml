@@ -18,16 +18,16 @@ services:
       timeout: 10s
       retries: 5
 
-  # 2. Gateway - API Gateway service
   gateway:
     container_name: gateway_container
     build:
-      context: ./packages/api-gateway # Path to the gateway's code
-      dockerfile: Dockerfile.dev # Dockerfile to use for building the gateway
+      context: ./packages/api-gateway
+      dockerfile: Dockerfile.dev
+    image: chekromlek-monorepo-gateway
     restart: always
     ports:
-      - 3000:3000 # Map port 3000 of the container to port 3000 on the host
-    env_file: ./packages/api-gateway/configs/.env # Environment variables file
+      - 3000:3000
+    env_file: ./packages/api-gateway/configs/.env
     environment:
       - DOCKER_ENV=true # Indicate that it's a Docker environment
       - AUTH_SERVICE_URL=http://auth:3001 # URL for the Auth service
@@ -36,54 +36,55 @@ services:
       - POST_SERVICE_URL=http://post:3005
       - CLIENT_URL=http://localhost:9000
     secrets:
-      - jwt_public_key # Use JWT public key secret
+      - jwt_public_key
     volumes:
-      - ./packages/api-gateway/src:/app/src # Mount the gateway code directory
+      - ./packages/api-gateway/src:/app/src
 
-  # 3. Auth - Authentication service
   auth:
     container_name: auth_container
     build:
-      context: ./packages/auth # Path to the auth service's code
-      dockerfile: Dockerfile.dev # Dockerfile to use for building the auth service
+      context: ./packages/auth
+      dockerfile: Dockerfile.dev
+    image: chekromlek-monorepo-auth
     restart: always
     ports:
-      - 3001:3001 # Map port 3001 of the container to port 3001 on the host
-    env_file: ./packages/auth/configs/.env # Environment variables file
+      - 3001:3001
+    env_file: ./packages/auth/configs/.env
     environment:
-      - DOCKER_ENV=true # Indicate that it's a Docker environment
+      - DOCKER_ENV=true
     secrets:
-      - jwt_private_key # Use JWT private key secret
+      - jwt_private_key
     depends_on:
       - rabbitmq
     volumes:
-      - ./packages/auth/src:/app/src # Mount the auth service code directory
+      - ./packages/auth/src:/app/src
       - ./packages/auth/dist:/app/dist
 
-  # 4. User Profile - User profile service
   user-profile:
     container_name: user-profile_container
     build:
-      context: ./packages/users # Path to the user profile service's code
-      dockerfile: Dockerfile.dev # Dockerfile to use for building the user profile service
+      context: ./packages/users
+      dockerfile: Dockerfile.dev
+    image: chekromlek-monorepo-user-profile
     restart: always
     ports:
-      - 4000:4000 # Map port 4000 of the container to port 4000 on the host
-    env_file: ./packages/users/configs/.env # Environment variables file
+      - 4000:4000
+    env_file: ./packages/users/configs/.env
     volumes:
-      - ./packages/users/src:/app/src # Mount the user profile service code directory
+      - ./packages/users/src:/app/src
       - ./packages/users/dist:/app/dist
 
   # 5. Notification - Notification sending service
   notification:
     container_name: notification_container
     build:
-      context: ./packages/notification # Path to the notification service's code
-      dockerfile: Dockerfile.dev # Dockerfile to use for building the notification service
+      context: ./packages/notification
+      dockerfile: Dockerfile.dev
+    image: chekromlek-monorepo-notification
     restart: always
     ports:
-      - 3002:3002 # Map port 3002 of the container to port 3002 on the host
-    env_file: ./packages/notification/configs/.env # Environment variables file
+      - 3002:3002
+    env_file: ./packages/notification/configs/.env
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -92,9 +93,8 @@ services:
       - API_GATEWAY=http://gatway:3000 # URL for the Auth service
       - RABBITMQ_ENDPOINT=amqp://myuser:mypassword@rabbitmq:5672
     volumes:
-      - ./packages/notification/src:/app/src # Mount the notification service code directory
+      - ./packages/notification/src:/app/src
 
-  # 6. Post - Post service
   post:
     container_name: post_container
     build:
@@ -102,15 +102,14 @@ services:
       dockerfile: Dockerfile.dev # Use the Dockerfile created for the "post" service
     restart: always
     ports:
-      - 3005:3005 # Map port 3005 of the container to port 3005 on the host
-    env_file: ./packages/post/configs/.env # Environment variables file
+      - 3005:3005
+    env_file: ./packages/post/configs/.env
     volumes:
-      - ./packages/post/src:/app/src # Mount the post service code directory
+      - ./packages/post/src:/app/src
       - ./packages/post/dist:/app/dist
 
-# Secrets - Securely store sensitive data
 secrets:
   jwt_public_key:
-    file: .packages/api-gateway/public_key.pem # Path to JWT public key file
+    file: .packages/api-gateway/public_key.pem
   jwt_private_key:
     file: .packages/auth/private_key.pem # Path to JWT private key file

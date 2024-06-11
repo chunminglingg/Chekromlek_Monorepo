@@ -9,7 +9,7 @@ export default function Post() {
           profile="/card-svg/avatar.svg"
           hour={2}
           username="Kimlang Tieng"
-          caption="Why is it  s it that although China is already the second largest  in the world..already the second largest  in the worldalready the second largest  in the worldthat although China is already the second largest  in the world"
+          description="Why is it  s it that although China is already the second largest  in the world..already the second largest  in the worldalready the second largest  in the worldthat although China is already the second largest  in the world"
           id={"1"}
           title="HELLO"
           onLike={function (): void {
@@ -24,7 +24,7 @@ export default function Post() {
           hour={2}
           username="Kimlang Tieng"
           title="Why??"
-          caption="Why is it that although China is already the second largest  in the world."
+          description="Why is it that although China is already the second largest  in the world."
           postImage="/socialMedia/imageContent.svg"
           id={"2"}
           onLike={function (): void {
@@ -38,7 +38,7 @@ export default function Post() {
           profile="/card-svg/avatar.svg"
           hour={2}
           username="Kimlang Tieng"
-          caption="Why is it that although China is already the second largest  in the world."
+          description="Why is it that although China is already the second largest  in the world."
           postImage="/socialMedia/imageContent.svg"
           id={"3"}
           onLike={function (): void {

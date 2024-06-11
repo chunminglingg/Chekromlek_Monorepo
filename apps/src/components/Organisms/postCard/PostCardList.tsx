@@ -1,29 +1,27 @@
 "use client";
-import React, { useContext, useState, useEffect, useRef } from "react";
-import PostCard, { postCardProps } from "./PostCard"; // Assuming PostCard component is imported correctly
-import PostCardSkeleton from "./CardSkeleton"; // Importing the Skeleton component
-import { MyCardContext } from "@/contexts/PostCardContext/PostCardContext"; // Assuming correct path
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import PostCard, { postCardProps } from "./PostCard"; // Ensure this is the correct path to your PostCard component
+import PostCardSkeleton from "./CardSkeleton";
+// import PostCardSkeleton from './PostCardSkeleton'; // Uncomment if you have this component
 
-const PostCardList = ({ searchQuery = "" }) => {
-  const { CardInfo, nextToken, fetchMoreCards } = useContext(MyCardContext); // Updated context to include nextToken and fetchMoreCards
+const PostCardList = () => {
   const [loading, setLoading] = useState(false);
   const [displayedCards, setDisplayedCards] = useState<postCardProps[]>([]);
   const [hasMore, setHasMore] = useState(true);
+  const [nextToken, setNextToken] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const observer = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    // Only load cards if CardInfo is populated
-    if (CardInfo.length > 0) {
-      loadMoreCards();
-    }
-  }, [CardInfo]);
+    loadMoreCards();
+  }, []);
 
   useEffect(() => {
     const handleObserver = (entries: IntersectionObserverEntry[]) => {
       const target = entries[0];
-      if (target.isIntersecting && !loading) {
+      if (target.isIntersecting) {
         loadMoreCards();
       }
     };
@@ -35,66 +33,79 @@ const PostCardList = ({ searchQuery = "" }) => {
     return () => {
       if (observer.current) observer.current.disconnect();
     };
-  }, [loading, displayedCards]);
+  }, [loading, error]);
 
-  const loadMoreCards = () => {
+  const loadMoreCards = async () => {
     setLoading(true);
+    setError(null);
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/v1/post?page=1&limit=6"
+      );
+      console.log("Response data:", response); // Log full response data
 
-    // Simulate an API call to fetch more cards
-    fetchMoreCards(nextToken)
-      .then((newCardData: { newCards: any; newNextToken: any; }) => {
-        const { newCards, newNextToken } = newCardData;
+      // Destructure response data
+      const newCards = response.data;
 
+      // Check if newCards is an array before attempting to iterate over it
+      if (Array.isArray(newCards)) {
         setDisplayedCards((prev) => [...prev, ...newCards]);
+        // setNextToken(newNextToken);
         setLoading(false);
 
         if (newCards.length < 5) {
           setHasMore(false);
         }
-      })
-      .catch((error: any) => {
-        console.error("Error fetching more cards:", error);
-        setLoading(false);
-      });
+      } else {
+        throw new Error("newCards is not an array");
+      }
+    } catch (error) {
+      console.error("Error fetching more cards:", error);
+      setError("Failed to load more cards. Please try again later.");
+      setLoading(false);
+    }
   };
-
-  const filteredCardInfo = CardInfo.filter((info) => {
-    return searchQuery.trim() === ""
-      ? info
-      : info.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          (info.caption !== undefined &&
-            info.caption.toLowerCase().includes(searchQuery.toLowerCase())) ||
-          (info.title !== undefined &&
-            info.title.toLowerCase().includes(searchQuery.toLowerCase()));
-  });
 
   return (
     <div className="space-y-4">
-      {displayedCards.map((info) => (
-        <PostCard
-          key={info.id}
-          id={info.id}
-          hour={info.hour}
-          caption={info.caption}
-          profile={info.profile}
-          username={info.username}
-          postImage={info.postImage}
-          title={info.title}
-          onLike={() => console.log("Liked")}
-          onSave={() => console.log("Saved")}
-        />
-      ))}
-      {loading && (
+      {displayedCards.map((info) => {
+        return (
+          <PostCard
+            key={info.id}
+            id={info.id}
+            hour={info.hour}
+            description={info.description}
+            profile={info.profile}
+            username={info.username}
+            postImage={info.postImage}
+            title={info.title}
+            onLike={() => console.log("Liked")}
+            onSave={() => console.log("Saved")}
+          />
+        );
+      })}
+      {/* Uncomment this block if you have the PostCardSkeleton component */}
+       {loading && (
         <div className="space-y-4">
           {Array.from({ length: 5 }, (_, index) => (
             <PostCardSkeleton key={index} />
           ))}
         </div>
       )}
+      {error && <div className="text-center text-red-500">{error}</div>}
       {!hasMore && (
-        <div className="text-center text-[14px] text-[#6C757D] m-4 border rounded-md h-[20%] bg-slate-200">No more cards</div>
+        <div className="text-center text-[14px] text-[#6C757D] m-4 border rounded-md h-[20%] bg-slate-200">
+          No more cards
+        </div>
       )}
-      <div ref={loadMoreRef} className="text-center text-[20px] text-[#6C757D] m-4 rounded-md h-[35%] ">Loading...</div>
+      {!loading && !error && (
+        <div
+          ref={loadMoreRef}
+          className="text-center text-[20px] text-[#6C757D] m-4 rounded-md h-[35%] "
+        >
+          Loading...
+        </div>
+      )}
     </div>
   );
 };
