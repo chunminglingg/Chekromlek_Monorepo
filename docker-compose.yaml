@@ -1,16 +1,17 @@
-version: "3.8"
+version: "3.9"
 services:
-  # 1. RabbitMQ - A messaging service
   rabbitmq:
     container_name: rabbitmq_container
     image: rabbitmq:3.13-rc-management-alpine
     restart: always
     environment:
-      - RABBITMQ_DEFAULT_USER=myuser # Set default RabbitMQ user
-      - RABBITMQ_DEFAULT_PASS=mypassword # Set default RabbitMQ password
+      - RABBITMQ_DEFAULT_USER=myuser
+      - RABBITMQ_DEFAULT_PASS=mypassword
     ports:
-      - "5672:5672" # AMQP protocol port
-      - "15672:15672" # Management UI port
+      # AMQP protocol port
+      - "5672:5672"
+      # Management UI
+      - "15672:15672"
     healthcheck:
       test: ["CMD", "rabbitmqctl", "status"]
       interval: 30s
@@ -32,7 +33,7 @@ services:
       - AUTH_SERVICE_URL=http://auth:3001 # URL for the Auth service
       - USER_SERVICE_URL=http://user-profile:4000 # URL for the User Profile service
       - NOTIFICATION_SERVICE_URL=http://notification:3002 # URL for the Notification service
-      - POST_SERVICE_URL=http://post:3005 
+      - POST_SERVICE_URL=http://post:3005
       - CLIENT_URL=http://localhost:9000
     secrets:
       - jwt_public_key # Use JWT public key secret
@@ -72,7 +73,7 @@ services:
     volumes:
       - ./packages/users/src:/app/src # Mount the user profile service code directory
       - ./packages/users/dist:/app/dist
-   
+
   # 5. Notification - Notification sending service
   notification:
     container_name: notification_container
@@ -89,6 +90,7 @@ services:
     environment:
       - DOCKER_ENV=true # Indicate that it's a Docker environment
       - API_GATEWAY=http://gatway:3000 # URL for the Auth service
+      - RABBITMQ_ENDPOINT=amqp://myuser:mypassword@rabbitmq:5672
     volumes:
       - ./packages/notification/src:/app/src # Mount the notification service code directory
 
@@ -97,7 +99,7 @@ services:
     container_name: post_container
     build:
       context: ./packages/post # Path to the post service's code
-      dockerfile: Dockerfile.dev  # Use the Dockerfile created for the "post" service
+      dockerfile: Dockerfile.dev # Use the Dockerfile created for the "post" service
     restart: always
     ports:
       - 3005:3005 # Map port 3005 of the container to port 3005 on the host

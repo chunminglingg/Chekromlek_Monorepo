@@ -1,4 +1,5 @@
 export interface IEmailLocals {
+  token?: string;
   appLink?: string;
   appIcon?: string;
   username?: string;
@@ -10,7 +11,7 @@ export interface EmailApi {
   sendEmail(
     template: string,
     receiver: string,
-    locals: IEmailLocals
+    locals: IEmailLocals,
   ): Promise<void>;
 }
 
