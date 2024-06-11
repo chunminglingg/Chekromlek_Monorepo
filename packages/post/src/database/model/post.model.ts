@@ -13,7 +13,7 @@ const PostSchema = new mongoose.Schema(
     username: { type: mongoose.Schema.Types.String, ref: "User" },
     title: { type: String, required: true },
     description: { type: String, required: true },
-    postImage: { type: String, default: "jpg" },
+    postImage: { type: String },
     category: {
       type: String,
       enum: [

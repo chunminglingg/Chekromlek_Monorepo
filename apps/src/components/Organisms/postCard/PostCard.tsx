@@ -53,6 +53,7 @@ const PostCard: React.FC<postCardProps> = ({
 
   // Maximum length for the caption before truncation
   const maxCaptionLength = 100;
+  
 
   return (
     <div>

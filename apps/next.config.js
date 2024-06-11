@@ -16,9 +16,18 @@ module.exports = {
           },
         },
       ],
+      
     });
 
     return config;
   },
-
+  reactStrictMode: false,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
+  },
 };

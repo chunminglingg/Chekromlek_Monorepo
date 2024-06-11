@@ -213,6 +213,8 @@ const proxyConfigs: ProxyConfig = {
             if (responseBody.errors) {
               return res.status(proxyRes.statusCode!).json(responseBody);
             }
+            console.log("responseBody here!");
+            
 
             return res.status(proxyRes.statusCode!).json(responseBody);
           } catch (error) {
