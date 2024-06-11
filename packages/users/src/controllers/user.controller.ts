@@ -52,7 +52,16 @@ export class UserController {
       throw error;
     }
   }
-  
+  @SuccessResponse(StatusCode.Found, 'Found')
+  @Get('{id}')
+  public async FindUserById(@Path() id: string): Promise<any> {
+    try {
+      return await this.userService.getUserById(id);
+    } catch (error: unknown) {
+      throw error;
+    }
+  }
+
   @SuccessResponse(StatusCode.OK, 'OK')
   @Patch('{userId}')
   @Middlewares(verificationToken)
@@ -110,7 +119,7 @@ export class UserController {
   ): Promise<any> {
     try {
       const userId = request.authId;
-      const token = request.headers.authorization?.split(' ')[1];
+      // const token = request.headers.authorization?.split(' ')[1];
 
       if (!mongoose.Types.ObjectId.isValid(postId)) {
         throw new Error('Invalid post ID format');
@@ -125,29 +134,25 @@ export class UserController {
       if (!user) {
         throw new Error('User not found');
       }
+      const post = await axios.get(
+        `http://localhost:3005/v1/post?page=1&limit=6id=${postId}`,
+      );
 
       const existingFavoriteIndex = user.saves.findIndex((item) =>
-        item.equals(objectId),
+        item.equals(post.data[0]._id),
       );
       let isSave: boolean;
       if (existingFavoriteIndex !== -1) {
         // Remove post from favorites
-        user.saves.splice(existingFavoriteIndex, 1);
+        user?.saves.splice(existingFavoriteIndex, 1);
         isSave = false;
+        await user?.save();
       } else {
         // Add post to favorites
         user.saves.push(objectId);
         isSave = true;
       }
       await user.save();
-
-      await axios.get(
-        `http://localhost:3005/v1/post/${postId}/save`,
-
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
 
       return {
         message: `Post ${isSave ? 'added to' : 'removed from'} save successfully`,

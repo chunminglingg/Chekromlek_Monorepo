@@ -33,6 +33,7 @@ export class UserRepository {
       );
     }
   }
+
   async FindAuthById(authId: string) {
     try {
       const existingUser = await UserModel.findOne({ authId });
