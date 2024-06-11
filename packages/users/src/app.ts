@@ -2,7 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import hpp from 'hpp';
 import helmet from 'helmet';
 import cors from 'cors';
-import compression from 'compression';
+// import compression from 'compression';
 import { urlencoded } from 'body-parser';
 import swaggerUi from 'swagger-ui-express';
 import * as swaggerDocument from '../dist/swagger/swagger.json';
@@ -35,7 +35,7 @@ app.use(
 // =======================
 // Standard Middleware
 // =======================
-app.use(compression());
+// app.use(compression());
 app.use(express.json({ limit: '200mb' }));
 app.use(urlencoded({ extended: true, limit: '200mb' }));
 app.use(express.static('public'));
