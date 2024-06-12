@@ -148,7 +148,7 @@ export class UserController {
         throw new Error('User not found');
       }
       const post = await axios.get(
-        `http://post:3005/v1/post?page=1&limit=6id=${postId}`,
+        `http://localhost:3005/v1/post?page=1&limit=5id=${postId}`,
       );
 
       const existingFavoriteIndex = user.saves.findIndex((item) =>

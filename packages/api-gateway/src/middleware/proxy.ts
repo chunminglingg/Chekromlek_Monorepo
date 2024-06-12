@@ -180,47 +180,63 @@ const proxyConfigs: ProxyConfig = {
     selfHandleResponse: true,
     pathRewrite: (path, _req) => `${ROUTE_PATHS.POST_SERVICE}${path}`,
     on: {
-      proxyReq: (
-        proxyReq: ClientRequest,
-        req: IncomingMessage,
-        _res: Response
-      ) => {
+      proxyReq: (proxyReq, req, _res) => {
         logger.info(
           `Proxied request URL: ${proxyReq.protocol}//${proxyReq.host}${proxyReq.path}`
         );
         logger.info(`Headers Sent: ${JSON.stringify(proxyReq.getHeaders())}`);
-
-        // Extract JWT token from session
         const token = (req as Request).session!.jwt;
+        console.log(`Token sent: ${token}`);
+        // Extract JWT token from session
         proxyReq.setHeader("Authorization", `Bearer ${token}`);
       },
       proxyRes: (proxyRes, _req, res) => {
         let originalBody: Buffer[] = [];
-        proxyRes.on("data", function (chunk: Buffer) {
+        proxyRes.on("data", (chunk: Buffer) => {
           originalBody.push(chunk);
         });
-        proxyRes.on("end", function () {
+        proxyRes.on("end", () => {
           const bodyString = Buffer.concat(originalBody).toString("utf8");
-
-          let responseBody: {
-            message?: string;
-            token?: string;
-            errors?: Array<object>;
-          };
+          logger.info(`Response status code: ${proxyRes.statusCode}`);
+          logger.info(`Response headers: ${JSON.stringify(proxyRes.headers)}`);
+          logger.info(`Response body: ${bodyString}`);
+          if (proxyRes.statusCode === 304) {
+            return res.status(304).end();
+          }
 
           try {
-            responseBody = JSON.parse(bodyString);
+            if (!bodyString) {
+              logger.warn("Empty response body received from backend.");
+              return res
+                .status(proxyRes.statusCode || 500)
+                .json({ message: "Empty response body" });
+            }
 
-            // If Response Error
+            let responseBody;
+            try {
+              responseBody = JSON.parse(bodyString);
+            } catch (jsonError) {
+              logger.error(
+                "JSON Parsing Error:",
+                jsonError,
+                "Response Body:",
+                bodyString
+              );
+              return res.status(500).json({
+                message: "Invalid JSON response received from backend",
+              });
+            }
+
             if (responseBody.errors) {
               return res.status(proxyRes.statusCode!).json(responseBody);
             }
-            console.log("responseBody here!");
+
+            res.setHeader("Cache-Control", "no-store");
 
             return res.status(proxyRes.statusCode!).json(responseBody);
-          } catch (error: any) {
-            console.log("Error:", error);
-            return res.status(500).json({ message: error.message });
+          } catch (error) {
+            logger.error("Unhandled Error:", error);
+            return res.status(500).json({ message: "Internal Server Error" });
           }
         });
       },
