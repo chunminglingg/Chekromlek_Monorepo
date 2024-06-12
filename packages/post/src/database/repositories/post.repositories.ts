@@ -58,29 +58,46 @@ export class postRepository {
   public async FindPostByQueries(queryParams: QueryParams) {
     try {
       const { id, username, category, title, page, limit } = queryParams;
+      console.log("QueryParams:", queryParams); // Log the query parameters
+
       const query: { [key: string]: any } = {};
       if (username) query.username = { $regex: username, $options: "i" };
       if (title) query.title = { $regex: title, $options: "i" };
       if (category) query.category = category;
       if (id) query._id = id;
 
-      const Page = parseInt(page);
-      const sizePage = parseInt(limit);
-      const startIndex = (Page - 1) * sizePage;
-      const endIndex = Page * sizePage;
-      console.log(startIndex, endIndex);
+      // console.log("Query:", query); // Log the constructed query
 
-      const post = await PostModel.find(query ? query : {})
+      const pageNumber = parseInt(page, 10) || 1;
+      const pageSize = parseInt(limit, 10) || 10;
+
+      const startIndex = (pageNumber - 1) * pageSize;
+      // console.log(
+      //   "Pagination - Page Number:",
+      //   pageNumber,
+      //   "Page Size:",
+      //   pageSize,
+      //   "Start Index:",
+      //   startIndex
+      // );
+
+      const posts = await PostModel.find(query)
         .skip(startIndex)
-        .limit(sizePage);
-      if (post.length === 0) {
-        throw new APIError("No more posts available", StatusCode.NotFound);
-      }
+        .limit(pageSize)
+        .exec();
+      // console.log("Fetched Posts:", posts);
 
-      return post;
+      const totalPosts = await PostModel.countDocuments(query).exec();
+      const hasMore = startIndex + posts.length < totalPosts;
+      // console.log("Total Posts:", totalPosts, "Has More:", hasMore);
+
+      return { posts, hasMore };
     } catch (error) {
-      console.error("Error fetching posts from database:", error);
-      throw error;
+      // console.error("Error fetching posts from database:", error);
+      throw new APIError(
+        "Failed to fetch posts",
+        StatusCode.InternalServerError
+      );
     }
   }
 

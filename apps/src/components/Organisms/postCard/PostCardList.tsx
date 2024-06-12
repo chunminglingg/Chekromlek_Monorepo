@@ -3,16 +3,15 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import PostCard, { postCardProps } from "./PostCard"; // Ensure this is the correct path to your PostCard component
 import PostCardSkeleton from "./CardSkeleton";
-// import PostCardSkeleton from './PostCardSkeleton'; // Uncomment if you have this component
 
 const PostCardList = () => {
   const [loading, setLoading] = useState(false);
   const [displayedCards, setDisplayedCards] = useState<postCardProps[]>([]);
   const [hasMore, setHasMore] = useState(true);
-  const [nextToken, setNextToken] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const observer = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     loadMoreCards();
@@ -21,7 +20,7 @@ const PostCardList = () => {
   useEffect(() => {
     const handleObserver = (entries: IntersectionObserverEntry[]) => {
       const target = entries[0];
-      if (target.isIntersecting) {
+      if (target.isIntersecting && hasMore && !loading) {
         loadMoreCards();
       }
     };
@@ -33,59 +32,50 @@ const PostCardList = () => {
     return () => {
       if (observer.current) observer.current.disconnect();
     };
-  }, [loading, error]);
+  }, [loading, hasMore]);
 
   const loadMoreCards = async () => {
     setLoading(true);
     setError(null);
     try {
       const response = await axios.get(
-        "http://localhost:3000/v1/post?page=1&limit=6"
+        `http://localhost:3000/v1/post?page=${page}&limit=6`
       );
-      console.log("Response data:", response); // Log full response data
+      const { posts, hasMore: morePosts } = response.data; // Destructure according to expected structure
+      // console.log("Posts:", posts, "Has More:", morePosts);
 
-      // Destructure response data
-      const newCards = response.data;
-
-      // Check if newCards is an array before attempting to iterate over it
-      if (Array.isArray(newCards)) {
-        setDisplayedCards((prev) => [...prev, ...newCards]);
-        // setNextToken(newNextToken);
-        setLoading(false);
-
-        if (newCards.length < 5) {
-          setHasMore(false);
-        }
+      if (Array.isArray(posts)) {
+        setDisplayedCards((prev) => [...prev, ...posts]);
+        setPage((prevPage) => prevPage + 1);
+        setHasMore(morePosts);
       } else {
-        throw new Error("newCards is not an array");
+        throw new Error("Posts data is not an array");
       }
     } catch (error) {
-      console.error("Error fetching more cards:", error);
+      // console.error("Error fetching more cards:", error);
       setError("Failed to load more cards. Please try again later.");
+    } finally {
       setLoading(false);
     }
   };
 
   return (
     <div className="space-y-4">
-      {displayedCards.map((info) => {
-        return (
-          <PostCard
-            key={info.id}
-            id={info.id}
-            hour={info.hour}
-            description={info.description}
-            profile={info.profile}
-            username={info.username}
-            postImage={info.postImage}
-            title={info.title}
-            onLike={() => console.log("Liked")}
-            onSave={() => console.log("Saved")}
-          />
-        );
-      })}
-      {/* Uncomment this block if you have the PostCardSkeleton component */}
-       {loading && (
+      {displayedCards.map((info) => (
+        <PostCard
+          key={info.id}
+          id={info.id}
+          hour={info.hour}
+          description={info.description}
+          profile={info.profile}
+          username={info.username}
+          postImage={info.postImage}
+          title={info.title}
+          onLike={() => console.log("Liked")}
+          onSave={() => console.log("Saved")}
+        />
+      ))}
+      {loading && (
         <div className="space-y-4">
           {Array.from({ length: 5 }, (_, index) => (
             <PostCardSkeleton key={index} />
@@ -98,14 +88,12 @@ const PostCardList = () => {
           No more cards
         </div>
       )}
-      {!loading && !error && (
-        <div
-          ref={loadMoreRef}
-          className="text-center text-[20px] text-[#6C757D] m-4 rounded-md h-[35%] "
-        >
-          Loading...
-        </div>
-      )}
+      <div
+        ref={loadMoreRef}
+        className="text-center text-[20px] text-[#6C757D] m-4 rounded-md h-[35%] "
+      >
+        {loading ? "Loading..." : ""}
+      </div>
     </div>
   );
 };
