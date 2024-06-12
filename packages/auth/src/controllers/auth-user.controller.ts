@@ -5,6 +5,7 @@ import {
   Route,
   SuccessResponse,
   Tags,
+  Header,
   Get,
   Middlewares,
 } from "tsoa";
@@ -25,6 +26,7 @@ import { authChannel } from "../utils/server";
 import dotenv from "dotenv";
 import getConfig from "../utils/config";
 import DuplicateError from "../errors/duplicate-error";
+import { decodedToken } from "../utils/decodedToken";
 
 dotenv.config();
 interface LoginRequestBody {
@@ -59,7 +61,7 @@ export class UserAuthController {
         email,
         password,
       });
-      
+
       const verificationToken = await this.userService.SendEmailToken({
         userId: newUser._id.toString(),
       });
@@ -96,9 +98,7 @@ export class UserAuthController {
   }
   @SuccessResponse(StatusCode.OK, "OK")
   @Get("/verify")
-  public async VerifyEmail(
-    @Query() token: string
-  ): Promise<{ message: string; token: string }> {
+  public async VerifyEmail(@Query() token: string): Promise<any> {
     try {
       // Verify the email token
       const user = await this.userService.VerifyEmailToken({ token });
@@ -117,7 +117,7 @@ export class UserAuthController {
 
       // dev: localhost
       // docker: http://user-profile:4000...
-      await axios.post("http://user-profile:4000/v1/users", {
+      await axios.post("http://localhost:4000/v1/users", {
         authId: userDetail.id,
         username: userDetail.username,
         email: userDetail.email,
@@ -143,10 +143,7 @@ export class UserAuthController {
         userId: user._id,
         username: user.username,
       });
-      console.log({
-        message: "User verified email successfully",
-        token: jwtToken,
-      });
+
       return { message: "User verified email successfully", token: jwtToken };
     } catch (error) {
       logger.error(`Error verifying email token: ${error}`);
@@ -167,7 +164,7 @@ export class UserAuthController {
   @Middlewares(validateInput(AuthUserSignInSchema))
   public async LoginWithEmail(
     @Body() requestBody: LoginRequestBody
-  ): Promise<{ token: string }> {
+  ): Promise<any> {
     try {
       const { email, password } = requestBody;
       // Call the userService to perform the login operation
@@ -181,6 +178,7 @@ export class UserAuthController {
       }
       // Return the JWT token in the response
       return {
+        message: "Login Successfully",
         token: jwtToken,
       };
     } catch (error: unknown) {
@@ -419,5 +417,17 @@ export class UserAuthController {
         StatusCode.InternalServerError
       );
     }
+  }
+  @Get("/logout")
+  async logout(@Header("authorization") authorization: string): Promise<any> {
+    try {
+      const token = authorization?.split(" ")[1];
+      const decodedUser = await decodedToken(token);
+      const isLogOut = await this.userService.logout(decodedUser);
+      if (!isLogOut) {
+        throw new APIError("Unable to logout!");
+      }
+      return { message: "Logout Successfully", data: isLogOut };
+    } catch (error) {}
   }
 }
