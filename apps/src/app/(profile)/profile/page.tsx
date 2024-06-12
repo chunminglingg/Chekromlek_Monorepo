@@ -11,12 +11,12 @@ interface userDataTypes {
   _id: string;
   username: string;
   email: string;
-  saves: string[];
-  post: string[];
   work: string;
   answers: number;
   posts: number;
-  createdAt: Date;
+  bio: string;
+  gender: string;
+  profile: string;
 }
 
 const Page = () => {
@@ -28,18 +28,15 @@ const Page = () => {
       const response = await axios.get(
         "http://localhost:3000/v1/users/profile",
         {
-          withCredentials: true, // This ensures the cookies are sent with the request
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
         }
       );
-      console.log(response.data.username);
-
-      // Validate the response and ensure it's JSON
-      if (response.headers["content-type"].includes("application/json")) {
-        setUserData(response.data.data); // Assuming 'data' contains the user object
-      } else {
-        console.error("Response is not in JSON format");
+      if (response) {
+        setUserData(response.data.user);
       }
     } catch (error: any) {
+
       if (error.response) {
         console.error("Error response:", error.response.data);
       } else if (error.request) {
@@ -58,6 +55,11 @@ const Page = () => {
   if (!userData) {
     return <div>Loading...</div>;
   }
+
+  const { username, work, answers, posts,profile, bio } = userData;
+  console.log("username:",username);
+  
+
   return (
     <>
       <div className="content flex flex-col justify-center items-center">
@@ -67,25 +69,23 @@ const Page = () => {
             <div className="user-profile max-sm:mt-2">
               <Image
                 alt="profile"
-                src={"/card-svg/avatar.svg"}
+                src={ `${profile}` || "/card-svg/avatar.svg"}
                 width={98}
                 height={98}
               />
             </div>
             <div className="user-info flex flex-col">
               <div className="user-name font-medium text-[30px] text-[#343A40] max-sm:text-[14px] ">
-                {userData.username}
+                {username}
               </div>
               <div className="been-post text-[#6C757D] text-[15px] font-sans flex flex-row gap-10">
-                <p>{userData.posts} Posts</p>
-                <p>{userData.answers} Answers</p>
+                <p>{posts} Posts</p>
+                <p>{answers} Answers</p>
               </div>
               <div className="Category text-[#623cbb] text-[15px] font-medium">
-                {userData.work}
+                {work}
               </div>
-              <div className="bio text-[#6C757D] font-light text-base">
-                Bio
-              </div>
+              <div className="bio text-[#6C757D] font-light text-base">{bio}</div>
             </div>
           </div>
           <div className="header-right pb-28 pr-8">
@@ -100,7 +100,7 @@ const Page = () => {
               className="flex flex-row gap-1"
               onClick={() => setView("Post")}
             >
-              <p>{userData.post.length}</p>
+              <p>Post</p>
               <Image
                 alt="post"
                 src={"/profile-page/postss.svg"}
@@ -117,7 +117,7 @@ const Page = () => {
               className="flex flex-row gap-1"
               onClick={() => setView("SavedPost")}
             >
-              <p>{userData.saves.length}</p>
+              <p>Saved</p>
               <Image
                 alt="save"
                 src={"/profile-page/savee.svg"}

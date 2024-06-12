@@ -57,7 +57,7 @@ export class UserController {
     }
   }
 
-  @SuccessResponse(StatusCode.Found, 'Found')
+  @SuccessResponse(StatusCode.Accepted, 'Accepted')
   @Get('/profile')
   @Middlewares(verificationToken)
   public async FindUserById(@Request() request: any): Promise<any> {
@@ -67,7 +67,10 @@ export class UserController {
       if (!user) {
         throw new APIError('User Not Found!!', StatusCode.NotFound);
       }
-      return user;
+      return {
+        message: "Get user info succesful",
+        user: user
+      };
     } catch (error: unknown) {
       throw error;
     }

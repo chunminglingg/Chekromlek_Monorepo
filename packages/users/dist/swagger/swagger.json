@@ -138,8 +138,8 @@
 			"get": {
 				"operationId": "FindUserById",
 				"responses": {
-					"302": {
-						"description": "Found",
+					"202": {
+						"description": "Accepted",
 						"content": {
 							"application/json": {
 								"schema": {}

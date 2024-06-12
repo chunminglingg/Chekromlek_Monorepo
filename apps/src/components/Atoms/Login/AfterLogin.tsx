@@ -1,24 +1,58 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { SideLeft } from "@/components/Molecules";
-import axios from 'axios'
+import axios from 'axios';
 
 const AfteLogin = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [username, setUsername] = useState<string | null>(null);
+
   const toggleDropdown = () => setIsOpen(!isOpen);
-  
-  const nameUser = "Kimlang Tieng"
+
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/v1/users/profile",
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+      if (response && response.data) {
+        const { username } = response.data.user;        
+        setUsername(username);
+      }
+    } catch (error: any) {
+      if (error.response) {
+        console.error("Error response:", error.response.data);
+      } else if (error.request) {
+        console.error("Error request:", error.request);
+      } else {
+        console.error("Error message:", error.message);
+      }
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
 
   return (
     <>
       <div className="relative">
         <button
-          className="flex flex-row gap-2 w-auto px-4 h-[50px] items-center justify-center rounded-xl shadow-sm  hover:border-[#D9D9D9] hover:border"
+          className="flex flex-row gap-2 w-auto px-4 h-[50px] items-center justify-center rounded-xl shadow-sm hover:border-[#D9D9D9] hover:border"
           onClick={toggleDropdown}
         >
-          Welcome, { nameUser.length > 6 ? nameUser.substring(0, 7) : nameUser }
+          {username ? (
+            <>
+              Welcome, {username.length > 6 ? `${username.substring(0, 7)}...` : username}
+            </>
+          ) : (
+            "Loading..."
+          )}
           {isOpen ? (
             <svg
               width="24"
@@ -42,21 +76,23 @@ const AfteLogin = () => {
           )}
         </button>
         {isOpen && (
-          <div className="absolute mt-1 w-auto px-24 shadow-md rounded-md bg-white z-55 pl-2 right-0 ">
+          <div className="absolute mt-1 w-auto px-24 shadow-md rounded-md bg-white z-55 pl-2 right-0">
             <ul className="px-2 py-5 flex flex-col gap-4">
               <li>
-                <Link href={"/profile"}>
-                  <button className="hover:font-medium" >Profile</button>
+                <Link href="/profile">
+                  <button className="hover:font-medium">Profile</button>
                 </Link>
               </li>
               <li>
-                <Link href={"/setting/"}>
+                <Link href="/setting">
                   <button className="hover:font-medium">Setting</button>
                 </Link>
               </li>
               <li>
-                <Link href={"/signup/"}>
-                  <button className="text-red-400 hover:font-medium items-start justify-start">Log Out</button>
+                <Link href="/signup">
+                  <button className="text-red-400 hover:font-medium items-start justify-start">
+                    Log Out
+                  </button>
                 </Link>
               </li>
             </ul>

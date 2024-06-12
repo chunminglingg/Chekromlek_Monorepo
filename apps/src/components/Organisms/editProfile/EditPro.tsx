@@ -100,7 +100,7 @@ export function EditProfile() {
         <div className="flex flex-col items-start justify-center gap-1 outline-none">
           {/* Select Job Title */}
           <div className="flex flex-col w-full focus:outline-none">
-            <label className="text-left">Job Title</label>
+            <label className="text-left pb-1">Job Title</label>
             <Select value={job} onValueChange={handleJobSelect}>
               <SelectTrigger className="w-full focus:outline-none">
                 <SelectValue placeholder="Select a Job" />
