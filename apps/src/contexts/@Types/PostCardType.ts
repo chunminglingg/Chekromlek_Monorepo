@@ -4,7 +4,7 @@ export interface PostCardType {
   profile: string;
   hour: number;
   username: string;
-  caption?: string;
+  description?: string;
   postImage?: string;
   isFavorite: boolean
 }

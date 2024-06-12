@@ -9,9 +9,9 @@ import hpp from "hpp";
 import { logger } from "./utils/logger";
 import { StatusCode } from "./utils/consts";
 import { errorHandler } from "./middleware/error-handler";
-import { verifyUser } from "./middleware/auth-middleware";
+// import { verifyUser } from "./middleware/auth-middleware";
 import getConfig from "./utils/createConfig";
-import unless from "./middleware/unless-route";
+// import unless from "./middleware/unless-route"; 
 
 const app = express();
 
@@ -65,7 +65,7 @@ app.disable("x-powered-by");
 // ===================
 // JWT Middleware
 // ===================
-app.use(unless("/v1/auth", verifyUser));
+// app.use(unless("/v1/auth", verifyUser));
 
 // ===================
 // Proxy Routes

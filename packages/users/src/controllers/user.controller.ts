@@ -61,6 +61,17 @@ export class UserController {
       throw error;
     }
   }
+  @Get('/profile')
+  @Middlewares(verificationToken)
+  public async getProfile(@Request() request: any): Promise<any> {
+    try {
+      const userInfo = await this.userService.getUserById(request.id)
+      console.log(userInfo);
+      
+    } catch (error: unknown) {
+
+    }
+  }
 
   @SuccessResponse(StatusCode.OK, 'OK')
   @Patch('{userId}')
