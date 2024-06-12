@@ -5,22 +5,49 @@ import Post from "@/components/Organisms/ProfileUser/Post";
 import SavedPost from "@/components/Organisms/ProfileUser/SavedPost";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import axios from 'axios'
+import axios from "axios";
+
+interface userDataTypes {
+  _id: string;
+  username: string;
+  email: string;
+  saves: string[];
+  post: string[];
+  work: string;
+  answers: number;
+  posts: number;
+  createdAt: Date;
+}
 
 const Page = () => {
   const [view, setView] = useState("Post");
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState<userDataTypes | null>(null);
 
   const fetchUserData = async () => {
     try {
-      
-      const response = await axios.get('http://localhost:3000/v1/users/info', {
-        withCredentials: true, // This ensures the cookies are sent with the request
-      });
-      console.log(response);
-      
-    } catch (error) {
-      console.error('Error fetching user data:', error);
+      const response = await axios.get(
+        "http://localhost:3000/v1/users/profile",
+        {
+          withCredentials: true, // This ensures the cookies are sent with the request
+        }
+      );
+      console.log(response.data.username);
+
+      // Validate the response and ensure it's JSON
+      if (response.headers["content-type"].includes("application/json")) {
+        setUserData(response.data.data); // Assuming 'data' contains the user object
+      } else {
+        console.error("Response is not in JSON format");
+      }
+    } catch (error: any) {
+      if (error.response) {
+        console.error("Error response:", error.response.data);
+      } else if (error.request) {
+        console.error("Error request:", error.request);
+      } else {
+        console.error("Error message:", error.message);
+      }
+      console.error("Error fetching user data:", error);
     }
   };
 
@@ -45,19 +72,19 @@ const Page = () => {
                 height={98}
               />
             </div>
-            <div className="user-infor flex flex-col">
+            <div className="user-info flex flex-col">
               <div className="user-name font-medium text-[30px] text-[#343A40] max-sm:text-[14px] ">
-                Kimlang Tieng
+                {userData.username}
               </div>
               <div className="been-post text-[#6C757D] text-[15px] font-sans flex flex-row gap-10">
-                <p>82 Posts</p>
-                <p>82 Answers</p>
+                <p>{userData.posts} Posts</p>
+                <p>{userData.answers} Answers</p>
               </div>
               <div className="Category text-[#623cbb] text-[15px] font-medium">
-                #Web Designer
+                {userData.work}
               </div>
               <div className="bio text-[#6C757D] font-light text-base">
-                Here is my bio of my account
+                Bio
               </div>
             </div>
           </div>
@@ -73,7 +100,7 @@ const Page = () => {
               className="flex flex-row gap-1"
               onClick={() => setView("Post")}
             >
-              <p>Post</p>
+              <p>{userData.post.length}</p>
               <Image
                 alt="post"
                 src={"/profile-page/postss.svg"}
@@ -90,7 +117,7 @@ const Page = () => {
               className="flex flex-row gap-1"
               onClick={() => setView("SavedPost")}
             >
-              <p>Saved</p>
+              <p>{userData.saves.length}</p>
               <Image
                 alt="save"
                 src={"/profile-page/savee.svg"}

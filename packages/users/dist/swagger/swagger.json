@@ -134,7 +134,7 @@
 				"parameters": []
 			}
 		},
-		"/v1/users/info": {
+		"/v1/users/profile": {
 			"get": {
 				"operationId": "FindUserById",
 				"responses": {
