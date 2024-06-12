@@ -11,8 +11,6 @@ const AfteLogin = () => {
   
   const nameUser = "Kimlang Tieng"
 
-  const response = axios.get(`http://localhost:3000/users`)
-
   return (
     <>
       <div className="relative">
