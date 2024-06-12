@@ -50,9 +50,11 @@ const Typography: React.FC<TypoProps> = ({
       case "submit":
         return "text-white";
       case "wearing":
-        return "text-red-500"; 
-      case "success":
-        return "text-green-500"; 
+        return "text-red-500";  
+      case "categories":
+        return "text-purple-600"  
+      case "maintenance":
+        return "text-yellow-500"; 
       default:
         return "text-black";
     }

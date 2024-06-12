@@ -26,11 +26,12 @@ app.use(hpp());
 app.use(helmet());
 app.use(
   cors({
-    origin: config.apiGatewayUrl,
+    origin: [config.apiGatewayUrl as string, "http://localhost:3000"],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   })
 );
+
 
 // =======================
 // Standard Middleware

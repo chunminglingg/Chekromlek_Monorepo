@@ -167,10 +167,13 @@ export class UserAuthService {
         StatusCode.BadRequest
       );
     }
-    const isPwdCorrect = await validationPassword({
-      enterPassword: userDetail.password,
-      savedPassword: auth.password as string,
-    });
+    const isPwdCorrect =
+      auth.password &&
+      (await validationPassword({
+        enterPassword: userDetail.password,
+        savedPassword: auth.password,
+      }));
+
     if (!isPwdCorrect) {
       throw new CustomError(
         "The email or password you entered is incorrect. Please double-check and try again.",
