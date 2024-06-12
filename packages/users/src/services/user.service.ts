@@ -20,7 +20,7 @@ export class UserService {
   }
   async UpdateById(authId: string, update: IUser) {
     try {
-      const users = this.userRepo.FindAuthById(authId);
+      const users = this.userRepo.FindUserById(authId);
       console.log('user', users);
       if (!users) {
         throw new APIError('User not found', StatusCode.NotFound);

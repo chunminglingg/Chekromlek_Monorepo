@@ -76,7 +76,7 @@ const proxyConfigs: ProxyConfig = {
             res.status(proxyRes.statusCode!).json(filteredResponseBody);
           } catch (error: any) {
             logger.error(`Proxy Response Error: ${error}`);
-            return res.status(500).json({ message: "error from service" });
+            return res.status(500).json({ message: error.message });
           }
         });
       },
@@ -145,8 +145,9 @@ const proxyConfigs: ProxyConfig = {
             }
 
             return res.status(proxyRes.statusCode!).json(responseBody);
-          } catch (error) {
-            return res.status(500).json({ message: "Error parsing response" });
+          } catch (error: any) {
+            console.log("Error:", error);
+            return res.status(500).json({ message: error.message });
           }
         });
       },
@@ -217,9 +218,9 @@ const proxyConfigs: ProxyConfig = {
             
 
             return res.status(proxyRes.statusCode!).json(responseBody);
-          } catch (error) {
+          } catch (error: any) {
             console.log("Error:", error);
-            return res.status(500).json({ message: "Error parsing response" });
+            return res.status(500).json({ message: error.message });
           }
         });
       },

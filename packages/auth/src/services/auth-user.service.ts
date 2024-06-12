@@ -14,6 +14,7 @@ import { authChannel } from "../utils/server";
 import { UserSignInResult } from "./@types/auth-user.types";
 import DuplicateError from "../errors/duplicate-error";
 import mongoose from "mongoose";
+import axios from "axios";
 
 export class UserAuthService {
   private userRepo: UserAuthRpository;
@@ -49,7 +50,7 @@ export class UserAuthService {
     } catch (error: unknown) {
       if (error instanceof DuplicateError) {
         const existedUser = await this.userRepo.FindUser({
-          email: user.email ?? "",
+          email: user.email as string,
         });
         if (!existedUser?.isVerified) {
           const token = await this.verificationRepo.FindVerificationTokenById({
@@ -175,7 +176,7 @@ export class UserAuthService {
 
     if (!isPwdCorrect) {
       throw new CustomError(
-        "Email or Password is incorrect",
+        "The email or password you entered is incorrect. Please double-check and try again.",
         StatusCode.BadRequest
       );
     }
@@ -259,6 +260,21 @@ export class UserAuthService {
 
       return user;
     } catch (error: unknown) {
+      throw error;
+    }
+  }
+  async logout(decodedUser: any) {
+    try {
+      const { authId } = decodedUser;
+      console.log("id from service: ", authId);
+      const existedUser = await axios.get(
+        `http://localhost:4000/v1/users/${authId}`
+      );
+      if (!existedUser) {
+        throw new APIError("No user found!", StatusCode.NotFound);
+      }
+      return true;
+    } catch (error) {
       throw error;
     }
   }

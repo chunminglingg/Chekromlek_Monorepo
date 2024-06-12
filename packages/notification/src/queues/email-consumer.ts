@@ -61,7 +61,7 @@ export async function consumeAuthEmailMessages(
               appLink: `${getConfig().clientUrl}`,
               appIcon: ``,
               username,
-              resetLink: `http://localhost:3001/v1/auth/reset-password/token?token=${verifyLink}`,
+              resetLink: `${getConfig().clientUrl}`,
             };
             break;
           case 'resetPassword':
