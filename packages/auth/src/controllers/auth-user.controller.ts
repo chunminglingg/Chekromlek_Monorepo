@@ -144,6 +144,10 @@ export class UserAuthController {
         username: user.username,
       });
 
+      console.log({
+        message: "User verified email successfully",
+        token: jwtToken,
+      });
       return { message: "User verified email successfully", token: jwtToken };
     } catch (error) {
       logger.error(`Error verifying email token: ${error}`);

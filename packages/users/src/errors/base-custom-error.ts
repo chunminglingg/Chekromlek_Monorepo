@@ -1,4 +1,4 @@
-import { SerializedErrorOutput } from "./@types/serialized-error-output";
+import { SerializedErrorOutput } from './@types/serialized-error-output';
 
 export default abstract class BaseCustomError extends Error {
   public statusCode: number;

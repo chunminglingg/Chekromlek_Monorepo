@@ -134,36 +134,12 @@
 				"parameters": []
 			}
 		},
-		"/v1/users/{id}": {
+		"/v1/users/info": {
 			"get": {
 				"operationId": "FindUserById",
 				"responses": {
 					"302": {
 						"description": "Found",
-						"content": {
-							"application/json": {
-								"schema": {}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			},
-			"post": {
-				"operationId": "FindSavePost",
-				"responses": {
-					"302": {
-						"description": "Found Successfully",
 						"content": {
 							"application/json": {
 								"schema": {}
@@ -323,6 +299,23 @@
 						}
 					}
 				]
+			}
+		},
+		"/v1/users/{id}": {
+			"post": {
+				"operationId": "FindSavePost",
+				"responses": {
+					"302": {
+						"description": "Found Successfully",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
 			}
 		}
 	},

@@ -58,7 +58,6 @@ services:
       - rabbitmq
     volumes:
       - ./packages/auth/src:/app/src
-      - ./packages/auth/dist:/app/dist
 
   user-profile:
     container_name: user-profile_container
@@ -72,9 +71,7 @@ services:
     env_file: ./packages/users/configs/.env
     volumes:
       - ./packages/users/src:/app/src
-      - ./packages/users/dist:/app/dist
 
-  # 5. Notification - Notification sending service
   notification:
     container_name: notification_container
     build:
@@ -90,7 +87,7 @@ services:
         condition: service_healthy
     environment:
       - DOCKER_ENV=true # Indicate that it's a Docker environment
-      - API_GATEWAY=http://gatway:3000 # URL for the Auth service
+      - API_GATEWAY=http://gateway:3000 # URL for the API Gateway service
       - RABBITMQ_ENDPOINT=amqp://myuser:mypassword@rabbitmq:5672
     volumes:
       - ./packages/notification/src:/app/src
@@ -106,10 +103,10 @@ services:
     env_file: ./packages/post/configs/.env
     volumes:
       - ./packages/post/src:/app/src
-      - ./packages/post/dist:/app/dist
 
 secrets:
   jwt_public_key:
-    file: .packages/api-gateway/public_key.pem
+    file: ./packages/api-gateway/configs/public_key.pem
+    
   jwt_private_key:
-    file: .packages/auth/private_key.pem # Path to JWT private key file
+    file: ./packages/auth/configs/private_key.pem # Path to JWT private key file

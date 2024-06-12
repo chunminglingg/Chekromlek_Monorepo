@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "start:dev": "cross-env NODE_ENV=development nodemon -r tsconfig-paths/register src/server.ts",
+    "start:dev": "cross-env NODE_ENV=development nodemon -r tsconfig-paths/register --legacy-watch src/server.ts",
     "dev": "nodemon --exec ts-node -r tsconfig-paths/register src/server.ts ",
     "test": "jest",
     "swagger": "tsoa spec-and-routes"

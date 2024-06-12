@@ -27,7 +27,7 @@ app.use(
     keys: [`${config.cookieSecretKeyOne}`, `${config.cookieSecretKeyTwo}`],
     maxAge: 24 * 7 * 3600000,
     secure: config.env !== "development", // update with value from config
-    ...(config.env !== "development" && {
+    ...(config.env !== "development" && { 
       sameSite: "none",
     }),
   })

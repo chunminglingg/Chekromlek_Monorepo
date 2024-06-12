@@ -37,6 +37,7 @@ export class UserRepository {
   async FindAuthById(authId: string) {
     try {
       const existingUser = await UserModel.findOne({ authId });
+
       return existingUser;
     } catch (error) {
       throw new APIError('Cannot Find User in Database');
@@ -101,4 +102,27 @@ export class UserRepository {
       throw new CustomError('Cannot Find user in Database');
     }
   }
+
+  /*
+  1.Check if a user with the given authId exists.
+  2.If the user exists, find the user by authId.
+  3.If the user is found, return the user's data.
+  4.Handle cases where the user is not found or if there are any errors.
+  */
+  async FindUserProfile(authId: string) {
+    try {
+      const existingUser = await UserModel.findOne({ authId });
+      if (!existingUser) {
+        logger.error(`User ${authId} not found`);
+        throw new APIError('User not found');
+      }
+  
+      // Return the found user
+      return existingUser;
+    } catch (error: any) {
+      logger.error(`Error finding user profile: ${error.message}`);
+      throw new APIError('Cannot Find User in Database');
+    }
+  }
+  
 }

@@ -1,4 +1,5 @@
 import { IUser } from '@users/database/models/user.model';
+import APIError from '@users/errors/api-error';
 import CustomError from '@users/errors/custom-erorrs';
 import { verificationToken } from '@users/middlewares/auth-token-validate';
 import { UserService } from '@users/services/user.service';
@@ -21,9 +22,11 @@ import {
 @Route('v1/users')
 export class UserController {
   private userService: UserService;
+
   constructor() {
     this.userService = new UserService();
   }
+
   @SuccessResponse(StatusCode.Created, 'Created')
   @Post('/')
   // @Middlewares(validateInput(UserSaveSchema))
@@ -44,19 +47,30 @@ export class UserController {
       throw error;
     }
   }
+
   @Get('/')
-  public async showAllUser(): Promise<any> {
+  public async showAllUser(): Promise<any> {  
     try {
       return await this.userService.showAllUser();
     } catch (error: unknown) {
       throw error;
     }
   }
+
   @SuccessResponse(StatusCode.Found, 'Found')
-  @Get('{id}')
-  public async FindUserById(@Path() id: string): Promise<any> {
+  @Get('/profile')
+  @Middlewares(verificationToken)
+  public async FindUserById(@Request() request: any): Promise<any> {
     try {
-      return await this.userService.getUserById(id);
+      const user = await this.userService.getAuthById(request.authId);
+      // console.log(request.authId);
+      if (!user) {
+        throw new APIError('User Not Found!!', StatusCode.NotFound);
+      }
+      return {
+        message: 'Get user profile successfully',
+        data: user,
+      };
     } catch (error: unknown) {
       throw error;
     }
@@ -82,6 +96,7 @@ export class UserController {
       throw error;
     }
   }
+
   @SuccessResponse(StatusCode.OK, 'OK')
   @Get('/auth/:authId')
   // @Middlewares(verificationToken)
@@ -110,6 +125,7 @@ export class UserController {
       throw error;
     }
   }
+
   @SuccessResponse(StatusCode.OK, 'Add/Remove Save successfully')
   @Post('/:postId/save')
   @Middlewares(verificationToken)
@@ -162,6 +178,7 @@ export class UserController {
       throw new CustomError(`${error}`);
     }
   }
+
   @SuccessResponse(StatusCode.OK, 'Add/Remove Save successfully')
   @Patch('/:postId/addpost')
   @Middlewares(verificationToken)
@@ -234,7 +251,7 @@ export class UserController {
       );
       return {
         message: 'Favorite events found successfully',
-        data: posts, // not wokring yet
+        data: posts, // not working yet
       };
     } catch (error) {
       throw new CustomError(
@@ -243,4 +260,30 @@ export class UserController {
       );
     }
   }
+
+  // @SuccessResponse(StatusCode.OK, 'Get a user successfully')
+  // @Get('/profile')
+  // @Middlewares(verificationToken)
+  // public async getUserProfile(@Path() request: any): Promise<any> {
+
+  //   const userId = request.authId
+  //   logger.debug(request)
+  //   logger.debug(`authId: ${userId}`);
+
+  //   try {
+
+  //     const user = await this.userService.getUserProfile(userId);
+  //     if (!user) {
+  //       throw new Error('User not found');
+  //     }
+
+  //     return {
+  //       message: 'User profile fetched successfully',
+  //       data: user,
+  //     };
+  //   } catch (error: any) {
+  //     logger.error('Controller Get User Profile Error:', error.message);
+  //     throw new Error('Failed to fetch user profile: ' + error.message);
+  //   }
+  // }
 }
