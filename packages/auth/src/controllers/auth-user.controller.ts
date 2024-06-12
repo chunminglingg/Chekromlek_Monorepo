@@ -180,7 +180,7 @@ export class UserAuthController {
 
       return {
         message: "Login Successfully",
-        token: jwtToken,
+        token: token,
       };
     } catch (error: unknown) {
       // Handle specific error types
