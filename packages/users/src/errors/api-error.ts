@@ -1,6 +1,6 @@
-import { StatusCode } from "../utils/consts/status-code";
-import { SerializedErrorOutput } from "./@types/serialized-error-output";
-import BaseCustomError from "./base-custom-error";
+import { StatusCode } from '../utils/consts/status-code';
+import { SerializedErrorOutput } from './@types/serialized-error-output';
+import BaseCustomError from './base-custom-error';
 
 // USE CASE:
 // 1. Unexpected Server Error
@@ -10,7 +10,7 @@ import BaseCustomError from "./base-custom-error";
 export default class APIError extends BaseCustomError {
   constructor(
     message: string,
-    statusCode: number = StatusCode.InternalServerError
+    statusCode: number = StatusCode.InternalServerError,
   ) {
     super(message, statusCode);
 

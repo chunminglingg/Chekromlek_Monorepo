@@ -54,4 +54,3 @@ jobs:
       - name: Deploy to AWS with SST
         run: npx sst deploy --stage prod
         working-directory: ./app
-    

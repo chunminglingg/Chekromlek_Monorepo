@@ -118,8 +118,10 @@ const proxyConfigs: ProxyConfig = {
         );
         logger.info(`Headers Sent: ${JSON.stringify(proxyReq.getHeaders())}`);
 
+        const expresReq = req as Request;
         // Extract JWT token from session
-        const token = (req as Request).session!.jwt;
+        const token = expresReq.session!.jwt;
+
         proxyReq.setHeader("Authorization", `Bearer ${token}`);
       },
       proxyRes: (proxyRes, _req, res) => {
@@ -129,12 +131,12 @@ const proxyConfigs: ProxyConfig = {
         });
         proxyRes.on("end", function () {
           const bodyString = Buffer.concat(originalBody).toString("utf8");
-
           let responseBody: {
             message?: string;
             token?: string;
             errors?: Array<object>;
           };
+          console.log("=========", originalBody);
 
           try {
             responseBody = JSON.parse(bodyString);
@@ -152,7 +154,6 @@ const proxyConfigs: ProxyConfig = {
         });
       },
       error: (err: NetworkError, _req, res) => {
-        logger.error(`Proxy Error: ${err}`);
         switch (err.code) {
           case "ECONNREFUSED":
             (res as Response).status(StatusCode.ServiceUnavailable).json({
@@ -215,7 +216,6 @@ const proxyConfigs: ProxyConfig = {
               return res.status(proxyRes.statusCode!).json(responseBody);
             }
             console.log("responseBody here!");
-            
 
             return res.status(proxyRes.statusCode!).json(responseBody);
           } catch (error: any) {
