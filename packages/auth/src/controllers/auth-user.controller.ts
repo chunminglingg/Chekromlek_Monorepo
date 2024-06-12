@@ -5,6 +5,7 @@ import {
   Route,
   SuccessResponse,
   Tags,
+  Header,
   Get,
   Middlewares,
 } from "tsoa";
@@ -25,6 +26,7 @@ import { authChannel } from "../utils/server";
 import dotenv from "dotenv";
 import getConfig from "../utils/config";
 import DuplicateError from "../errors/duplicate-error";
+import { decodedToken } from "../utils/decodedToken";
 
 dotenv.config();
 interface LoginRequestBody {
@@ -96,9 +98,7 @@ export class UserAuthController {
   }
   @SuccessResponse(StatusCode.OK, "OK")
   @Get("/verify")
-  public async VerifyEmail(
-    @Query() token: string
-  ): Promise<{ message: string; token: string }> {
+  public async VerifyEmail(@Query() token: string): Promise<any> {
     try {
       // Verify the email token
       const user = await this.userService.VerifyEmailToken({ token });
@@ -117,7 +117,7 @@ export class UserAuthController {
 
       // dev: localhost
       // docker: http://user-profile:4000...
-      await axios.post("http://user-profile:4000/v1/users", {
+      await axios.post("http://localhost:4000/v1/users", {
         authId: userDetail.id,
         username: userDetail.username,
         email: userDetail.email,
@@ -180,19 +180,31 @@ export class UserAuthController {
           StatusCode.Unauthorized
         );
       }
-      const token = await generateSignature({ userId: user._id });
 
+      // console.log(`User found: ${user.id}`);
+
+      // const response = await axios.get(
+      //   `http://localhost:4000/v1/users/auth/${user.id}`
+      // );
+      // console.log("Response", response);
+      const token = await generateSignature({
+        userId: user._id,
+        username: user.username,
+      });
+      console.log("JWT", token);
       return {
-        message: "Login successful.",
+        message: "Login Successfully",
         token: token,
       };
-    } catch (error: unknown) {
+    } catch (error: any | unknown) {
       // Handle specific error types
       if (error instanceof CustomError) {
-        // More fine-grained status codes based on CustomError type
         throw error;
       } else {
-        console.error("Unexpected error:", error);
+        console.error("Unexpected error:", error.message);
+        if (error.response) {
+          console.error("Error response data:", error.response.data);
+        }
         throw new CustomError("Login failed", StatusCode.InternalServerError);
       }
     }
@@ -422,6 +434,20 @@ export class UserAuthController {
         "An error occurred during reset password",
         StatusCode.InternalServerError
       );
+    }
+  }
+  @Get("/logout")
+  async logout(@Header("authorization") authorization: string): Promise<any> {
+    try {
+      const token = authorization?.split(" ")[1];
+      const decodedUser = await decodedToken(token);
+      const isLogOut = await this.userService.logout(decodedUser);
+      if (!isLogOut) {
+        throw new APIError("Unable to logout!");
+      }
+      return { message: "Logout Successfully", data: isLogOut };
+    } catch (error) {
+      throw error;
     }
   }
 }
