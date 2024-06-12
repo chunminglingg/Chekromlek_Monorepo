@@ -176,19 +176,31 @@ export class UserAuthController {
           StatusCode.Unauthorized
         );
       }
-      const token = await generateSignature({ userId: user._id });
 
+      // console.log(`User found: ${user.id}`);
+
+      // const response = await axios.get(
+      //   `http://localhost:4000/v1/users/auth/${user.id}`
+      // );
+      // console.log("Response", response);
+      const token = await generateSignature({
+        userId: user._id,
+        username: user.username,
+      });
+      console.log("JWT", token);
       return {
         message: "Login Successfully",
         token: token,
       };
-    } catch (error: unknown) {
+    } catch (error: any | unknown) {
       // Handle specific error types
       if (error instanceof CustomError) {
-        // More fine-grained status codes based on CustomError type
         throw error;
       } else {
-        console.error("Unexpected error:", error);
+        console.error("Unexpected error:", error.message);
+        if (error.response) {
+          console.error("Error response data:", error.response.data);
+        }
         throw new CustomError("Login failed", StatusCode.InternalServerError);
       }
     }
@@ -430,6 +442,8 @@ export class UserAuthController {
         throw new APIError("Unable to logout!");
       }
       return { message: "Logout Successfully", data: isLogOut };
-    } catch (error) {}
+    } catch (error) {
+      throw error;
+    }
   }
 }
