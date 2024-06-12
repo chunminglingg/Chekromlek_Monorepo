@@ -26,7 +26,7 @@ const PostCardList = () => {
     };
 
     if (observer.current) observer.current.disconnect();
-    observer.current = new IntersectionObserver(handleObserver);
+    observer.current = new IntersectionObserver(handleObserver, {rootMargin: "200px"});
     if (loadMoreRef.current) observer.current.observe(loadMoreRef.current);
 
     return () => {
