@@ -84,7 +84,7 @@ export class UserController {
   }
   @SuccessResponse(StatusCode.OK, 'OK')
   @Get('/auth/:authId')
-  @Middlewares(verificationToken)
+  // @Middlewares(verificationToken)
   public async GetAuthById(@Path() authId: string): Promise<any> {
     try {
       const user = await this.userService.getAuthById(authId);

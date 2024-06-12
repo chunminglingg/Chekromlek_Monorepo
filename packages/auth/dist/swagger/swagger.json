@@ -93,21 +93,7 @@
 						"description": "OK",
 						"content": {
 							"application/json": {
-								"schema": {
-									"properties": {
-										"token": {
-											"type": "string"
-										},
-										"message": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"token",
-										"message"
-									],
-									"type": "object"
-								}
+								"schema": {}
 							}
 						}
 					}
@@ -136,17 +122,7 @@
 						"description": "OK",
 						"content": {
 							"application/json": {
-								"schema": {
-									"properties": {
-										"token": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"token"
-									],
-									"type": "object"
-								}
+								"schema": {}
 							}
 						}
 					}
@@ -311,7 +287,7 @@
 				"operationId": "ForgotPassword",
 				"responses": {
 					"200": {
-						"description": "Ok",
+						"description": "OK",
 						"content": {
 							"application/json": {
 								"schema": {}
@@ -423,6 +399,35 @@
 						}
 					}
 				}
+			}
+		},
+		"/v1/auth/logout": {
+			"get": {
+				"operationId": "Logout",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "header",
+						"name": "authorization",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		}
 	},
