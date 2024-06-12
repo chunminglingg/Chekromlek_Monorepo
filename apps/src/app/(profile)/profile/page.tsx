@@ -4,11 +4,33 @@ import Edit from "@/components/Organisms/postCard/Edit";
 import Post from "@/components/Organisms/ProfileUser/Post";
 import SavedPost from "@/components/Organisms/ProfileUser/SavedPost";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from 'axios'
 
 const Page = () => {
   const [view, setView] = useState("Post");
+  const [userData, setUserData] = useState(null);
 
+  const fetchUserData = async () => {
+    try {
+      
+      const response = await axios.get('http://localhost:3000/v1/users/info', {
+        withCredentials: true, // This ensures the cookies are sent with the request
+      });
+      console.log(response);
+      
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
+  if (!userData) {
+    return <div>Loading...</div>;
+  }
   return (
     <>
       <div className="content flex flex-col justify-center items-center">

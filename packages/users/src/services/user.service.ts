@@ -32,14 +32,6 @@ export class UserService {
     }
   }
 
-  async getAuthById(authId: string) {
-    try {
-      return await this.userRepo.FindAuthById(authId);
-    } catch (error) {
-      logger.error('Get Auth Error:', error);
-      throw error;
-    }
-  }
   async showAllUser() {
     try {
       return await this.userRepo.showAllUser();
@@ -50,6 +42,16 @@ export class UserService {
   async updateUserPosts(userId: string, postId: string) {
     return this.userRepo.updateUserPosts(userId, postId);
   }
+
+  async getAuthById(authId: string) {
+    try {
+      return await this.userRepo.FindAuthById(authId);
+    } catch (error) {
+      logger.error('Get Auth Error:', error);
+      throw error;
+    }
+  }
+
   async getUserById(id: string) {
     try {
       return await this.userRepo.FindUserById(id);
@@ -58,4 +60,13 @@ export class UserService {
       throw error;
     }
   }
+
+  // async getUserProfile(id: string){
+  //   try {
+  //     return await this.userRepo.FindUserProfile(id);
+  //   } catch (error) {
+  //     logger.error('Get user error:', error);
+  //     throw error;
+  //   }
+  // }
 }

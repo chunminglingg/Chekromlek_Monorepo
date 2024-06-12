@@ -1,4 +1,4 @@
-import { privateKey } from '@users/server';
+import { public_key } from '@users/server';
 import jwt from 'jsonwebtoken';
 
 export const verificationToken = (req: any, res: any, next: any) => {
@@ -8,7 +8,7 @@ export const verificationToken = (req: any, res: any, next: any) => {
   }
   console.log('Token', token);
   try {
-    const decodedToken = jwt.verify(token, privateKey, {
+    const decodedToken = jwt.verify(token, public_key, {
       algorithms: ['RS256'],
     }) as {
       userId: string;
