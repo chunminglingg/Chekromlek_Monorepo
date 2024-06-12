@@ -134,12 +134,12 @@
 				"parameters": []
 			}
 		},
-		"/v1/users/info": {
+		"/v1/users/profile": {
 			"get": {
 				"operationId": "FindUserById",
 				"responses": {
-					"302": {
-						"description": "Found",
+					"202": {
+						"description": "Accepted",
 						"content": {
 							"application/json": {
 								"schema": {}

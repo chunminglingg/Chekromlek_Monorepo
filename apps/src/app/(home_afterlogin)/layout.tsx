@@ -23,7 +23,7 @@ export default function RootLayout({
       <body className={KhFont.className}>
         <NavAfter />
         <div className="flex justify-center items-center h-full max-sm:w-full md:w-full">
-        <CardContext>{children}</CardContext>
+        {children}
           <div className="absolute right-0 top-32 hidden lg:block">
             <SideRight></SideRight>
           </div>

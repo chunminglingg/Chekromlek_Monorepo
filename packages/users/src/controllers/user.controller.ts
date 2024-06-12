@@ -57,19 +57,19 @@ export class UserController {
     }
   }
 
-  @SuccessResponse(StatusCode.Found, 'Found')
+  @SuccessResponse(StatusCode.Accepted, 'Accepted')
   @Get('/profile')
   @Middlewares(verificationToken)
   public async FindUserById(@Request() request: any): Promise<any> {
     try {
       const user = await this.userService.getAuthById(request.authId);
-      // console.log(request.authId);
+      console.log(request.authId);
       if (!user) {
         throw new APIError('User Not Found!!', StatusCode.NotFound);
       }
       return {
-        message: 'Get user profile successfully',
-        data: user,
+        message: "Get user info succesful",
+        user: user
       };
     } catch (error: unknown) {
       throw error;

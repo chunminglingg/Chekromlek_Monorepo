@@ -136,7 +136,6 @@ const proxyConfigs: ProxyConfig = {
             token?: string;
             errors?: Array<object>;
           };
-          console.log("=========", originalBody);
 
           try {
             responseBody = JSON.parse(bodyString);
