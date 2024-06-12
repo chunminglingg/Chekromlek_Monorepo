@@ -5,13 +5,12 @@ import applyProxy from "./middleware/proxy";
 import { applyRateLimit } from "./middleware/rate-limit";
 import cookieSession from "cookie-session";
 import hpp from "hpp";
-// import compression from "compression";
 import { logger } from "./utils/logger";
 import { StatusCode } from "./utils/consts";
 import { errorHandler } from "./middleware/error-handler";
-// import { verifyUser } from "./middleware/auth-middleware";
 import getConfig from "./utils/createConfig";
-// import unless from "./middleware/unless-route"; 
+import unless from "./middleware/unless-route";
+import { verifyUser } from "./middleware/auth-middleware";
 
 const app = express();
 
@@ -66,7 +65,14 @@ app.disable("x-powered-by");
 // JWT Middleware
 // ===================
 // app.use(unless("/v1/auth", verifyUser));
+const conditions = [
+  { path: "/v1/auth" }, // Exclude all routes starting with /v1/auth
+  { path: "/v1/post", method: "GET" }, // Exclude GET requests starting with /v1/events
+  { path: "/v1/users/info" },
+];
 
+// Use verifyUser middleware with the unless function
+app.use(unless(conditions, verifyUser));
 // ===================
 // Proxy Routes
 // ===================
