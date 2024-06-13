@@ -151,6 +151,33 @@
 				"parameters": []
 			}
 		},
+		"/v1/users/update": {
+			"patch": {
+				"operationId": "UpdateUserProfile",
+				"responses": {
+					"202": {
+						"description": "Accepted",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IUser"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/v1/users/{userId}": {
 			"patch": {
 				"operationId": "UpdateProfile",
