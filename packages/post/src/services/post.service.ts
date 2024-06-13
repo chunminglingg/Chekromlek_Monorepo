@@ -79,6 +79,10 @@ export class PostService {
   }
   async getPostsByCategory(category: PostCategory) {
     try {
+      const post = await this.postRepo.findPost(category);
+      if (!post) {
+        throw new APIError("Post not found");
+      }
       if (!category) {
         throw new Error("Category is required");
       }
