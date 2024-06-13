@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import axios from 'axios';
+import axios from "axios";
 
 const AfteLogin = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,7 +20,7 @@ const AfteLogin = () => {
         }
       );
       if (response && response.data) {
-        const { username } = response.data.user;        
+        const { username } = response.data.user;
         setUsername(username);
       }
     } catch (error: any) {
@@ -38,6 +38,45 @@ const AfteLogin = () => {
   useEffect(() => {
     fetchUserData();
   }, []);
+  const handleOnLogout = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/v1/auth/logout", {
+        withCredentials: true,
+      });
+      console.log("Response: ", response);
+      window.location.href = "/login";
+    } catch (error: unknown | any) {
+      // AxiosError is used to handle specific axios errors
+      if (axios.isAxiosError(error)) {
+        // Handle HTTP errors (response status codes)
+        if (error.response) {
+          console.error(
+            "Logout HTTP error:",
+            error.response.status,
+            error.response.data
+          );
+          // Handle specific HTTP error codes if needed
+          if (error.response.status === 401) {
+            // Unauthorized error handling (e.g., token expired)
+            console.log("Unauthorized, redirecting to login...");
+            // Redirect to login page
+            window.location.href = "/login";
+          } else {
+            // Handle other HTTP errors as needed
+          }
+        } else if (error.request) {
+          // Handle network errors (no response received)
+          console.error("Logout network error:", error.request);
+        } else {
+          // Handle other unexpected errors
+          console.error("Logout unexpected error:", error.message);
+        }
+      } else {
+        // Handle non-axios errors (if any)
+        console.error("Logout error:", error);
+      }
+    }
+  };
 
   return (
     <>
@@ -48,7 +87,10 @@ const AfteLogin = () => {
         >
           {username ? (
             <>
-              Welcome, {username.length > 6 ? `${username.substring(0, 7)}...` : username}
+              Welcome,{" "}
+              {username.length > 6
+                ? `${username.substring(0, 7)}...`
+                : username}
             </>
           ) : (
             "Loading..."
@@ -89,8 +131,11 @@ const AfteLogin = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/signup">
-                  <button className="text-red-400 hover:font-medium items-start justify-start">
+                <Link href="/login">
+                  <button
+                    onClick={handleOnLogout}
+                    className="text-red-400 hover:font-medium items-start justify-start"
+                  >
                     Log Out
                   </button>
                 </Link>
