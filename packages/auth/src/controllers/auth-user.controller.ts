@@ -438,16 +438,18 @@ export class UserAuthController {
   }
   @Get("/logout")
   async logout(@Header("authorization") authorization: string): Promise<any> {
-    try {
+    try{
       const token = authorization?.split(" ")[1];
       const decodedUser = await decodedToken(token);
-      const isLogOut = await this.userService.logout(decodedUser);
-      if (!isLogOut) {
-        throw new APIError("Unable to logout!");
+      const isLogout = await this.userService.logout(decodedUser)
+      
+      if(!isLogout){
+        throw new APIError("Unable to logout!")
       }
-      return { message: "Logout Successfully", data: isLogOut };
-    } catch (error) {
-      throw error;
+      return {message: "Success logout", isLogout: isLogout}
+    }catch(error: unknown){
+      throw error
     }
   }
+
 }

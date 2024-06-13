@@ -49,7 +49,7 @@ export class UserController {
   }
 
   @Get('/')
-  public async showAllUser(): Promise<any> {  
+  public async showAllUser(): Promise<any> {
     try {
       return await this.userService.showAllUser();
     } catch (error: unknown) {
@@ -68,8 +68,8 @@ export class UserController {
         throw new APIError('User Not Found!!', StatusCode.NotFound);
       }
       return {
-        message: "Get user info succesful",
-        user: user
+        message: 'Get user info succesful',
+        user: user,
       };
     } catch (error: unknown) {
       throw error;
@@ -98,11 +98,11 @@ export class UserController {
   }
 
   @SuccessResponse(StatusCode.OK, 'OK')
-  @Get('/auth/:authId')
+  @Get('{userId}')
   // @Middlewares(verificationToken)
-  public async GetAuthById(@Path() authId: string): Promise<any> {
+  public async GetById(@Path() userId: string): Promise<any> {
     try {
-      const user = await this.userService.getAuthById(authId);
+      const user = await this.userService.getUserById(userId);
       return {
         message: 'Get Successfully',
         data: user,
