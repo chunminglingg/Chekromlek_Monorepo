@@ -4,7 +4,7 @@ export interface IUser {
   authId?: string;
   username?: string;
   email?: string;
-  profile?: string;
+  profile?: string | null; // Use string to store file path or URL
   saves?: string[];
   post?: string[];
   bio?: string;
@@ -20,11 +20,11 @@ const userSchema = new mongoose.Schema(
     authId: { type: mongoose.Schema.Types.ObjectId, ref: 'Auth' },
     username: { type: String, require: true },
     email: { type: String, required: true, unique: true },
-    profile: { type: String },
+    profile: { type: String }, // Store the file path as a string
     saves: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
     post: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
     bio: { type: String },
-    gender: { type: String, enum: ['Male', 'Female', 'other'] },
+    gender: { type: String, enum: ['Male', 'Female', 'Other'] },
     work: {
       type: String,
       default: 'Student',

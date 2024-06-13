@@ -11,33 +11,39 @@ import {
 import { SelectScrollable } from '../Selection/Selection';
 import { HeaderPost } from '../AfterPostHeader';
 import UploadButton from '@/components/Molecules/UploadImage/UploadButton';
+import axios from 'axios'
+import { useToast } from "@/components/ui/use-toast"
 
 
 interface CreatePostDialogProps {
   onTitleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onDescriptionChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onSubmit?: () => void;
-  onImageUpload?: (imageUrl: string) => void;
+  onPostImage?: (imageUrl: string) => void;
   onImageDelete?: () => void;
   onDialogOpen?: () => void;
   onDialogClose?: () => void;
+  onNewPost: (postData: any) => void;
 }
 
 const CreatePostDialog: React.FC<CreatePostDialogProps> = ({
   onTitleChange,
   onDescriptionChange,
   onSubmit,
-  onImageUpload,
+  onPostImage,
   onImageDelete,
   onDialogOpen,
   onDialogClose,
+  onNewPost,
 }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [uploadedImageUrl, setUploadedImageUrl] = useState('');
+  const [postImage, setPostImage] = useState('');
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [category, setCategory] = useState('');
   const [loading, setLoading] = useState(true);
+
+  const { toast } = useToast()
 
   useEffect(() => {
     // Simulate data fetching delay
@@ -49,7 +55,8 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({
   }, []);
 
   const handleCategoryChange = (value: string) => {
-    setSelectedCategory(value);
+    setCategory(value);
+    console.log(category)
   };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,25 +69,13 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({
     onDescriptionChange?.(e);
   };
 
-  const handleSubmit = () => {
-    console.log('Selected Category:', selectedCategory);
-    console.log('Title:', title);
-    console.log('Description:', description);
-    console.log('Uploaded Image URL:', uploadedImageUrl);
-    onSubmit?.();
-    setSelectedCategory('');
-    setTitle('');
-    setDescription('');
-    setUploadedImageUrl('');
-  };
-
   const handleAttachmentUpload = (imageUrl: string) => {
-    setUploadedImageUrl(imageUrl);
-    onImageUpload?.(imageUrl);
+    setPostImage(imageUrl);
+    onPostImage?.(imageUrl);
   };
 
   const handleAttachmentDelete = () => {
-    setUploadedImageUrl('');
+    setPostImage('');
     onImageDelete?.();
   };
 
@@ -93,7 +88,47 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({
     setIsOpen(false);
     onDialogClose?.();
   };
-
+  const handleSubmit = async () => {
+    console.log('Selected Category:', category);
+    console.log('Title:', title);
+    console.log('Description:', description);
+    console.log('Uploaded Image URL:', postImage);
+    onSubmit?.();
+    setCategory('');
+    setTitle('');
+    setDescription('');
+    setPostImage('');
+    const postData = {
+      title,
+      description,
+      postImage,
+      category,
+      username: '', 
+      // profile: '/images/profile.jpg', // Updated profile image path
+      // hour: new Date().getHours(),
+    };
+    try{
+      const response = await axios.post("http://localhost:3000/v1/post", 
+        postData,
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "application/json",
+            },
+        }
+        
+      );
+      console.log(response.data.message);
+      // alert("success post")
+      toast({
+        description: "Your post have been successfully",
+      })
+    }catch(error:any){
+      // console.error('Error creating post:', error.message); 
+      alert("not successful")
+    }
+    console.log(postData)
+  };
   return (
     <>
       <Dialog open={isOpen} onOpenChange={(open) => open ? openDialog() : closeDialog()}>

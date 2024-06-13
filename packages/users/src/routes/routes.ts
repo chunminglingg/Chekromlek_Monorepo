@@ -17,7 +17,7 @@ const models: TsoaRoute.Models = {
             "authId": {"dataType":"string"},
             "username": {"dataType":"string"},
             "email": {"dataType":"string"},
-            "profile": {"dataType":"string"},
+            "profile": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}]},
             "saves": {"dataType":"array","array":{"dataType":"string"}},
             "post": {"dataType":"array","array":{"dataType":"string"}},
             "bio": {"dataType":"string"},
