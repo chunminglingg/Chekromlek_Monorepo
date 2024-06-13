@@ -126,7 +126,7 @@ export default function Page() {
       </Link>
 
       {/* Switch Account */}
-      <Link href={"/"}>
+      <Link href={"/login"}>
         <button className="mt-[4%] mb-[2%] w-full h-[70px] max-sm:h-[60px] flex-row flex items-center justify-between border rounded-md shadow-md p-5 hover:bg-gray-50">
           <div className="flex items-center justify-start gap-1">
             <p className="items-center justify-center text-[18px]">

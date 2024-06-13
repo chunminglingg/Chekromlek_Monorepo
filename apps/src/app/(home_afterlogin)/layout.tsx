@@ -7,6 +7,7 @@ import SideRight from "@/components/Molecules/SideRight/SideRight";
 import { SideBarLogin } from "@/components/Organisms/sidebar/SieBarLogin";
 import { KhFont } from "@/utils/font";
 const inter = Inter({ subsets: ["latin"] });
+import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
   title: "Chekromlek",
@@ -29,6 +30,7 @@ export default function RootLayout({
           </div>
         </div>
         <SideBarLogin />
+        <Toaster />
       </body>
     </html>
   );

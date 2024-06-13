@@ -66,7 +66,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
   };
 
   return (
-    <div className="w-[430px] max-sm:w-[315px] h-auto min-md:mt-[10%] p-2 max-sm:m-4">
+    <div className="w-auto max-sm:w-[315px] h-auto min-md:mt-[10%] p-2 max-sm:m-4">
       <div>
         <div className="flex items-center justify-between gap-5">
           {/* Profile */}
@@ -99,10 +99,10 @@ const ViewPost: React.FC<ViewPostProps> = ({
           </div>
         </div>
         {/* Caption */}
-        <div className="card-content flex flex-col gap-4 items-center justify-center pt-2 pb-2">
+        <div className="card-content flex flex-col gap-4  pt-2 pb-2">
           {/* Render truncated caption with "See more" link */}
           {/* #tittle */}
-          <div className="mt-1 title font-semibold text-[#343A40] text-2xl hover:underline max-sm:text-lg max-sm:font-medium pt-2 hover:cursor-pointer">
+          <div className=" mt-1 title font-semibold text-[#343A40] text-2xl hover:underline max-sm:text-lg max-sm:font-medium pt-2 hover:cursor-pointer">
             <Typography fontSize="title" align="left" className="">
               {title}
             </Typography>

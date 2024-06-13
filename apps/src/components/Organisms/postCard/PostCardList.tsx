@@ -80,6 +80,7 @@ const PostCardList = () => {
           key={info.id}
           id={info.id}
           hour={info.hour}
+          likeCounts={info.likeCounts}
           description={info.description}
           profile={info.profile}
           username={info.username}
@@ -102,14 +103,14 @@ const PostCardList = () => {
           No more cards
         </div>
       )}
-      {/* {!loading && hasMore && !error && (
+      {!loading && hasMore && !error && (
         <div
           ref={loadMoreRef}
           className="text-center text-[20px] text-[#6C757D] m-4 rounded-md h-[35%] "
         >
           Loading...
         </div>
-      )} */}
+      )}
     </div>
   );
 };

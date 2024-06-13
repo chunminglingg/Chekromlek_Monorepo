@@ -229,8 +229,8 @@
 			"get": {
 				"operationId": "GetPostById",
 				"responses": {
-					"302": {
-						"description": "Found the post",
+					"202": {
+						"description": "Get a post successfully",
 						"content": {
 							"application/json": {
 								"schema": {}
@@ -255,8 +255,8 @@
 			"get": {
 				"operationId": "GetPostAllPost",
 				"responses": {
-					"302": {
-						"description": "Found the post",
+					"202": {
+						"description": "Get a Post successfully",
 						"content": {
 							"application/json": {
 								"schema": {}
@@ -272,8 +272,8 @@
 			"get": {
 				"operationId": "GetPostsByCategory",
 				"responses": {
-					"302": {
-						"description": "Found the posts",
+					"202": {
+						"description": "Get Category",
 						"content": {
 							"application/json": {
 								"schema": {}

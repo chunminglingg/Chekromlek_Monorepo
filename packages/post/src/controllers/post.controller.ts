@@ -105,7 +105,7 @@ export class PostController {
       throw error;
     }
   }
-  @SuccessResponse(StatusCode.Accepted, "Get a Post successfully")
+  @SuccessResponse(StatusCode.OK, "Get a Post successfully")
   @Get("/getpost")
   public async GetPostAllPost(): Promise<any> {
     try {
