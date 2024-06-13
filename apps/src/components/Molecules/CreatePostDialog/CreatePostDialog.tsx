@@ -11,8 +11,8 @@ import {
 import { SelectScrollable } from '../Selection/Selection';
 import { HeaderPost } from '../AfterPostHeader';
 import UploadButton from '@/components/Molecules/UploadImage/UploadButton';
-import axios from 'axios'
-import { useToast } from "@/components/ui/use-toast"
+import axios from 'axios';
+import { useToast } from "@/components/ui/use-toast";
 
 
 interface CreatePostDialogProps {
@@ -43,7 +43,7 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({
   const [category, setCategory] = useState('');
   const [loading, setLoading] = useState(true);
 
-  const { toast } = useToast()
+  const { toast } = useToast();
 
   useEffect(() => {
     // Simulate data fetching delay
@@ -56,7 +56,7 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({
 
   const handleCategoryChange = (value: string) => {
     setCategory(value);
-    console.log(category)
+    console.log(category);
   };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,16 +88,14 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({
     setIsOpen(false);
     onDialogClose?.();
   };
+
   const handleSubmit = async () => {
     console.log('Selected Category:', category);
     console.log('Title:', title);
     console.log('Description:', description);
     console.log('Uploaded Image URL:', postImage);
     onSubmit?.();
-    setCategory('');
-    setTitle('');
-    setDescription('');
-    setPostImage('');
+    
     const postData = {
       title,
       description,
@@ -107,28 +105,33 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({
       // profile: '/images/profile.jpg', // Updated profile image path
       // hour: new Date().getHours(),
     };
-    try{
+    try {
       const response = await axios.post("http://localhost:3000/v1/post", 
         postData,
-          {
-            withCredentials: true,
-            headers: {
-              "Content-Type": "application/json",
-            },
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-        
       );
       console.log(response.data.message);
-      // alert("success post")
       toast({
-        description: "Your post have been successfully",
-      })
-    }catch(error:any){
-      // console.error('Error creating post:', error.message); 
-      alert("not successful")
+        description: "Your post has been successfully created",
+      });
+      // Clear input fields after successful post
+      setCategory('');
+      setTitle('');
+      setDescription('');
+      setPostImage('');
+      closeDialog(); // Close the dialog after successful post
+    } catch (error: any) {
+      console.error('Error creating post:', error.message); 
+      alert("Post not successful");
     }
-    console.log(postData)
+    console.log(postData);
   };
+
   return (
     <>
       <Dialog open={isOpen} onOpenChange={(open) => open ? openDialog() : closeDialog()}>
@@ -136,45 +139,45 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({
           <button onClick={openDialog}><HeaderPost/></button>
         </DialogTrigger>
         <DialogContent className="w-[645px] max-sm:w-[90%] max-sm:rounded-md">
-            <DialogHeader className="flex flex-col gap-2">
-              <DialogTitle>Create a Post</DialogTitle>
-              <DialogDescription className="flex flex-col gap-2">
-                <div className="flex flex-col gap-2">
-                  Simplify Your Sharing Experience!
-                  <SelectScrollable onValueChange={handleCategoryChange} />
-                </div>
-                <div className="flex flex-col gap-4 pt-6 focus:outline-none">
-                  <input
-                    placeholder="Title"
-                    value={title}
-                    onChange={handleTitleChange}
-                    aria-label="title"
-                    className="focus:outline-none border rounded-md h-[40px] p-1"
+          <DialogHeader className="flex flex-col gap-2">
+            <DialogTitle>Create a Post</DialogTitle>
+            <DialogDescription className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2">
+                Simplify Your Sharing Experience!
+                <SelectScrollable onValueChange={handleCategoryChange} />
+              </div>
+              <div className="flex flex-col gap-4 pt-6 focus:outline-none">
+                <input
+                  placeholder="Title"
+                  value={title}
+                  onChange={handleTitleChange}
+                  aria-label="title"
+                  className="focus:outline-none border rounded-md h-[40px] p-1"
+                />
+                <textarea
+                  placeholder="Type your descriptions of your question here."
+                  value={description}
+                  onChange={handleDescriptionChange}
+                  aria-label="description"
+                  className="focus:outline-none border rounded-md h-[80px] p-1"
+                />
+                <div className="w-full h-[250px] border rounded-md justify-center items-center grid gap-1.5">
+                  <UploadButton
+                    onImageUpload={handleAttachmentUpload}
+                    onImageDelete={handleAttachmentDelete}
                   />
-                  <textarea
-                    placeholder="Type your descriptions of your question here."
-                    value={description}
-                    onChange={handleDescriptionChange}
-                    aria-label="description"
-                    className="focus:outline-none border rounded-md h-[80px] p-1"
-                  />
-                  <div className="w-full h-[250px] border rounded-md justify-center items-center grid gap-1.5">
-                    <UploadButton
-                      onImageUpload={handleAttachmentUpload}
-                      onImageDelete={handleAttachmentDelete}
-                    />
-                  </div>
                 </div>
-                <div className="flex justify-end">
-                  <button
-                    onClick={handleSubmit}
-                    className="px-8 py-2 bg-[#7B2CBF] hover:opacity-[70%] text-white rounded-md"
-                  >
-                    Post
-                  </button>
-                </div>
-              </DialogDescription>
-            </DialogHeader>
+              </div>
+              <div className="flex justify-end">
+                <button
+                  onClick={handleSubmit}
+                  className="px-8 py-2 bg-[#7B2CBF] hover:opacity-[70%] text-white rounded-md"
+                >
+                  Post
+                </button>
+              </div>
+            </DialogDescription>
+          </DialogHeader>
         </DialogContent>
       </Dialog>
     </>
