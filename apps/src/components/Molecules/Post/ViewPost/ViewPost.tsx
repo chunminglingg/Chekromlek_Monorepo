@@ -1,12 +1,14 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
+import { Typography } from "@/components/Atoms";
 
-interface ViewPostProps {
+export interface ViewPostProps {
   profile: string;
   username: string;
   hour: number;
-  caption: string;
+  title?: string;
+  description?: string;
   postImage?: string | undefined;
 }
 
@@ -14,7 +16,8 @@ const ViewPost: React.FC<ViewPostProps> = ({
   profile,
   username,
   hour,
-  caption,
+  title,
+  description,
   postImage,
 }) => {
   // State to track whether the caption is truncated
@@ -98,11 +101,17 @@ const ViewPost: React.FC<ViewPostProps> = ({
         {/* Caption */}
         <div className="card-content flex flex-col gap-4 items-center justify-center pt-2 pb-2">
           {/* Render truncated caption with "See more" link */}
+          {/* #tittle */}
+          <div className="mt-1 title font-semibold text-[#343A40] text-2xl hover:underline max-sm:text-lg max-sm:font-medium pt-2 hover:cursor-pointer">
+            <Typography fontSize="title" align="left" className="">
+              {title}
+            </Typography>
+          </div>
           <p className="text-[18px] text-[#6C757D] font-medium">
             {isCaptionTruncated
-              ? truncateCaption(caption || "", maxCaptionLength)
-              : caption}
-            {caption && caption.length > maxCaptionLength && (
+              ? truncateCaption(description || "", maxCaptionLength)
+              : description}
+            {description && description.length > maxCaptionLength && (
               <button
                 className="text-[14px] text-[#4b81ed] font-medium underline cursor-pointer ml-1"
                 onClick={toggleCaptionTruncation}
