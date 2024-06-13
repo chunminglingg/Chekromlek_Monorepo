@@ -152,7 +152,7 @@ Use the following command to start all services defined in the docker-compose.ya
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+_For more examples, please refer to the [Documentation](https://chekromlek.com)_
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -162,7 +162,13 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 ## Contact
 
 chekromlek - chekromlek.info@gmail.com <br/>
-Team members - chunming200@gmail.com - khievnavin@gmail.com - tiengkimlang10@gmail.com - hangsaphotan@gmail.com
+
+### Team members 
+
+ * [Backend Developer] - soklengphen.dev@gmail.com  
+ * [Backend Developer] - hangsaphotan@gmail.com
+ * [Frontend Developer] - khievnavin@gmail.com 
+ * [UX/UI Designer] - tiengkimlang10@gmail.com 
 
 Project Link: [https://github.com/chunminglingg/Chekromlek_Monorepo.git](https://github.com/chunminglingg/Chekromlek_Monorepo.git)
 

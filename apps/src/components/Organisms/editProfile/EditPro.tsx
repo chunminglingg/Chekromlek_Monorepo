@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -20,22 +20,75 @@ import {
 import { UploadPro } from "./UploadPro"; // Ensure correct path
 import { Button } from "@/components/Atoms/Button/Button";
 import { Typography } from "@/components/Atoms/Typography/Typography";
+import axios from "axios";
+
+interface userDataTypes {
+  _id: string;
+  username: string;
+  email: string;
+  work: string;
+  answers: number;
+  posts: number;
+  bio: string;
+  gender: string;
+  profile: string;
+}
 
 export function EditProfile() {
-  const [bio, setBio] = useState("");
-  const [job, setJob] = useState("");
+  const [bio, setBio] = useState<string>("");
+  const [work, setWork] = useState("");
   const [gender, setGender] = useState("");
-  const [image, setImage] = useState<File | null>(null);
+  const [profile, setProfile] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [errors, setErrors] = useState({ bio: false, job: false, gender: false });
+  const [errors, setErrors] = useState({
+    bio: false,
+    job: false,
+    gender: false,
+  });
 
-  const handleBioChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
+  const [userData, setUserData] = useState<userDataTypes | null>(null);
+
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/v1/users/profile",
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+      if (response) {
+        setUserData(response.data.user);
+      }
+    } catch (error: any) {
+      if (error.response) {
+        console.error("Error response:", error.response.data);
+      } else if (error.request) {
+        console.error("Error request:", error.request);
+      } else {
+        console.error("Error message:", error.message);
+      }
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
+  if (!userData) {
+    return <div>Loading...</div>;
+  }
+
+  const handleBioChange = (event: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
     setBio(event.target.value);
   };
 
   const handleJobSelect = (selectedJob: React.SetStateAction<string>) => {
-    setJob(selectedJob);
+    setWork(selectedJob);
   };
 
   const handleGenderSelect = (selectedGender: React.SetStateAction<string>) => {
@@ -43,43 +96,72 @@ export function EditProfile() {
   };
 
   const handleImageUpload = (uploadedFile: File | null) => {
-    setImage(uploadedFile);
+    if (uploadedFile) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setProfile(e.target?.result as string);
+      };
+      reader.readAsDataURL(uploadedFile); // or use readAsText(uploadedFile) if you want to read it as plain text
+    } else {
+      setProfile(null);
+    }
   };
+
 
   const handleSubmit = () => {
     const formErrors = {
       bio: !bio,
-      job: !job,
+      job: !work,
       gender: !gender,
     };
 
     setErrors(formErrors);
 
-    if (!bio || !job || !gender) {
+    if (!bio || !work || !gender) {
       return;
     }
 
     setLoading(true);
     const formData = {
       bio,
-      job,
+      work,
       gender,
-      image,
+      profile,
     };
 
-    console.log("Submitting form data", formData);
+    const handleUpdate = async () => {
+      try {
+        const response = await axios.patch(
+          "http://localhost:3000/v1/users/update",
+          formData,
+          {
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+          }
+        );
+        if (response) {
+          setSuccess(true);
+        }
+      } catch (error: any) {
+        throw error;
+      }
+    };
+    console.log("Submitting form data:", formData);
+    console.log("request:", handleUpdate);
+
     // Simulate a loading process with a timeout
     setTimeout(() => {
       setLoading(false);
       setSuccess(true);
       // Reset all fields after submission
       setBio("");
-      setJob("");
+      setWork("");
       setGender("");
-      setImage(null);
+      setProfile(null);
       // Hide success message after 3 seconds
       setTimeout(() => setSuccess(false), 3000);
     }, 2000);
+    return handleUpdate();
   };
 
   return (
@@ -95,13 +177,13 @@ export function EditProfile() {
         <DialogHeader>
           <DialogTitle>Edit Profile</DialogTitle>
         </DialogHeader>
-        <UploadPro onUpload={handleImageUpload} />{" "}
+        <UploadPro onUpload={handleImageUpload} username={userData.username} />{" "}
         {/* Pass the upload handler */}
         <div className="flex flex-col items-start justify-center gap-1 outline-none">
           {/* Select Job Title */}
           <div className="flex flex-col w-full focus:outline-none">
             <label className="text-left pb-1">Job Title</label>
-            <Select value={job} onValueChange={handleJobSelect}>
+            <Select value={work} onValueChange={handleJobSelect}>
               <SelectTrigger className="w-full focus:outline-none">
                 <SelectValue placeholder="Select a Job" />
               </SelectTrigger>

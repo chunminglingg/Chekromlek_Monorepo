@@ -49,7 +49,7 @@ export class UserController {
   }
 
   @Get('/')
-  public async showAllUser(): Promise<any> {  
+  public async showAllUser(): Promise<any> {
     try {
       return await this.userService.showAllUser();
     } catch (error: unknown) {
@@ -68,11 +68,43 @@ export class UserController {
         throw new APIError('User Not Found!!', StatusCode.NotFound);
       }
       return {
-        message: "Get user info succesful",
-        user: user
+        message: 'Get user info succesful',
+        user: user,
       };
     } catch (error: unknown) {
       throw error;
+    }
+  }
+
+  @SuccessResponse(StatusCode.Accepted, 'Accepted')
+  @Patch('/update')
+  @Middlewares(verificationToken)
+  public async UpdateUserProfile(
+    @Request() request: any,
+    @Body() reqBody: IUser,
+  ): Promise<any> {
+    try {
+      const authId = request.authId;
+      logger.debug(`user request: ${request.authId}`)
+      if (!authId) {
+        logger.error(`Could not find user: ${authId}`);
+      }
+      const findUser = await this.userService.getAuthById(authId);
+      logger.debug(`findUser: ${findUser?.id}`)
+      if(!findUser){
+        throw new APIError('User Not Found!!', StatusCode.NotFound);
+      }
+      const modifiedUser = await this.userService.UpdateById(findUser.id, reqBody);
+      if (!modifiedUser) {
+        logger.error(`Update user error: ${modifiedUser}`)
+      }
+      return {
+        message: "Update user profile successfully!",
+        data: modifiedUser
+      };
+      
+    } catch (err) {
+
     }
   }
 
@@ -98,11 +130,11 @@ export class UserController {
   }
 
   @SuccessResponse(StatusCode.OK, 'OK')
-  @Get('/auth/:authId')
+  @Get('{userId}')
   // @Middlewares(verificationToken)
-  public async GetAuthById(@Path() authId: string): Promise<any> {
+  public async GetById(@Path() userId: string): Promise<any> {
     try {
-      const user = await this.userService.getAuthById(authId);
+      const user = await this.userService.getUserById(userId);
       return {
         message: 'Get Successfully',
         data: user,

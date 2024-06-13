@@ -87,7 +87,7 @@ export class PostController {
     }
   }
 
-  @SuccessResponse(StatusCode.Found, "Found the post")
+  @SuccessResponse(StatusCode.Accepted, "Get a post successfully")
   @Get("/getpost/{postId}")
   public async GetPostById(@Path() postId: string): Promise<any> {
     try {
@@ -105,7 +105,7 @@ export class PostController {
       throw error;
     }
   }
-  @SuccessResponse(StatusCode.Found, "Found the post")
+  @SuccessResponse(StatusCode.Accepted, "Get a Post successfully")
   @Get("/getpost")
   public async GetPostAllPost(): Promise<any> {
     try {
@@ -123,7 +123,7 @@ export class PostController {
       throw error;
     }
   }
-  @SuccessResponse(StatusCode.Found, "Found the posts")
+  @SuccessResponse(StatusCode.Accepted, "Get Category")
   @Get("category/{category}")
   public async getPostsByCategory(@Path() category: string): Promise<any> {
     try {

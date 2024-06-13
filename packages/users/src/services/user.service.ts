@@ -31,6 +31,20 @@ export class UserService {
       throw error;
     }
   }
+  
+  async updateUserProfile(authId: string, update: IUser) {
+    try {
+      const users = this.userRepo.FindAuthById(authId);
+      console.log('user', users);
+      if (!users) {
+        throw new APIError('User not found', StatusCode.NotFound);
+      }
+      return await this.userRepo.UpdateUserById(authId, update);
+    } catch (error) {
+      logger.error('Update error: ', error);
+      throw error;
+    }
+  }
 
   async showAllUser() {
     try {
@@ -60,6 +74,8 @@ export class UserService {
       throw error;
     }
   }
+
+  
 
   // async getUserProfile(id: string){
   //   try {
