@@ -80,6 +80,26 @@ export class UserRepository {
     }
   }
 
+  // async UpdateUserProfile(authId: string , update: IUser) {
+  //   try {
+  //     const existingUser = await UserModel.findOne({ authId });
+  //     if (!existingUser) {
+  //       throw new CustomError('User not found', StatusCode.NotFound);
+  //     }
+  //     const newUpdateUser = await UserModel.findByIdAndUpdate(authId, update , { new: true});
+  //     if (!newUpdateUser) {
+  //       throw new CustomError(
+  //         'Failed to update user',
+  //         StatusCode.InternalServerError,
+  //       );
+  //     }
+
+  //     return newUpdateUser;
+  //   } catch (error) {
+  //     throw new APIError('Cannot Find User in Database');
+  //   }
+  // }
+
   async showAllUser() {
     try {
       return await UserModel.find();

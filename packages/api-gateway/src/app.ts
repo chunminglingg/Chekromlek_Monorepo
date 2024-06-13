@@ -50,7 +50,7 @@ app.use(
         ? ["http://localhost:9000"]
         : ["https://domain.com"],
     credentials: true, // attach token from client
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH" , "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
@@ -67,7 +67,7 @@ app.disable("x-powered-by");
 // app.use(unless("/v1/auth", verifyUser));
 const conditions = [
   { path: "/v1/auth" }, // Exclude all routes starting with /v1/auth
-  { path: "/v1/post", method: "GET" }, // Exclude GET requests starting with /v1/events
+  { path: "/v1/post", method: "GET"}, // Exclude GET requests starting with /v1/events
   { path: "/v1/users/info" },
 ];
 

@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import axios from "axios"
 
 interface UploadProProps {
   onUpload: (uploadedFile: File | null) => void;
+  username: string;
 }
 
-const UploadPro: React.FC<UploadProProps> = ({ onUpload }) => {
+
+const UploadPro: React.FC<UploadProProps> = ({ onUpload , username }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,6 +26,7 @@ const UploadPro: React.FC<UploadProProps> = ({ onUpload }) => {
       onUpload(file); // Pass the uploaded file to the parent component
     }
   };
+
 
   return (
     <div className="items-center justify-center border rounded-lg">
@@ -46,7 +50,7 @@ const UploadPro: React.FC<UploadProProps> = ({ onUpload }) => {
               />
             )}
           </div>
-          <span className="text-center pl-2 font-medium">Kimlang Tieng</span>
+          <span className="text-center pl-2 font-medium">{username}</span>
         </div>
         <div className="flex h-[35px] items-center border rounded-xl p-2 mt-2 hover:bg-gray-200">
           <label htmlFor="upload-photo" className="cursor-pointer">

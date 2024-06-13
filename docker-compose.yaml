@@ -104,6 +104,7 @@ services:
     volumes:
       - ./packages/post/src:/app/src
 
+
 secrets:
   jwt_public_key:
     file: ./packages/api-gateway/configs/public_key.pem

@@ -12,6 +12,7 @@ import Edit from "./Edit";
 export interface postCardProps {
   id: string;
   profile: string;
+  likeCounts: number;
   username: string;
   hour: number;
   title?: string;
@@ -25,6 +26,7 @@ const PostCard: React.FC<postCardProps> = ({
   id,
   profile,
   username,
+  likeCounts,
   hour,
   description,
   title,
@@ -141,7 +143,7 @@ const PostCard: React.FC<postCardProps> = ({
                   {/* Like */}
                   <div className=" flex flex-row justify-between items-center gap-6">
                     <div className="like">
-                      <Like />
+                      <Like like={likeCounts} />
                     </div>
                     {/* Save */}
                     <div className="Saved">

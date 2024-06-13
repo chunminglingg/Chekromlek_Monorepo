@@ -26,7 +26,7 @@ interface CreatePostDialogProps {
   onNewPost: (postData: any) => void;
 }
 
-const CreatePostDialog: React.FC<CreatePostDialogProps> = ({
+const UpdatePostDialog: React.FC<CreatePostDialogProps> = ({
   onTitleChange,
   onDescriptionChange,
   onSubmit,
@@ -184,4 +184,4 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({
   );
 };
 
-export default CreatePostDialog;
+export default UpdatePostDialog;

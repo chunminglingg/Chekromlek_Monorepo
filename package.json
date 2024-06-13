@@ -23,7 +23,7 @@
     "start:notificaton-service": "yarn workspace notification start:dev",
     "start:post-service": "yarn workspace post start:dev",
     "start:user-service": "yarn workspace user start:dev",
-    "start:all": "concurrently \"yarn start:api-gateway\" \"yarn start:auth-service\" \"yarn start:notificaton-service\" \"yarn start:post-service\" \"yarn start:user-service\""
+    "start:dev": "docker-compose up -d"
   },
   "dependencies": {
     "@storybook/addon-actions": "^8.1.3",
