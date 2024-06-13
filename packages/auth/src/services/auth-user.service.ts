@@ -265,16 +265,17 @@ export class UserAuthService {
   }
   async logout(decodedUser: any) {
     try {
-      const { authId } = decodedUser;
-      console.log("id from service: ", authId);
-      const existedUser = await axios.get(
-        `http://localhost:4000/v1/users/${authId}`
+      const { id } = decodedUser;
+      console.log("id from service: ", id);
+      const existingUser = await axios.get(
+        `http://localhost:4000/v1/users/${id}`
       );
-      if (!existedUser) {
+      console.log("exist User : ", existingUser);
+      if (!existingUser) {
         throw new APIError("No user found!", StatusCode.NotFound);
       }
       return true;
-    } catch (error) {
+    } catch (error: unknown) {
       throw error;
     }
   }

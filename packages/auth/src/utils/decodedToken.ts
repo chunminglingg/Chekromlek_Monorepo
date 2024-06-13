@@ -8,12 +8,17 @@ export const decodedToken = async (token: string) => {
     const decodedPayload = jwt.verify(token, privateKey, {
       algorithms: ["RS256"],
     }) as {
-      id: string;
+      userId: string;
     };
 
+    // console.log("=== decodePayload === : ", decodedPayload);
+
     const datapayload = {
-      id: decodedPayload.id,
-    };
+      id: decodedPayload.userId,
+    }
+    
+    // console.log("datapayload : ", datapayload)
+
     return datapayload;
   } catch (error: unknown) {
     logger.error("Unable to decode in decodeToken() method !", error);
