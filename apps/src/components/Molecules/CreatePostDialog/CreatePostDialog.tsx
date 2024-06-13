@@ -72,6 +72,7 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({
     setTitle('');
     setDescription('');
     setUploadedImageUrl('');
+    onDialogClose
   };
 
   const handleAttachmentUpload = (imageUrl: string) => {
