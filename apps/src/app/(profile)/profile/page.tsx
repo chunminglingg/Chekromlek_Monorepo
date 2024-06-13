@@ -57,9 +57,8 @@ const Page = () => {
   }
 
   const { username, work, answers, posts,profile, bio } = userData;
-  console.log("username:",username);
   
-
+  
   return (
     <>
       <div className="content flex flex-col justify-center items-center">

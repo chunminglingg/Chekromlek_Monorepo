@@ -76,6 +76,38 @@ export class UserController {
     }
   }
 
+  @SuccessResponse(StatusCode.Accepted, 'Accepted')
+  @Patch('/update')
+  @Middlewares(verificationToken)
+  public async UpdateUserProfile(
+    @Request() request: any,
+    @Body() reqBody: IUser,
+  ): Promise<any> {
+    try {
+      const authId = request.authId;
+      logger.debug(`user request: ${request.authId}`)
+      if (!authId) {
+        logger.error(`Could not find user: ${authId}`);
+      }
+      const findUser = await this.userService.getAuthById(authId);
+      logger.debug(`findUser: ${findUser?.id}`)
+      if(!findUser){
+        throw new APIError('User Not Found!!', StatusCode.NotFound);
+      }
+      const modifiedUser = await this.userService.UpdateById(findUser.id, reqBody);
+      if (!modifiedUser) {
+        logger.error(`Update user error: ${modifiedUser}`)
+      }
+      return {
+        message: "Update user profile successfully!",
+        data: modifiedUser
+      };
+      
+    } catch (err) {
+
+    }
+  }
+
   @SuccessResponse(StatusCode.OK, 'OK')
   @Patch('{userId}')
   @Middlewares(verificationToken)
