@@ -129,7 +129,7 @@ export class UserController {
     }
   }
 
-  @SuccessResponse(StatusCode.OK, 'OK')
+  @SuccessResponse(StatusCode.Accepted, 'Get User Successfully')
   @Get('{userId}')
   // @Middlewares(verificationToken)
   public async GetById(@Path() userId: string): Promise<any> {

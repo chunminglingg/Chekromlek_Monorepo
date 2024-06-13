@@ -5,6 +5,7 @@ import { IAnswer, IPost, QueryParams } from "../@types/post.interface";
 import { logger } from "@post/utils/logger";
 import mongoose from "mongoose";
 import APIError from "@post/errors/api-error";
+import axios from "axios";
 
 export class postRepository {
   // Create Post
@@ -32,12 +33,16 @@ export class postRepository {
       return posts;
     } catch (error: any) {
       logger.error("FindPostById repository method() error:", error.message);
-      throw new Error(`Unable to fetch posts: ${error.message}`);
+      throw new APIError(`Unable to fetch posts: ${error.message}`);
     }
   }
   //find answer by id
   async findAnswerById(answerId: string) {
-    return PostModel.findById(answerId);
+    try {
+      return PostModel.findById(answerId);
+    } catch (error) {
+      throw error;
+    }
   }
   //find post user
   async FindPostUser(id: string) {
@@ -132,6 +137,44 @@ export class postRepository {
       throw error;
     }
   }
+  //list the answer that user have post
+  public async findAnswersByUserOnPost(postId: string, userId: string) {
+    try {
+      const post = await PostModel.findById(postId);
+
+      if (!post) {
+        throw new Error("Post not found");
+      }
+
+      // Filter answers by user ID
+      const userAnswers = post.answers.filter(
+        (answer: any) => answer.userId.toString() === userId
+      );
+
+      // Fetch user details from the user service
+      const userResponse = await axios.get(
+        `http://localhost:4000/v1/users/${userId}`
+      );
+      const user = userResponse.data;
+
+      // Attach user details to the answers
+      const answersWithUserDetails = userAnswers.map((answer: any) => ({
+        ...answer.toObject(),
+        user: user.username,
+      }));
+
+      return answersWithUserDetails;
+    } catch (error: any) {
+      if (error.response && error.response.status === StatusCode.NotFound) {
+        // If the error is a 404 from the user service, rethrow as a NotFound APIError
+        throw new APIError("User not found", StatusCode.NotFound);
+      }
+      throw new APIError(
+        `Error fetching answers for post: ${error.message}`,
+        StatusCode.InternalServerError
+      );
+    }
+  }
   //delete post
   async deletePost(postId: string) {
     try {
@@ -179,8 +222,9 @@ export class postRepository {
         logger.debug(
           `LikeAnswer failed for postId: ${postId}, answerId: ${answerId}, userId: ${userId}`
         );
-        throw new Error(
-          "Post or answer not found or user already liked the answer."
+        throw new APIError(
+          "Post or answer not found or user already liked the answer.",
+          StatusCode.BadRequest
         );
       }
 

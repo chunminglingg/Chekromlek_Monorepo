@@ -9,6 +9,7 @@ import APIError from "@post/errors/api-error";
 import CustomError from "@post/errors/customError";
 import { StatusCode } from "@post/utils/const";
 import { logger } from "@post/utils/logger";
+import axios from "axios";
 
 export class PostService {
   private postRepo: postRepository;
@@ -79,6 +80,10 @@ export class PostService {
   }
   async getPostsByCategory(category: PostCategory) {
     try {
+      const post = await this.postRepo.findPost(category);
+      if (!post) {
+        throw new APIError("Post not found");
+      }
       if (!category) {
         throw new Error("Category is required");
       }
@@ -104,6 +109,32 @@ export class PostService {
       return answer;
     } catch (error) {
       throw error;
+    }
+  }
+  public async findAnswersByUserOnPost(postId: string, userId: string) {
+    try {
+      return await this.postRepo.findAnswersByUserOnPost(postId, userId);
+    } catch (error: unknown | any) {
+      if (error instanceof APIError) {
+        throw error;
+      }
+
+      // Handle Axios HTTP errors
+      if (axios.isAxiosError(error)) {
+        const axiosError = error.response?.data;
+        const statusCode =
+          error.response?.status || StatusCode.InternalServerError;
+
+        throw new APIError(
+          axiosError.message || "Internal Server Error",
+          statusCode
+        );
+      }
+      // For other errors, default to Internal Server Error
+      throw new APIError(
+        "Internal Server Error",
+        StatusCode.InternalServerError
+      );
     }
   }
   async findPostUser(id: string) {
