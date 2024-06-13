@@ -3,9 +3,9 @@ import { EditProfile } from "@/components/Organisms/editProfile/EditPro";
 import Edit from "@/components/Organisms/postCard/Edit";
 import Post from "@/components/Organisms/ProfileUser/Post";
 import SavedPost from "@/components/Organisms/ProfileUser/SavedPost";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Image from "next/image"
 
 interface userDataTypes {
   _id: string;

@@ -17,24 +17,24 @@ const PostCardList = () => {
     loadMoreCards();
   }, []);
 
-  // useEffect(() => {
-  //   const handleObserver = (entries: IntersectionObserverEntry[]) => {
-  //     const target = entries[0];
-  //     if (target.isIntersecting && hasMore && !loading && !error) {
-  //       loadMoreCards();
-  //     }
-  //   };
+  useEffect(() => {
+    const handleObserver = (entries: IntersectionObserverEntry[]) => {
+      const target = entries[0];
+      if (target.isIntersecting && hasMore && !loading && !error) {
+        loadMoreCards();
+      }
+    };
 
-  //   if (observer.current) observer.current.disconnect();
-  //   observer.current = new IntersectionObserver(handleObserver, {
-  //     rootMargin: "200px",
-  //   });
-  //   if (loadMoreRef.current) observer.current.observe(loadMoreRef.current);
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver(handleObserver, {
+      rootMargin: "200px",
+    });
+    if (loadMoreRef.current) observer.current.observe(loadMoreRef.current);
 
-  //   return () => {
-  //     if (observer.current) observer.current.disconnect();
-  //   };
-  // }, [loading, hasMore]);
+    return () => {
+      if (observer.current) observer.current.disconnect();
+    };
+  }, [loading, hasMore]);
 
   const loadMoreCards = async () => {
     console.log("fetch");
@@ -74,6 +74,7 @@ const PostCardList = () => {
           key={index}
           id={info.id}
           hour={info.hour}
+          likeCounts={info.likeCounts}
           description={info.description}
           profile={info.profile}
           username={info.username}
