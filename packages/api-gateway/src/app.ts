@@ -50,7 +50,7 @@ app.use(
         ? ["http://localhost:9000"]
         : ["https://domain.com"],
     credentials: true, // attach token from client
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH" , "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
