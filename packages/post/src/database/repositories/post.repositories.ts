@@ -66,34 +66,33 @@ export class postRepository {
       if (category) query.category = category;
       if (id) query._id = id;
 
-      // console.log("Query:", query); // Log the constructed query
+      console.log("Query:", query); // Log the constructed query
 
-      const pageNumber = parseInt(page, 10) || 1;
-      const pageSize = parseInt(limit, 10) || 10;
+      const pageNumber = parseInt(page) || 1;
+      const pageSize = parseInt(limit) || 10;
 
       const startIndex = (pageNumber - 1) * pageSize;
-      // console.log(
-      //   "Pagination - Page Number:",
-      //   pageNumber,
-      //   "Page Size:",
-      //   pageSize,
-      //   "Start Index:",
-      //   startIndex
-      // );
+      console.log(
+        "Pagination - Page Number:",
+        pageNumber,
+        "Page Size:",
+        pageSize,
+        "Start Index:",
+        startIndex
+      );
 
       const posts = await PostModel.find(query)
         .skip(startIndex)
-        .limit(pageSize)
-        .exec();
-      // console.log("Fetched Posts:", posts);
+        .limit(pageSize);
+      console.log("Fetched Posts:", posts);
 
       const totalPosts = await PostModel.countDocuments(query).exec();
       const hasMore = startIndex + posts.length < totalPosts;
-      // console.log("Total Posts:", totalPosts, "Has More:", hasMore);
+      console.log("Total Posts:", totalPosts, "Has More:", hasMore);
 
       return { posts, hasMore };
     } catch (error) {
-      // console.error("Error fetching posts from database:", error);
+      console.error("Error fetching posts from database:", error);
       throw new APIError(
         "Failed to fetch posts",
         StatusCode.InternalServerError

@@ -3,11 +3,62 @@ import { EditProfile } from "@/components/Organisms/editProfile/EditPro";
 import Edit from "@/components/Organisms/postCard/Edit";
 import Post from "@/components/Organisms/ProfileUser/Post";
 import SavedPost from "@/components/Organisms/ProfileUser/SavedPost";
-import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import Image from "next/image"
+
+interface userDataTypes {
+  _id: string;
+  username: string;
+  email: string;
+  work: string;
+  answers: number;
+  posts: number;
+  bio: string;
+  gender: string;
+  profile: string;
+}
 
 const Page = () => {
   const [view, setView] = useState("Post");
+  const [userData, setUserData] = useState<userDataTypes | null>(null);
+
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/v1/users/profile",
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+      if (response) {
+        setUserData(response.data.user);
+      }
+    } catch (error: any) {
+
+      if (error.response) {
+        console.error("Error response:", error.response.data);
+      } else if (error.request) {
+        console.error("Error request:", error.request);
+      } else {
+        console.error("Error message:", error.message);
+      }
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
+  if (!userData) {
+    return <div>Loading...</div>;
+  }
+
+  const { username, work, answers, posts,profile, bio } = userData;
+  console.log("username:",username);
+  
 
   return (
     <>
@@ -18,25 +69,23 @@ const Page = () => {
             <div className="user-profile max-sm:mt-2">
               <Image
                 alt="profile"
-                src={"/card-svg/avatar.svg"}
+                src={ `${profile}` || "/card-svg/avatar.svg"}
                 width={98}
                 height={98}
               />
             </div>
-            <div className="user-infor flex flex-col">
+            <div className="user-info flex flex-col">
               <div className="user-name font-medium text-[30px] text-[#343A40] max-sm:text-[14px] ">
-                Kimlang Tieng
+                {username}
               </div>
               <div className="been-post text-[#6C757D] text-[15px] font-sans flex flex-row gap-10">
-                <p>82 Posts</p>
-                <p>82 Answers</p>
+                <p>{posts} Posts</p>
+                <p>{answers} Answers</p>
               </div>
               <div className="Category text-[#623cbb] text-[15px] font-medium">
-                #Web Designer
+                {work}
               </div>
-              <div className="bio text-[#6C757D] font-light text-base">
-                Here is my bio of my account
-              </div>
+              <div className="bio text-[#6C757D] font-light text-base">{bio}</div>
             </div>
           </div>
           <div className="header-right pb-28 pr-8">

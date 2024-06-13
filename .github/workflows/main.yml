@@ -14,6 +14,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: List root directory
+        run: ls -alh
+
+      - name: List app directory
+        run: ls -alh ./app
+
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
@@ -35,6 +41,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: List root directory
+        run: ls -alh
+
+      - name: List app directory
+        run: ls -alh ./app
+
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
@@ -54,4 +66,3 @@ jobs:
       - name: Deploy to AWS with SST
         run: npx sst deploy --stage prod
         working-directory: ./app
-    

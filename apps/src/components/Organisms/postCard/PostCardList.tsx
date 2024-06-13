@@ -20,13 +20,15 @@ const PostCardList = () => {
   useEffect(() => {
     const handleObserver = (entries: IntersectionObserverEntry[]) => {
       const target = entries[0];
-      if (target.isIntersecting && hasMore && !loading) {
+      if (target.isIntersecting && hasMore && !loading && !error) {
         loadMoreCards();
       }
     };
 
     if (observer.current) observer.current.disconnect();
-    observer.current = new IntersectionObserver(handleObserver, {rootMargin: "200px"});
+    observer.current = new IntersectionObserver(handleObserver, {
+      rootMargin: "200px",
+    });
     if (loadMoreRef.current) observer.current.observe(loadMoreRef.current);
 
     return () => {
@@ -35,37 +37,44 @@ const PostCardList = () => {
   }, [loading, hasMore]);
 
   const loadMoreCards = async () => {
+    console.log("fetch");
+
     setLoading(true);
     setError(null);
     try {
       const response = await axios.get(
-        `http://localhost:3000/v1/post?page=${page}&limit=6`
+        `http://localhost:3000/v1/post?page=${page}&limit=5`
       );
       const { posts, hasMore: morePosts } = response.data; // Destructure according to expected structure
       // console.log("Posts:", posts, "Has More:", morePosts);
+      console.log("response:", response);
 
-      if (Array.isArray(posts)) {
+      if (posts.length > 0) {
         setDisplayedCards((prev) => [...prev, ...posts]);
-        setPage((prevPage) => prevPage + 1);
+        setPage(page + 1);
         setHasMore(morePosts);
-      } else {
-        throw new Error("Posts data is not an array");
       }
+      setLoading(false);
     } catch (error) {
-      // console.error("Error fetching more cards:", error);
+      console.error("Error fetching more cards:", error);
       setError("Failed to load more cards. Please try again later.");
-    } finally {
       setLoading(false);
     }
   };
 
+  console.log("error", error);
+  console.log("loading", loading);
+  console.log("hasMore", hasMore);
+  console.log("hasMore", page);
+
   return (
     <div className="space-y-4">
-      {displayedCards.map((info) => (
+      {displayedCards.map((info, index) => (
         <PostCard
-          key={info.id}
+          key={index}
           id={info.id}
           hour={info.hour}
+          likeCounts={info.likeCounts}
           description={info.description}
           profile={info.profile}
           username={info.username}
@@ -88,12 +97,14 @@ const PostCardList = () => {
           No more cards
         </div>
       )}
-      <div
-        ref={loadMoreRef}
-        className="text-center text-[20px] text-[#6C757D] m-4 rounded-md h-[35%] "
-      >
-        {loading ? "Loading..." : ""}
-      </div>
+      {!loading && hasMore && !error && (
+        <div
+          ref={loadMoreRef}
+          className="text-center text-[20px] text-[#6C757D] m-4 rounded-md h-[35%] "
+        >
+          Loading...
+        </div>
+      )}
     </div>
   );
 };
