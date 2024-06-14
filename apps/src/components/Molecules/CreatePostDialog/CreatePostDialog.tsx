@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -7,13 +7,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { SelectScrollable } from '../Selection/Selection';
-import { HeaderPost } from '../AfterPostHeader';
-import UploadButton from '@/components/Molecules/UploadImage/UploadButton';
-import axios from 'axios';
+} from "@/components/ui/dialog";
+import { SelectScrollable } from "../Selection/Selection";
+import { HeaderPost } from "../AfterPostHeader";
+import UploadButton from "@/components/Molecules/UploadImage/UploadButton";
+import axios from "axios";
 import { useToast } from "@/components/ui/use-toast";
-
 
 interface CreatePostDialogProps {
   onTitleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -36,14 +35,14 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({
   onDialogClose,
   onNewPost,
 }) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [postImage, setPostImage] = useState('');
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [postImage, setPostImage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // const { toast } = useToast();
+  const { toast } = useToast();
 
   useEffect(() => {
     // Simulate data fetching delay
@@ -64,7 +63,9 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({
     onTitleChange?.(e);
   };
 
-  const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleDescriptionChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     setDescription(e.target.value);
     onDescriptionChange?.(e);
   };
@@ -75,7 +76,7 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({
   };
 
   const handleAttachmentDelete = () => {
-    setPostImage('');
+    setPostImage("");
     onImageDelete?.();
   };
 
@@ -90,23 +91,24 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({
   };
 
   const handleSubmit = async () => {
-    // console.log('Selected Category:', category);
-    // console.log('Title:', title);
-    // console.log('Description:', description);
-    // console.log('Uploaded Image URL:', postImage);
-    // onSubmit?.();
-    
+    console.log("Selected Category:", category);
+    console.log("Title:", title);
+    console.log("Description:", description);
+    console.log("Uploaded Image URL:", postImage);
+    onSubmit?.();
+
     const postData = {
       title,
       description,
       postImage,
       category,
-      username: '', 
+      username: "",
       // profile: '/images/profile.jpg', // Updated profile image path
       // hour: new Date().getHours(),
     };
     try {
-      const response = await axios.post("http://localhost:3000/v1/post", 
+      const response = await axios.post(
+        "http://localhost:3000/v1/post",
         postData,
         {
           withCredentials: true,
@@ -115,28 +117,34 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({
           },
         }
       );
-      console.log(response.data.message);
-      // toast({
-      //   description: "Your post has been successfully created",
-      // });
+      console.log("responseData:" , response);
+      
+      toast({
+        description: "Your post has been successfully created",
+      });
       // Clear input fields after successful post
-      setCategory('');
-      setTitle('');
-      setDescription('');
-      setPostImage('');
+      setCategory("");
+      setTitle("");
+      setDescription("");
+      setPostImage("");
       closeDialog(); // Close the dialog after successful post
     } catch (error: any) {
-      console.error('Error creating post:', error.message); 
-      // alert("Post not successful");
+      console.error("Error creating post:", error.message);
+      alert("Post not successful");
     }
     console.log(postData);
   };
 
   return (
     <>
-      <Dialog open={isOpen} onOpenChange={(open) => open ? openDialog() : closeDialog()}>
+      <Dialog
+        open={isOpen}
+        onOpenChange={(open) => (open ? openDialog() : closeDialog())}
+      >
         <DialogTrigger asChild>
-          <button onClick={openDialog}><HeaderPost/></button>
+          <button onClick={openDialog}>
+            <HeaderPost />
+          </button>
         </DialogTrigger>
         <DialogContent className="w-[645px] max-sm:w-[90%] max-sm:rounded-md">
           <DialogHeader className="flex flex-col gap-2">

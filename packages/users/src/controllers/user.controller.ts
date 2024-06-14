@@ -86,27 +86,27 @@ export class UserController {
   ): Promise<any> {
     try {
       const authId = request.authId;
-      logger.debug(`user request: ${request.authId}`)
+      logger.debug(`user request: ${request.authId}`);
       if (!authId) {
         logger.error(`Could not find user: ${authId}`);
       }
       const findUser = await this.userService.getAuthById(authId);
-      logger.debug(`findUser: ${findUser?.id}`)
-      if(!findUser){
+      logger.debug(`findUser: ${findUser?.id}`);
+      if (!findUser) {
         throw new APIError('User Not Found!!', StatusCode.NotFound);
       }
-      const modifiedUser = await this.userService.UpdateById(findUser.id, reqBody);
+      const modifiedUser = await this.userService.UpdateById(
+        findUser.id,
+        reqBody,
+      );
       if (!modifiedUser) {
-        logger.error(`Update user error: ${modifiedUser}`)
+        logger.error(`Update user error: ${modifiedUser}`);
       }
       return {
-        message: "Update user profile successfully!",
-        data: modifiedUser
+        message: 'Update user profile successfully!',
+        data: modifiedUser,
       };
-      
-    } catch (err) {
-
-    }
+    } catch (err) {}
   }
 
   @SuccessResponse(StatusCode.OK, 'OK')
@@ -130,7 +130,7 @@ export class UserController {
     }
   }
 
-  @SuccessResponse(StatusCode.Accepted, 'Get User Successfully')
+  @SuccessResponse(StatusCode.OK, 'Get User Successfully')
   @Get('{userId}')
   // @Middlewares(verificationToken)
   public async GetById(@Path() userId: string): Promise<any> {
@@ -184,7 +184,7 @@ export class UserController {
         throw new Error('User not found');
       }
       const post = await axios.get(
-        `http://localhost:3005/v1/post?page=1&limit=5id=${postId}`,
+        `http://localhost:user-profile/v1/post?page=1&limit=5id=${postId}`,
       );
 
       const existingFavoriteIndex = user.saves.findIndex((item) =>
