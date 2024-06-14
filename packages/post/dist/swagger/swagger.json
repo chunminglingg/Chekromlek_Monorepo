@@ -164,7 +164,7 @@
 				"operationId": "FindPostByQueries",
 				"responses": {
 					"200": {
-						"description": "Ok",
+						"description": "Query a post successfully",
 						"content": {
 							"application/json": {
 								"schema": {}
@@ -229,7 +229,7 @@
 			"get": {
 				"operationId": "GetPostById",
 				"responses": {
-					"202": {
+					"200": {
 						"description": "Get a post successfully",
 						"content": {
 							"application/json": {
@@ -255,7 +255,7 @@
 			"get": {
 				"operationId": "GetPostAllPost",
 				"responses": {
-					"202": {
+					"200": {
 						"description": "Get a Post successfully",
 						"content": {
 							"application/json": {
@@ -266,32 +266,6 @@
 				},
 				"security": [],
 				"parameters": []
-			}
-		},
-		"/v1/post/category/{category}": {
-			"get": {
-				"operationId": "GetPostsByCategory",
-				"responses": {
-					"202": {
-						"description": "Get Category",
-						"content": {
-							"application/json": {
-								"schema": {}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "category",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
 			}
 		},
 		"/v1/post/{id}": {
@@ -364,6 +338,40 @@
 						}
 					}
 				}
+			}
+		},
+		"/v1/post/{postId}/answers/{userId}": {
+			"get": {
+				"operationId": "GetUserAnswersOnPost",
+				"responses": {
+					"200": {
+						"description": "User answers fetched successfully",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "postId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/v1/post/{postId}/{answerId}/like": {

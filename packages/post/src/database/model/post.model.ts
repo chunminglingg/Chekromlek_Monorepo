@@ -1,10 +1,12 @@
 import mongoose from "mongoose";
 
 const AnswerSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   username: { type: mongoose.Schema.Types.String, ref: "User" },
+  profile: { type: mongoose.Schema.Types.String, ref: "User" },
   postId: { type: mongoose.Schema.Types.ObjectId, ref: "PostModel" },
   answerlikedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  answer: { type: String },
   likeCounts: { type: Number, default: 0 },
 });
 const PostSchema = new mongoose.Schema(
