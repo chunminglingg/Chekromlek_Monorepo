@@ -26,7 +26,51 @@ export class UserController {
   constructor() {
     this.userService = new UserService();
   }
+  @Get('/save')
+  @Middlewares(verificationToken)
+  public async findSavePost(@Request() req: any): Promise<any> {
+    try {
+      console.log(`Request received with authId: ${req.authId}`);
 
+      const user = await this.userService.getUserById(req.authId);
+      console.log(`User fetched: ${user}`);
+
+      if (!user) {
+        throw new APIError('User not found', StatusCode.NotFound);
+      }
+      const postIds = user?.saves;
+      if (!postIds || !Array.isArray(postIds)) {
+        throw new APIError('No saved posts found', StatusCode.NotFound);
+      }
+
+      console.log(`PostIDS: ${postIds}`);
+      const fetchPost = postIds!.map(async (id) => {
+        try {
+          const response = await axios.get(
+            `http://localhost:3005/v1/post?page=1&limit=10&id=${id}`,
+          );
+          console.log(`Response for id ${id}: ${response.data}}`);
+          return response.data[0];
+        } catch (error) {
+          console.error(`Error fetching data for id ${id}:`, error);
+          return null;
+        }
+      });
+      const posts = (await Promise.all(fetchPost)).filter(
+        (post) => post !== null,
+      );
+      console.log('Post:', posts);
+      return {
+        message: 'Save Post found successfully',
+        data: posts, // not wokring yet
+      };
+    } catch (error: any) {
+      throw new APIError(
+        `Error fetching save post ${error}`,
+        StatusCode.BadRequest,
+      );
+    }
+  }
   @SuccessResponse(StatusCode.Created, 'Created')
   @Post('/')
   // @Middlewares(validateInput(UserSaveSchema))
@@ -57,7 +101,7 @@ export class UserController {
     }
   }
 
-  @SuccessResponse(StatusCode.Accepted, 'Accepted')
+  @SuccessResponse(StatusCode.OK, 'Accepted')
   @Get('/profile')
   @Middlewares(verificationToken)
   public async FindUserById(@Request() request: any): Promise<any> {
@@ -76,7 +120,7 @@ export class UserController {
     }
   }
 
-  @SuccessResponse(StatusCode.Accepted, 'Accepted')
+  @SuccessResponse(StatusCode.OK, 'Accepted')
   @Patch('/update')
   @Middlewares(verificationToken)
   public async UpdateUserProfile(
@@ -85,27 +129,27 @@ export class UserController {
   ): Promise<any> {
     try {
       const authId = request.authId;
-      logger.debug(`user request: ${request.authId}`)
+      logger.debug(`user request: ${request.authId}`);
       if (!authId) {
         logger.error(`Could not find user: ${authId}`);
       }
       const findUser = await this.userService.getAuthById(authId);
-      logger.debug(`findUser: ${findUser?.id}`)
-      if(!findUser){
+      logger.debug(`findUser: ${findUser?.id}`);
+      if (!findUser) {
         throw new APIError('User Not Found!!', StatusCode.NotFound);
       }
-      const modifiedUser = await this.userService.UpdateById(findUser.id, reqBody);
+      const modifiedUser = await this.userService.UpdateById(
+        findUser.id,
+        reqBody,
+      );
       if (!modifiedUser) {
-        logger.error(`Update user error: ${modifiedUser}`)
+        logger.error(`Update user error: ${modifiedUser}`);
       }
       return {
-        message: "Update user profile successfully!",
-        data: modifiedUser
+        message: 'Update user profile successfully!',
+        data: modifiedUser,
       };
-      
-    } catch (err) {
-
-    }
+    } catch (err) {}
   }
 
   @SuccessResponse(StatusCode.OK, 'OK')
@@ -129,7 +173,7 @@ export class UserController {
     }
   }
 
-  @SuccessResponse(StatusCode.Accepted, 'Get User Successfully')
+  @SuccessResponse(StatusCode.OK, 'Get User Successfully')
   @Get('{userId}')
   // @Middlewares(verificationToken)
   public async GetById(@Path() userId: string): Promise<any> {
@@ -155,6 +199,54 @@ export class UserController {
       return await this.userService.updateUserPosts(userId, postId);
     } catch (error) {
       throw error;
+    }
+  }
+
+  @SuccessResponse(StatusCode.OK, 'Add/Remove Save successfully')
+  @Patch('/:postId/addpost')
+  @Middlewares(verificationToken)
+  public async AddPost(
+    @Request() request: any,
+    @Path() postId: string,
+  ): Promise<any> {
+    try {
+      const authId = request.authId; // Assuming userId is actually authId
+
+      if (!mongoose.Types.ObjectId.isValid(authId)) {
+        throw new Error('Invalid auth ID format');
+      }
+
+      const user = await this.userService.getAuthById(authId); // Assuming this method retrieves user by authId
+      if (!user) {
+        throw new Error('User not found');
+      }
+
+      const objectId = new mongoose.Types.ObjectId(postId);
+
+      // Check if the post already exists in the user's post array
+      const existingPostIndex = user.post.findIndex((item) =>
+        item.equals(objectId),
+      );
+      if (existingPostIndex === -1) {
+        // If the post does not exist, add it to the user's post array
+        user.post.push(objectId);
+
+        // Save the updated user object
+        await user.save();
+
+        return {
+          message: `Post added successfully`,
+          data: user,
+        };
+      } else {
+        // If the post already exists, return a message indicating it's already added
+        return {
+          message: `Post already added to the user's post array`,
+          data: user,
+        };
+      }
+    } catch (error) {
+      throw new CustomError(`${error}`);
     }
   }
 
@@ -207,92 +299,9 @@ export class UserController {
         data: user,
       };
     } catch (error) {
-      throw new CustomError(`${error}`);
+      throw new APIError(`Error: ${error}`);
     }
   }
-
-  @SuccessResponse(StatusCode.OK, 'Add/Remove Save successfully')
-  @Patch('/:postId/addpost')
-  @Middlewares(verificationToken)
-  public async AddPost(
-    @Request() request: any,
-    @Path() postId: string,
-  ): Promise<any> {
-    try {
-      const authId = request.authId; // Assuming userId is actually authId
-
-      if (!mongoose.Types.ObjectId.isValid(authId)) {
-        throw new Error('Invalid auth ID format');
-      }
-
-      const user = await this.userService.getAuthById(authId); // Assuming this method retrieves user by authId
-      if (!user) {
-        throw new Error('User not found');
-      }
-
-      const objectId = new mongoose.Types.ObjectId(postId);
-
-      // Check if the post already exists in the user's post array
-      const existingPostIndex = user.post.findIndex((item) =>
-        item.equals(objectId),
-      );
-      if (existingPostIndex === -1) {
-        // If the post does not exist, add it to the user's post array
-        user.post.push(objectId);
-
-        // Save the updated user object
-        await user.save();
-
-        return {
-          message: `Post added successfully`,
-          data: user,
-        };
-      } else {
-        // If the post already exists, return a message indicating it's already added
-        return {
-          message: `Post already added to the user's post array`,
-          data: user,
-        };
-      }
-    } catch (error) {
-      throw new CustomError(`${error}`);
-    }
-  }
-
-  @Post('/:id')
-  @Middlewares(verificationToken)
-  @SuccessResponse(StatusCode.Found, 'Found Successfully')
-  public async FindSavePost(@Request() request: any): Promise<any> {
-    try {
-      const user = await this.userService.getUserById(request.id);
-      const postId = user?.saves;
-      const postPromise = postId!.map(async (id) => {
-        try {
-          const response = await axios.get(
-            `http://localhost:3005/v1/post/save`,
-          );
-
-          return response.data;
-        } catch (error) {
-          console.error(`Error fetching data for id ${id}:`, error);
-          return null;
-        }
-      });
-      const posts = (await Promise.all(postPromise)).filter(
-        (event) => event !== null,
-      );
-      return {
-        message: 'Favorite events found successfully',
-        data: posts, // not working yet
-      };
-    } catch (error) {
-      throw new CustomError(
-        'Error fetching favorite events',
-        StatusCode.BadRequest,
-      );
-    }
-  }
-
   // @SuccessResponse(StatusCode.OK, 'Get a user successfully')
   // @Get('/profile')
   // @Middlewares(verificationToken)

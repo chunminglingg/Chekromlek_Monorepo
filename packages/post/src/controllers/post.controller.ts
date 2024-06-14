@@ -206,7 +206,18 @@ export class PostController {
       );
     }
   }
-
+  // @Get("{postId}/users")
+  // public async getUsersWhoCommentedOnPost(
+  //   @Path() postId: string
+  // ): Promise<any> {
+  //   try {
+  //     const users =
+  //       await this.postService.findAllUsersWhoCommentedOnPost(postId);
+  //     return users;
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // }
   @Get("/:postId/answers/:userId")
   @SuccessResponse(StatusCode.OK, "User answers fetched successfully")
   public async getUserAnswersOnPost(
@@ -368,7 +379,7 @@ export class PostController {
   }
 
   @SuccessResponse(StatusCode.OK, "Favorite retrieved successfully")
-  @Get("/{postId}/favorite")
+  @Get("/{postId}/save")
   @Middlewares(verificationToken)
   public async FindFavorite(
     @Path() postId: string,
@@ -390,26 +401,26 @@ export class PostController {
     }
   }
 
-  @SuccessResponse(StatusCode.OK, "Saved successfully")
-  @Get("/{postId}/save")
-  @Middlewares(verificationToken)
-  public async toggleSavePost(@Path() postId: string): Promise<any> {
-    try {
-      const post = await this.postService.findPostById(postId);
-      if (!post) {
-        throw new CustomError("Post not found", StatusCode.NotFound);
-      }
-      await this.postService.savePost(postId);
-      return {
-        message: "Post saved successfully",
-        data: post,
-      };
-    } catch (error) {
-      logger.error(`Failed to save post: ${error}`);
-      throw new CustomError(
-        `Failed to save post: ${error}`,
-        StatusCode.InternalServerError
-      );
-    }
-  }
+  // @SuccessResponse(StatusCode.OK, "Saved successfully")
+  // @Get("/{postId}/save")
+  // @Middlewares(verificationToken)
+  // public async toggleSavePost(@Path() postId: string): Promise<any> {
+  //   try {
+  //     const post = await this.postService.findPostById(postId);
+  //     if (!post) {
+  //       throw new CustomError("Post not found", StatusCode.NotFound);
+  //     }
+  //     await this.postService.savePost(postId);
+  //     return {
+  //       message: "Post saved successfully",
+  //       data: post,
+  //     };
+  //   } catch (error) {
+  //     logger.error(`Failed to save post: ${error}`);
+  //     throw new CustomError(
+  //       `Failed to save post: ${error}`,
+  //       StatusCode.InternalServerError
+  //     );
+  //   }
+  // }
 }

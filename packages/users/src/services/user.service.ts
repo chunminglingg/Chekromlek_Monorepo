@@ -66,9 +66,9 @@ export class UserService {
     }
   }
 
-  async getUserById(id: string) {
+  async getUserById(authId: string) {
     try {
-      return await this.userRepo.FindUserById(id);
+      return await this.userRepo.FindUserById(authId);
     } catch (error) {
       logger.error('Get user error:', error);
       throw error;

@@ -19,9 +19,11 @@ export class UserRepository {
       throw error;
     }
   }
-  async FindUserById(userId: string) {
+  async FindUserById(authId: string) {
     try {
-      const user = await UserModel.findById(userId);
+      const user = await UserModel.findById(authId);
+      console.log(`User found: ${user}`);
+
       return user;
     } catch (error: any) {
       logger.error(
@@ -136,7 +138,7 @@ export class UserRepository {
         logger.error(`User ${authId} not found`);
         throw new APIError('User not found');
       }
-  
+
       // Return the found user
       return existingUser;
     } catch (error: any) {
@@ -144,5 +146,4 @@ export class UserRepository {
       throw new APIError('Cannot Find User in Database');
     }
   }
-  
 }
