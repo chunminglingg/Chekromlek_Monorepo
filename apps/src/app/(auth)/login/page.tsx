@@ -59,7 +59,7 @@ const LoginPage: React.FC = () => {
         if (status === 401 || status === 400) {
           setError(data.message || "Invalid email or password. Please try again.");
         } else {
-          setError("Something went wrong. Please try again.");
+          setError("Email or Password  is Incorrect, Please try again.");
         }
       } else {
         console.error("Unexpected error structure", error);
