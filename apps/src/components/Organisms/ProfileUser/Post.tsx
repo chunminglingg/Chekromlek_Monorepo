@@ -32,7 +32,7 @@ const Post: React.FC<PostProps> = ({ userId }) => {
     const fetchPosts = async () => {
       try {
         const response = await axios.get<ApiResponse>(
-          `http://localhost:3000/v1/post/getpost/`,
+          `http://localhost:3000/v1/users/66690afaef76dd59d556ce97`,
           {
             headers: { "Content-Type": "application/json" },
             withCredentials: true,

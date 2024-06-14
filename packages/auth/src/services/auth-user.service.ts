@@ -268,7 +268,7 @@ export class UserAuthService {
       const { id } = decodedUser;
       console.log("id from service: ", id);
       const existingUser = await axios.get(
-        `http://localhost:4000/v1/users/${id}`
+        `http://user-profile:4000/v1/users/${id}`
       );
       console.log("exist User : ", existingUser);
       if (!existingUser) {

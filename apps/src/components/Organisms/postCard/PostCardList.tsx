@@ -50,7 +50,13 @@ const PostCardList = () => {
       console.log("response:", response);
 
       if (posts.length > 0) {
-        setDisplayedCards((prev) => [...prev, ...posts]);
+        // setDisplayedCards((prev) => [...prev, ...posts]);
+        setDisplayedCards((prev) => [
+          ...prev,
+          ...posts.map((item: any) => {
+            return { ...item, id: item._id };
+          }),
+        ]);
         setPage(page + 1);
         setHasMore(morePosts);
       }
@@ -71,7 +77,7 @@ const PostCardList = () => {
     <div className="space-y-4">
       {displayedCards.map((info, index) => (
         <PostCard
-          key={index}
+          key={info.id}
           id={info.id}
           hour={info.hour}
           likeCounts={info.likeCounts}
@@ -84,7 +90,7 @@ const PostCardList = () => {
           onSave={() => console.log("Saved")}
         />
       ))}
-      {loading && (
+      {loading && hasMore && !error  && (
         <div className="space-y-4">
           {Array.from({ length: 5 }, (_, index) => (
             <PostCardSkeleton key={index} />

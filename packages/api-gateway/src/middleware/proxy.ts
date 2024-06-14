@@ -50,7 +50,6 @@ const proxyConfigs: ProxyConfig = {
         console.log(originalBody);
         proxyRes.on("end", function () {
           const bodyString = Buffer.concat(originalBody).toString("utf8");
-
           let responseBody: {
             message?: string;
             token?: string;

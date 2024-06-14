@@ -7,7 +7,8 @@ const Sidebar = () => {
   const pathname = usePathname();
 
   return (
-    <div className="sidebar">
+    <div>
+    <div className="sidebar items-start justify-around">
       <div className="home">
         <Link href="/afterlogin">
           <button
@@ -71,6 +72,23 @@ const Sidebar = () => {
           </button>
         </Link>
       </div>
+      
+    </div>
+    <div className='md:hidden'>
+    <Link href="/login">
+        <button
+          className={`flex flex-row gap-2 items-start px-4 py-4 group rounded-xl w-[250px] hover:bg-gray-200 text-[#343A40]`}
+        >
+          <Image
+            alt="logout"
+            src={'/login/logout.svg'}
+            height={24}
+            width={24}
+          />
+          <span className='text-red-600'>Log out</span>
+        </button>
+      </Link>
+    </div>
     </div>
   );
 };
