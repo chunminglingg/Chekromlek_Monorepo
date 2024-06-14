@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { Typography } from "@/components/Atoms";
+import Link from "next/link";
 
 export interface ViewPostProps {
   profile: string;
@@ -71,6 +72,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
         <div className="flex items-center justify-between gap-5">
           {/* Profile */}
           <div className="flex items-center">
+          <Link href={"/profile/"}>
             <Image
               src={profile}
               width={42}
@@ -78,12 +80,14 @@ const ViewPost: React.FC<ViewPostProps> = ({
               className="w-10 h-10 rounded-full"
               alt="profile"
             />
+            </Link>
             {/* Detail */}
             <div className="ml-2 ">
+            <Link href={"/profile/"}>
               <h3 className="font-medium text-[16px] text-[#343A40]">
                 {username}
               </h3>
-
+              </Link>
               <div className="flex flex-row gap-1">
                 <Image
                   src={"/icons/time.svg"}
@@ -102,12 +106,12 @@ const ViewPost: React.FC<ViewPostProps> = ({
         <div className="card-content flex flex-col gap-4  pt-2 pb-2">
           {/* Render truncated caption with "See more" link */}
           {/* #tittle */}
-          <div className=" mt-1 title font-semibold text-[#343A40] text-2xl hover:underline max-sm:text-lg max-sm:font-medium pt-2 hover:cursor-pointer">
+          <div className=" mt-1 w-auto title font-semibold text-[#343A40] text-2xl hover:underline max-sm:text-lg max-sm:font-medium pt-2 hover:cursor-pointer break-words">
             <Typography fontSize="title" align="left" className="">
               {title}
             </Typography>
           </div>
-          <p className="text-[18px] text-[#6C757D] font-medium">
+          <p className="text-[18px] text-[#6C757D] font-medium break-words">
             {isCaptionTruncated
               ? truncateCaption(description || "", maxCaptionLength)
               : description}
