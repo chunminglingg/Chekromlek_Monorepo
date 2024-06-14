@@ -23,10 +23,10 @@ interface CreatePostDialogProps {
   onImageDelete?: () => void;
   onDialogOpen?: () => void;
   onDialogClose?: () => void;
-  onNewPost?: (postData: any) => void;
+  onNewPost: (postData: any) => void;
 }
 
-const CreatePostDialog: React.FC<CreatePostDialogProps> = ({
+const UpdatePostDialog: React.FC<CreatePostDialogProps> = ({
   onTitleChange,
   onDescriptionChange,
   onSubmit,
@@ -43,7 +43,7 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({
   const [category, setCategory] = useState('');
   const [loading, setLoading] = useState(true);
 
-  // const { toast } = useToast();
+  const { toast } = useToast();
 
   useEffect(() => {
     // Simulate data fetching delay
@@ -90,11 +90,11 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({
   };
 
   const handleSubmit = async () => {
-    // console.log('Selected Category:', category);
-    // console.log('Title:', title);
-    // console.log('Description:', description);
-    // console.log('Uploaded Image URL:', postImage);
-    // onSubmit?.();
+    console.log('Selected Category:', category);
+    console.log('Title:', title);
+    console.log('Description:', description);
+    console.log('Uploaded Image URL:', postImage);
+    onSubmit?.();
     
     const postData = {
       title,
@@ -116,9 +116,9 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({
         }
       );
       console.log(response.data.message);
-      // toast({
-      //   description: "Your post has been successfully created",
-      // });
+      toast({
+        description: "Your post has been successfully created",
+      });
       // Clear input fields after successful post
       setCategory('');
       setTitle('');
@@ -127,7 +127,7 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({
       closeDialog(); // Close the dialog after successful post
     } catch (error: any) {
       console.error('Error creating post:', error.message); 
-      // alert("Post not successful");
+      alert("Post not successful");
     }
     console.log(postData);
   };
@@ -184,4 +184,4 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({
   );
 };
 
-export default CreatePostDialog;
+export default UpdatePostDialog;

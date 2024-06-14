@@ -38,7 +38,7 @@ export function EditProfile() {
   const [bio, setBio] = useState<string>("");
   const [work, setWork] = useState("");
   const [gender, setGender] = useState("");
-  const [profile, setProfile] = useState<File | null>(null);
+  const [profile, setProfile] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState({
@@ -96,10 +96,19 @@ export function EditProfile() {
   };
 
   const handleImageUpload = (uploadedFile: File | null) => {
-    setProfile(uploadedFile);
+    if (uploadedFile) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setProfile(e.target?.result as string);
+      };
+      reader.readAsDataURL(uploadedFile); // or use readAsText(uploadedFile) if you want to read it as plain text
+    } else {
+      setProfile("");
+    }
   };
 
-  const handleSubmit = async () => {
+
+  const handleSubmit = () => {
     const formErrors = {
       bio: !bio,
       job: !work,
@@ -113,37 +122,46 @@ export function EditProfile() {
     }
 
     setLoading(true);
+    const formData = {
+      bio,
+      work,
+      gender,
+      profile,
+    };
 
-    const formData = new FormData();
-    formData.append("bio", bio);
-    formData.append("work", work);
-    formData.append("gender", gender);
-    if (profile) {
-      formData.append("profile", profile);
-    }
-
-    try {
-      const response = await axios.patch(
-        "http://localhost:3000/v1/users/update",
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-          withCredentials: true,
+    const handleUpdate = async () => {
+      try {
+        const response = await axios.put(
+          "http://localhost:3000/v1/users/update",
+          formData,
+          {
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+          }
+        );
+        if (response) {
+          setSuccess(true);
         }
-      );
-      if (response) {
-        setSuccess(true);
-        setBio("");
-        setWork("");
-        setGender("");
-        setProfile(null);
-        setTimeout(() => setSuccess(false), 3000);
+      } catch (error: any) {
+        throw error;
       }
-    } catch (error: any) {
-      console.error("Error updating profile:", error);
-    } finally {
+    };
+    console.log("Submitting form data:", formData);
+    console.log("request:", handleUpdate);
+
+    // Simulate a loading process with a timeout
+    setTimeout(() => {
       setLoading(false);
-    }
+      setSuccess(true);
+      // Reset all fields after submission
+      setBio("");
+      setWork("");
+      setGender("");
+      setProfile(null);
+      // Hide success message after 3 seconds
+      setTimeout(() => setSuccess(false), 3000);
+    }, 2000);
+    return handleUpdate();
   };
 
   return (

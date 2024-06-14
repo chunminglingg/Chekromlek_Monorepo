@@ -17,6 +17,7 @@ import {
   Route,
   SuccessResponse,
   Patch,
+  Put,
 } from 'tsoa';
 
 @Route('v1/users')
@@ -77,7 +78,7 @@ export class UserController {
   }
 
   @SuccessResponse(StatusCode.Accepted, 'Accepted')
-  @Patch('/update')
+  @Put('/update')
   @Middlewares(verificationToken)
   public async UpdateUserProfile(
     @Request() request: any,
@@ -129,7 +130,7 @@ export class UserController {
     }
   }
 
-  @SuccessResponse(StatusCode.OK, 'OK')
+  @SuccessResponse(StatusCode.Accepted, 'Get User Successfully')
   @Get('{userId}')
   // @Middlewares(verificationToken)
   public async GetById(@Path() userId: string): Promise<any> {
