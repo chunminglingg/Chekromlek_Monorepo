@@ -4,6 +4,7 @@ import SearchInput from "@/components/Molecules/Search/SearchInput";
 import Link from "next/link";
 import Image from "next/image";
 import React, { useState } from "react";
+import SideLeftLogin from "@/components/Molecules/SideLeft/SideLeftLogin";
 
 const BurgerLogin = () => {
   const [click, setClick] = useState(false);
@@ -53,7 +54,7 @@ const BurgerLogin = () => {
                   </Link>
                   <div className="w-[100%] h-[0.5px] bg-gray-200"></div>
                   {/* Render the dropdown content here */}
-                  <SideLeft />
+                  <SideLeftLogin/>
                 </div>
               </div>
             </>

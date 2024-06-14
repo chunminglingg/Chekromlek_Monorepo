@@ -3,6 +3,7 @@ import { Key, useEffect, useState } from "react";
 import axios from "axios";
 import ViewPost, { ViewPostProps } from "@/components/Molecules/Post/ViewPost/ViewPost";
 import { useParams } from "next/navigation";
+import { UserCard } from "@/components/Organisms/postCard/UserAnswer/UserCard";
 
 const ViewPostPage = () => {
   const [post, setPost] = useState<ViewPostProps>();

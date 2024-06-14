@@ -74,7 +74,7 @@ export default function Page() {
       </Link>
 
       {/* Language Dropdown */}
-      <Link href={"/setting/language"}>
+      {/* <Link href={"/setting/language"}>
         <button className="mt-[3%] w-full h-[70px] max-sm:h-[60px] flex-row flex items-center justify-between border rounded-md shadow-md p-5 hover:bg-gray-50">
           <div className="flex items-center justify-start gap-1">
             <Image
@@ -89,7 +89,7 @@ export default function Page() {
           </div>
           <Image src={"/icons/go_on.svg"} alt="goon" width={17} height={17} />
         </button>
-      </Link>
+      </Link> */}
 
       {/* Dark Mode */}
      {/* <button className="mt-[2%] w-full h-[70px] max-sm:h-[60px] flex-row flex gap-3 items-center justify-between border rounded-md shadow-md p-5 hover:bg-gray-50">

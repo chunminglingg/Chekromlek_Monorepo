@@ -88,7 +88,7 @@ const UserCard: React.FC<UserCardProps> = ({
         <div className=" mb-[2%] ms-1 border-t rounded-sm border-gray-300 "></div>
         <div className="flex items-end justify-end gap-2 mb-1 ms-1">
           <div className="like">
-            <Like />
+            <Like like={0} />
           </div>
         </div>
       </div>
