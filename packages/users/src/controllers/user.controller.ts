@@ -151,7 +151,7 @@ export class UserController {
   @Middlewares(verificationToken)
   public async FindUserById(@Request() request: any): Promise<any> {
     try {
-      const user = await this.userService.getAuthById(request.authId);
+      const user = await this.userService.getAuthById(request.userId);
       console.log(request.authId);
       if (!user) {
         throw new APIError('User Not Found!!', StatusCode.NotFound);
