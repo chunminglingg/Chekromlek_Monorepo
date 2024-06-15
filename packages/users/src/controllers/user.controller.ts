@@ -51,6 +51,54 @@ export class UserController {
           // console.log('Response post:', posts);
           return posts;
         } catch (error) {
+          // console.error(`Error fetching data for id ${postId}:`, error);
+          return null; // or handle differently if needed
+        }
+      });
+      const posts = (await Promise.all(postPro)).filter(
+        (post) => post !== null,
+      );
+      if (posts.length === 0) {
+        console.log('No valid posts found from the saved post IDs.');
+      } else {
+        console.log(`Found posts: ${JSON.stringify(posts)}`);
+      }
+      return {
+        message: 'Save post found successfully',
+        data: posts,
+      };
+    } catch (error: unknown) {
+      throw new APIError(
+        'Error fetching favorite events',
+        StatusCode.BadRequest,
+      );
+    }
+  }
+  @Get('/post')
+  @Middlewares(verificationToken)
+  public async findPost(@Request() req: any): Promise<any> {
+    try {
+      const user = await this.userService.getAuthById(req.userId);
+      const postIds = user?.post;
+      if (!postIds || postIds.length === 0) {
+        console.log('No saved posts found for the user.');
+        return {
+          message: 'No saved posts found',
+          data: [],
+        };
+      }
+      console.log(`User's saved post IDs: ${postIds}`);
+
+      const postPro = postIds.map(async (postId) => {
+        try {
+          const postReponse = await axios.get(
+            `http://localhost:3005/v1/post?page=1&limit=5&id=${postId}`,
+          );
+          console.log(`Response for id ${postId}: ${postReponse.data}`);
+          const posts = postReponse.data.posts[0];
+          // console.log('Response post:', posts);
+          return posts;
+        } catch (error) {
           console.error(`Error fetching data for id ${postId}:`, error);
           return null; // or handle differently if needed
         }
