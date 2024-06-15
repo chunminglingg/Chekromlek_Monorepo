@@ -16,11 +16,11 @@ interface PostType {
 
 interface ApiResponse {
   message: string;
-  data: PostType[]; // Assuming data contains an array of PostType
+  data: PostType[];
 }
 
 interface PostProps {
-  userId: string; // Expecting the user ID as a prop
+  userId: string;
 }
 
 const Post: React.FC<PostProps> = ({ userId }) => {
@@ -32,7 +32,7 @@ const Post: React.FC<PostProps> = ({ userId }) => {
     const fetchPosts = async () => {
       try {
         const response = await axios.get<ApiResponse>(
-          `http://localhost:3000/v1/users/66690afaef76dd59d556ce97`,
+          `http://localhost:3000/v1/post/getpost/`, // Updated to use userId
           {
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
@@ -41,16 +41,17 @@ const Post: React.FC<PostProps> = ({ userId }) => {
 
         console.log("API Response:", response.data); // Log the entire response
 
-        if (response.data.message === "Post found successfully") {
-          setPosts(response.data.data); // Set posts based on data array
+        if (response.data.message === "Post found successfully" && Array.isArray(response.data.data)) {
+          setPosts(response.data.data);
         } else {
           console.error("API response is not as expected:", response.data);
           setError("Invalid response format from API");
         }
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching posts:", error);
+      } catch (error: any) {
+        console.error("Error fetching posts:", error.message);
+        console.error("Error details:", error.response ? error.response.data : error);
         setError("Error fetching posts. Please try again later.");
+      } finally {
         setLoading(false);
       }
     };

@@ -115,7 +115,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
               </Typography>
             </Link>
           </div>
-          <p className="text-[18px] text-[#6C757D] font-medium break-words">
+          <p className="text-[14px] text-[#6C757D] font-medium break-words">
             {isCaptionTruncated
               ? truncateCaption(description || "", maxCaptionLength)
               : description}
