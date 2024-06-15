@@ -77,32 +77,6 @@
 		"contact": {}
 	},
 	"paths": {
-		"/v1/users/save/{postId}": {
-			"post": {
-				"operationId": "AddFavoEvent",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "postId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
 		"/v1/users/save": {
 			"get": {
 				"operationId": "FindSavePost",
@@ -181,7 +155,7 @@
 			"get": {
 				"operationId": "FindUserById",
 				"responses": {
-					"202": {
+					"200": {
 						"description": "Accepted",
 						"content": {
 							"application/json": {
@@ -198,7 +172,7 @@
 			"patch": {
 				"operationId": "UpdateUserProfile",
 				"responses": {
-					"202": {
+					"200": {
 						"description": "Accepted",
 						"content": {
 							"application/json": {
@@ -259,7 +233,7 @@
 			"get": {
 				"operationId": "GetById",
 				"responses": {
-					"202": {
+					"200": {
 						"description": "Get User Successfully",
 						"content": {
 							"application/json": {
@@ -320,6 +294,32 @@
 		"/v1/users/{postId}/addpost": {
 			"patch": {
 				"operationId": "AddPost",
+				"responses": {
+					"200": {
+						"description": "Add/Remove Save successfully",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "postId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/users/save/{postId}": {
+			"post": {
+				"operationId": "ToggleSavePost",
 				"responses": {
 					"200": {
 						"description": "Add/Remove Save successfully",

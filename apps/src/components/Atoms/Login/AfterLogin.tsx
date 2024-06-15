@@ -38,12 +38,12 @@ const AfteLogin = () => {
   useEffect(() => {
     fetchUserData();
   }, []);
+
   const handleOnLogout = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/v1/auth/logout", {
+      await axios.get("http://localhost:3000/v1/auth/logout", {
         withCredentials: true,
       });
-      console.log("Response: ", response);
       window.location.href = "/login";
     } catch (error: unknown | any) {
       // AxiosError is used to handle specific axios errors

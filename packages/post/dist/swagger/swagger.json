@@ -554,38 +554,12 @@
 				]
 			}
 		},
-		"/v1/post/{postId}/favorite": {
+		"/v1/post/{postId}/save": {
 			"get": {
 				"operationId": "FindFavorite",
 				"responses": {
 					"200": {
 						"description": "Favorite retrieved successfully",
-						"content": {
-							"application/json": {
-								"schema": {}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "postId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/v1/post/{postId}/save": {
-			"get": {
-				"operationId": "ToggleSavePost",
-				"responses": {
-					"200": {
-						"description": "Saved successfully",
 						"content": {
 							"application/json": {
 								"schema": {}

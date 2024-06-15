@@ -137,6 +137,16 @@ export class postRepository {
       throw error;
     }
   }
+  async findPostById(postId: string) {
+    try {
+      return await PostModel.findById(postId).populate(
+        "answers.userId",
+        "username profile"
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
   //list the answer that user have post
   public async findAnswersByUserOnPost(postId: string, userId: string) {
     try {

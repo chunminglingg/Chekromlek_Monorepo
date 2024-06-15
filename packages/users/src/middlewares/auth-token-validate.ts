@@ -13,9 +13,7 @@ export const verificationToken = (req: any, res: any, next: any) => {
     }) as {
       userId: string;
     };
-    console.log('Verified token:', decodedToken);
     req.userId = decodedToken.userId;
-    console.log('req.userId set to:', req.userId);
     next();
   } catch (error: any) {
     return res.status(401).json({ message: 'Invalid token: ' + error.message });
