@@ -6,7 +6,7 @@ import { expect } from "@storybook/jest";
 import { Typography } from "../Typography";
 
 const meta: Meta<typeof Button> = {
-  title: "chekromlek/Components/Atoms/Button",
+  title: "Chekromlek/Components/Atoms/Button",
   component: Button,
   argTypes: {
     onClick: { action: 'clicked' }

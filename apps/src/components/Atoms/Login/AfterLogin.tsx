@@ -20,8 +20,9 @@ const AfteLogin = () => {
         }
       );
       if (response && response.data) {
-        const { username } = response.data.user;
+        const { _id, username } = response.data.user;
         setUsername(username);
+        localStorage.setItem("userId", _id);
       }
     } catch (error: any) {
       if (error.response) {
@@ -38,6 +39,7 @@ const AfteLogin = () => {
   useEffect(() => {
     fetchUserData();
   }, []);
+
   const handleOnLogout = async () => {
     try {
       const response = await axios.get("http://localhost:3000/v1/auth/logout", {

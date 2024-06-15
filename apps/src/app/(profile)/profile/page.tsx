@@ -5,7 +5,7 @@ import Post from "@/components/Organisms/ProfileUser/Post";
 import SavedPost from "@/components/Organisms/ProfileUser/SavedPost";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Image from "next/image"
+import Image from "next/image";
 
 interface userDataTypes {
   _id: string;
@@ -36,7 +36,6 @@ const Page = () => {
         setUserData(response.data.user);
       }
     } catch (error: any) {
-
       if (error.response) {
         console.error("Error response:", error.response.data);
       } else if (error.request) {
@@ -56,9 +55,10 @@ const Page = () => {
     return <div>Loading...</div>;
   }
 
-  const { username, work, answers, posts,profile, bio } = userData;
-  
-  
+  const { username, work, answers, posts, profile, bio } = userData;
+
+  console.log("User data", userData);
+
   return (
     <>
       <div className="content flex flex-col justify-center items-center">
@@ -68,7 +68,7 @@ const Page = () => {
             <div className="user-profile max-sm:mt-2">
               <Image
                 alt="profile"
-                src={ `${profile}` || "/card-svg/avatar.svg"}
+                src={`${profile}` || "/card-svg/avatar.svg"}
                 width={98}
                 height={98}
               />
@@ -84,7 +84,9 @@ const Page = () => {
               <div className="Category text-[#623cbb] text-[15px] font-medium">
                 {work}
               </div>
-              <div className="bio text-[#6C757D] font-light text-base">{bio}</div>
+              <div className="bio text-[#6C757D] font-light text-base">
+                {bio}
+              </div>
             </div>
           </div>
           <div className="header-right pb-28 pr-8">

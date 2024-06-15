@@ -1,12 +1,15 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
+import { Typography } from "@/components/Atoms";
+import Link from "next/link";
 
-interface ViewPostProps {
+export interface ViewPostProps {
   profile: string;
   username: string;
   hour: number;
-  caption: string;
+  title?: string;
+  description?: string;
   postImage?: string | undefined;
 }
 
@@ -14,7 +17,8 @@ const ViewPost: React.FC<ViewPostProps> = ({
   profile,
   username,
   hour,
-  caption,
+  title,
+  description,
   postImage,
 }) => {
   // State to track whether the caption is truncated
@@ -63,11 +67,12 @@ const ViewPost: React.FC<ViewPostProps> = ({
   };
 
   return (
-    <div className="w-[430px] max-sm:w-[315px] h-auto min-md:mt-[10%] p-2 max-sm:m-4">
+    <div className="w-auto max-sm:w-[315px] h-auto min-md:mt-[10%] p-2 max-sm:m-4">
       <div>
         <div className="flex items-center justify-between gap-5">
           {/* Profile */}
           <div className="flex items-center">
+          <Link href={"/profile/"}>
             <Image
               src={profile}
               width={42}
@@ -75,12 +80,14 @@ const ViewPost: React.FC<ViewPostProps> = ({
               className="w-10 h-10 rounded-full"
               alt="profile"
             />
+            </Link>
             {/* Detail */}
             <div className="ml-2 ">
+            <Link href={"/profile/"}>
               <h3 className="font-medium text-[16px] text-[#343A40]">
                 {username}
               </h3>
-
+              </Link>
               <div className="flex flex-row gap-1">
                 <Image
                   src={"/icons/time.svg"}
@@ -96,13 +103,19 @@ const ViewPost: React.FC<ViewPostProps> = ({
           </div>
         </div>
         {/* Caption */}
-        <div className="card-content flex flex-col gap-4 items-center justify-center pt-2 pb-2">
+        <div className="card-content flex flex-col gap-4  pt-2 pb-2">
           {/* Render truncated caption with "See more" link */}
-          <p className="text-[18px] text-[#6C757D] font-medium">
+          {/* #tittle */}
+          <div className=" mt-1 w-auto title font-semibold text-[#343A40] text-2xl hover:underline max-sm:text-lg max-sm:font-medium pt-2 hover:cursor-pointer break-words">
+            <Typography fontSize="title" align="left" className="">
+              {title}
+            </Typography>
+          </div>
+          <p className="text-[18px] text-[#6C757D] font-medium break-words">
             {isCaptionTruncated
-              ? truncateCaption(caption || "", maxCaptionLength)
-              : caption}
-            {caption && caption.length > maxCaptionLength && (
+              ? truncateCaption(description || "", maxCaptionLength)
+              : description}
+            {description && description.length > maxCaptionLength && (
               <button
                 className="text-[14px] text-[#4b81ed] font-medium underline cursor-pointer ml-1"
                 onClick={toggleCaptionTruncation}

@@ -117,7 +117,7 @@ export class UserAuthController {
 
       // dev: localhost
       // docker: http://user-profile:4000...
-      await axios.post("http://localhost:4000/v1/users", {
+      await axios.post("http://user-profile:4000/v1/users", {
         authId: userDetail.id,
         username: userDetail.username,
         email: userDetail.email,
@@ -438,18 +438,17 @@ export class UserAuthController {
   }
   @Get("/logout")
   async logout(@Header("authorization") authorization: string): Promise<any> {
-    try{
+    try {
       const token = authorization?.split(" ")[1];
       const decodedUser = await decodedToken(token);
-      const isLogout = await this.userService.logout(decodedUser)
-      
-      if(!isLogout){
-        throw new APIError("Unable to logout!")
+      const isLogout = await this.userService.logout(decodedUser);
+
+      if (!isLogout) {
+        throw new APIError("Unable to logout!");
       }
-      return {message: "Success logout", isLogout: isLogout}
-    }catch(error: unknown){
-      throw error
+      return { message: "Success logout", isLogout: isLogout };
+    } catch (error: unknown) {
+      throw error;
     }
   }
-
 }
