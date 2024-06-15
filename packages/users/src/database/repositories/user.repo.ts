@@ -19,20 +19,11 @@ export class UserRepository {
       throw error;
     }
   }
-  async FindUserById(authId: string) {
+  async findUserById(id: string) {
     try {
-      const user = await UserModel.findById(authId);
-      console.log(`User found: ${user}`);
-
-      return user;
-    } catch (error: any) {
-      logger.error(
-        `UserService UserRepository FindUserById() method error: ${error.message}`,
-      );
-      throw new CustomError(
-        'Error fetching user',
-        StatusCode.InternalServerError,
-      );
+      return await UserModel.findById(id);
+    } catch (error: unknown) {
+      throw error;
     }
   }
 
@@ -52,7 +43,7 @@ export class UserRepository {
         throw new CustomError('Invalid user ID', StatusCode.BadRequest);
       }
 
-      const isExist = await this.FindUserById(id);
+      const isExist = await this.findUserById(id);
       if (!isExist) {
         throw new CustomError('User not found', StatusCode.NotFound);
       }

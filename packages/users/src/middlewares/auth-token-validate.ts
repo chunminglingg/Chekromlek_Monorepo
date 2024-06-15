@@ -13,7 +13,7 @@ export const verificationToken = (req: any, res: any, next: any) => {
     }) as {
       userId: string;
     };
-    req.authId = decodedToken.userId;
+    req.userId = decodedToken.userId;
     next();
   } catch (error: any) {
     return res.status(401).json({ message: 'Invalid token: ' + error.message });

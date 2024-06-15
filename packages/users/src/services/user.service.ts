@@ -9,7 +9,7 @@ export class UserService {
   constructor() {
     this.userRepo = new UserRepository();
   }
-  async CreateUser(user: IUser & { authId: string }) {
+  async CreateUser(user: IUser) {
     try {
       const newUser = await this.userRepo.createUser(user);
       return newUser;
@@ -20,7 +20,7 @@ export class UserService {
   }
   async UpdateById(authId: string, update: IUser) {
     try {
-      const users = this.userRepo.FindUserById(authId);
+      const users = this.userRepo.findUserById(authId);
       console.log('user', users);
       if (!users) {
         throw new APIError('User not found', StatusCode.NotFound);
@@ -31,7 +31,7 @@ export class UserService {
       throw error;
     }
   }
-  
+
   async updateUserProfile(authId: string, update: IUser) {
     try {
       const users = this.userRepo.FindAuthById(authId);
@@ -66,16 +66,14 @@ export class UserService {
     }
   }
 
-  async getUserById(authId: string) {
+  async getUserById(id: string) {
     try {
-      return await this.userRepo.FindUserById(authId);
+      return await this.userRepo.findUserById(id);
     } catch (error) {
       logger.error('Get user error:', error);
       throw error;
     }
   }
-
-  
 
   // async getUserProfile(id: string){
   //   try {

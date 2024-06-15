@@ -9,7 +9,7 @@
 		"schemas": {
 			"IUser": {
 				"properties": {
-					"authId": {
+					"userId": {
 						"type": "string"
 					},
 					"username": {
@@ -114,22 +114,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"allOf": [
-									{
-										"$ref": "#/components/schemas/IUser"
-									},
-									{
-										"properties": {
-											"authId": {
-												"type": "string"
-											}
-										},
-										"required": [
-											"authId"
-										],
-										"type": "object"
-									}
-								]
+								"$ref": "#/components/schemas/IUser"
 							}
 						}
 					}
@@ -295,7 +280,7 @@
 			"patch": {
 				"operationId": "AddPost",
 				"responses": {
-					"200": {
+					"201": {
 						"description": "Add/Remove Save successfully",
 						"content": {
 							"application/json": {

@@ -32,7 +32,7 @@ export class UserController {
     try {
       console.log(`Request received with authId: ${req.authId}`);
 
-      const user = await this.userService.getUserById(req.authId);
+      const user = await this.userService.getUserById(req.userId);
       console.log(`User fetched: ${user}`);
 
       if (!user) {
@@ -74,9 +74,7 @@ export class UserController {
   @SuccessResponse(StatusCode.Created, 'Created')
   @Post('/')
   // @Middlewares(validateInput(UserSaveSchema))
-  public async SaveProfile(
-    @Body() reqBody: IUser & { authId: string },
-  ): Promise<any> {
+  public async SaveProfile(@Body() reqBody: IUser): Promise<any> {
     try {
       const newUser = await this.userService.CreateUser(reqBody);
 
@@ -106,7 +104,7 @@ export class UserController {
   @Middlewares(verificationToken)
   public async FindUserById(@Request() request: any): Promise<any> {
     try {
-      const user = await this.userService.getAuthById(request.authId);
+      const user = await this.userService.getAuthById(request.userId);
       console.log(request.authId);
       if (!user) {
         throw new APIError('User Not Found!!', StatusCode.NotFound);
@@ -128,8 +126,8 @@ export class UserController {
     @Body() reqBody: IUser,
   ): Promise<any> {
     try {
-      const authId = request.authId;
-      logger.debug(`user request: ${request.authId}`);
+      const authId = request.userId;
+      logger.debug(`user request: ${request.userId}`);
       if (!authId) {
         logger.error(`Could not find user: ${authId}`);
       }
@@ -210,7 +208,7 @@ export class UserController {
     @Path() postId: string,
   ): Promise<any> {
     try {
-      const authId = request.authId; // Assuming userId is actually authId
+      const authId = request.userId; // Assuming userId is actually authId
 
       if (!mongoose.Types.ObjectId.isValid(authId)) {
         throw new Error('Invalid auth ID format');
@@ -258,48 +256,41 @@ export class UserController {
     @Path() postId: string,
   ): Promise<any> {
     try {
-      const userId = request.authId;
-      // const token = request.headers.authorization?.split(' ')[1];
-
       if (!mongoose.Types.ObjectId.isValid(postId)) {
-        throw new Error('Invalid post ID format');
+        throw new Error('Invalid event ID format');
       }
-      if (!mongoose.Types.ObjectId.isValid(userId)) {
-        throw new Error('Invalid user ID format');
-      }
+      const user = await this.userService.getUserById(request.userId);
+      console.log(`fount userId`, request.userId);
+      console.log(`fount user ${user}`);
 
-      const objectId = new mongoose.Types.ObjectId(postId);
-
-      const user = await this.userService.getAuthById(userId);
-      if (!user) {
-        throw new Error('User not found');
-      }
       const post = await axios.get(
         `http://localhost:3005/v1/post?page=1&limit=5id=${postId}`,
       );
 
-      const existingFavoriteIndex = user.saves.findIndex((item) =>
+      const existingFavoriteIndex = user?.saves.findIndex((item) =>
         item.equals(post.data[0]._id),
       );
-      let isSave: boolean;
       if (existingFavoriteIndex !== -1) {
-        // Remove post from favorites
-        user?.saves.splice(existingFavoriteIndex, 1);
-        isSave = false;
+        // Remove event from favorites
+        user?.saves.splice(existingFavoriteIndex!, 1);
         await user?.save();
-      } else {
-        // Add post to favorites
-        user.saves.push(objectId);
-        isSave = true;
+
+        return {
+          message: 'Post removed from saves successfully',
+          data: user,
+        };
       }
-      await user.save();
+
+      // Add event to favorites
+      user?.saves.push(post.data[0]._id);
+      await user?.save();
 
       return {
-        message: `Post ${isSave ? 'added to' : 'removed from'} save successfully`,
+        message: 'Event added to favorites successfully',
         data: user,
       };
     } catch (error) {
-      throw new APIError(`Error: ${error}`);
+      throw new CustomError(`${error}`);
     }
   }
   // @SuccessResponse(StatusCode.OK, 'Get a user successfully')

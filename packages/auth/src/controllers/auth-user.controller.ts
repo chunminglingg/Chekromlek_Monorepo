@@ -118,7 +118,7 @@ export class UserAuthController {
       // dev: localhost
       // docker: http://user-profile:4000...
       await axios.post("http://localhost:4000/v1/users", {
-        authId: userDetail.id,
+        userId: userDetail.id,
         username: userDetail.username,
         email: userDetail.email,
       });
