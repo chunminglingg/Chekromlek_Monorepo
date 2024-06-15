@@ -9,7 +9,7 @@
 		"schemas": {
 			"IUser": {
 				"properties": {
-					"authId": {
+					"userId": {
 						"type": "string"
 					},
 					"username": {
@@ -77,6 +77,49 @@
 		"contact": {}
 	},
 	"paths": {
+		"/v1/users/save/{postId}": {
+			"post": {
+				"operationId": "AddFavoEvent",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "postId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/v1/users/save": {
+			"get": {
+				"operationId": "FindSavePost",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
 		"/v1/users": {
 			"post": {
 				"operationId": "SaveProfile",
@@ -103,12 +146,12 @@
 									},
 									{
 										"properties": {
-											"authId": {
+											"userId": {
 												"type": "string"
 											}
 										},
 										"required": [
-											"authId"
+											"userId"
 										],
 										"type": "object"
 									}
@@ -216,8 +259,8 @@
 			"get": {
 				"operationId": "GetById",
 				"responses": {
-					"200": {
-						"description": "OK",
+					"202": {
+						"description": "Get User Successfully",
 						"content": {
 							"application/json": {
 								"schema": {}
@@ -274,32 +317,6 @@
 				}
 			}
 		},
-		"/v1/users/{postId}/save": {
-			"post": {
-				"operationId": "ToggleSavePost",
-				"responses": {
-					"200": {
-						"description": "Add/Remove Save successfully",
-						"content": {
-							"application/json": {
-								"schema": {}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "postId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
 		"/v1/users/{postId}/addpost": {
 			"patch": {
 				"operationId": "AddPost",
@@ -324,23 +341,6 @@
 						}
 					}
 				]
-			}
-		},
-		"/v1/users/{id}": {
-			"post": {
-				"operationId": "FindSavePost",
-				"responses": {
-					"302": {
-						"description": "Found Successfully",
-						"content": {
-							"application/json": {
-								"schema": {}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": []
 			}
 		}
 	},
