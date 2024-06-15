@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema(
     authId: { type: mongoose.Schema.Types.ObjectId, ref: 'Auth' },
     username: { type: String, require: true },
     email: { type: String, required: true, unique: true },
-    profile: { type: String },
+    profile: { type: String , default: "https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?t=st=1718247335~exp=1718250935~hmac=47e9e0fe21830e0cc641a0473b46d5e995e1c5fc661e6c3c76a2d47fc19253ca&w=740" },
     saves: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
     post: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
     bio: { type: String, default: 'bio' },

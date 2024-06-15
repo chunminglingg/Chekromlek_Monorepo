@@ -73,6 +73,7 @@ Creating a platform for high school students to collaborate, enhance research sk
 This section highlights the major frameworks and libraries utilized to bootstrap our project. Please note that add-ons and plugins will be listed separately in the acknowledgements section. Here are some examples:
 
 * [![Next][Next.js]][Next-url]
+* [![StoryBook][StoryBook.js]][StoryBook-url]
 * [![Static Badge](https://img.shields.io/badge/Docker%20Desktop-1D63ED?style=for-the-badge&logo=docker&logoColor=fff)](https://www.docker.com/products/docker-desktop/)
 * [![Static Badge](https://img.shields.io/badge/Node.js-499442?style=for-the-badge&logo=node.js&logoColor=fff&color=499442)](https://nodejs.org/en)
 * [![Static Badge](https://img.shields.io/badge/Tyscript-3178C6?style=for-the-badge&logo=typescript&logoColor=fff&color=3178C6)](https://www.typescriptlang.org/)
@@ -152,7 +153,7 @@ Use the following command to start all services defined in the docker-compose.ya
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+_For more examples, please refer to the [Documentation](https://chekromlek.com)_
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -162,7 +163,13 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 ## Contact
 
 chekromlek - chekromlek.info@gmail.com <br/>
-Team members - chunming200@gmail.com - khievnavin@gmail.com - tiengkimlang10@gmail.com - hangsaphotan@gmail.com
+
+### Team members 
+
+ * [Backend Developer] - soklengphen.dev@gmail.com  
+ * [Backend Developer] - hangsaphotan@gmail.com
+ * [Frontend Developer] - khievnavin@gmail.com 
+ * [UX/UI Designer] - tiengkimlang10@gmail.com 
 
 Project Link: [https://github.com/chunminglingg/Chekromlek_Monorepo.git](https://github.com/chunminglingg/Chekromlek_Monorepo.git)
 
@@ -187,6 +194,8 @@ Project Link: [https://github.com/chunminglingg/Chekromlek_Monorepo.git](https:/
 [product-screenshot]: images/screenshot.png
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
+[StoryBook.js]: https://img.shields.io/badge/storybook.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white/
+[StoryBook-url]: https://storybook.js.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
 [Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D

@@ -134,12 +134,12 @@
 				"parameters": []
 			}
 		},
-		"/v1/users/info": {
+		"/v1/users/profile": {
 			"get": {
 				"operationId": "FindUserById",
 				"responses": {
-					"302": {
-						"description": "Found",
+					"202": {
+						"description": "Accepted",
 						"content": {
 							"application/json": {
 								"schema": {}
@@ -149,6 +149,33 @@
 				},
 				"security": [],
 				"parameters": []
+			}
+		},
+		"/v1/users/update": {
+			"patch": {
+				"operationId": "UpdateUserProfile",
+				"responses": {
+					"202": {
+						"description": "Accepted",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IUser"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/v1/users/{userId}": {
@@ -185,11 +212,9 @@
 						}
 					}
 				}
-			}
-		},
-		"/v1/users/auth/{authId}": {
+			},
 			"get": {
-				"operationId": "GetAuthById",
+				"operationId": "GetById",
 				"responses": {
 					"200": {
 						"description": "OK",
@@ -204,7 +229,7 @@
 				"parameters": [
 					{
 						"in": "path",
-						"name": "authId",
+						"name": "userId",
 						"required": true,
 						"schema": {
 							"type": "string"

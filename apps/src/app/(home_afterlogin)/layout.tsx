@@ -7,6 +7,7 @@ import SideRight from "@/components/Molecules/SideRight/SideRight";
 import { SideBarLogin } from "@/components/Organisms/sidebar/SieBarLogin";
 import { KhFont } from "@/utils/font";
 const inter = Inter({ subsets: ["latin"] });
+import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
   title: "Chekromlek",
@@ -23,12 +24,13 @@ export default function RootLayout({
       <body className={KhFont.className}>
         <NavAfter />
         <div className="flex justify-center items-center h-full max-sm:w-full md:w-full">
-        <CardContext>{children}</CardContext>
+        {children}
           <div className="absolute right-0 top-32 hidden lg:block">
             <SideRight></SideRight>
           </div>
         </div>
         <SideBarLogin />
+        <Toaster />
       </body>
     </html>
   );

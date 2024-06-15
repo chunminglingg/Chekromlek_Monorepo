@@ -17,24 +17,24 @@ const PostCardList = () => {
     loadMoreCards();
   }, []);
 
-  // useEffect(() => {
-  //   const handleObserver = (entries: IntersectionObserverEntry[]) => {
-  //     const target = entries[0];
-  //     if (target.isIntersecting && hasMore && !loading && !error) {
-  //       loadMoreCards();
-  //     }
-  //   };
+  useEffect(() => {
+    const handleObserver = (entries: IntersectionObserverEntry[]) => {
+      const target = entries[0];
+      if (target.isIntersecting && hasMore && !loading && !error) {
+        loadMoreCards();
+      }
+    };
 
-  //   if (observer.current) observer.current.disconnect();
-  //   observer.current = new IntersectionObserver(handleObserver, {
-  //     rootMargin: "200px",
-  //   });
-  //   if (loadMoreRef.current) observer.current.observe(loadMoreRef.current);
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver(handleObserver, {
+      rootMargin: "200px",
+    });
+    if (loadMoreRef.current) observer.current.observe(loadMoreRef.current);
 
-  //   return () => {
-  //     if (observer.current) observer.current.disconnect();
-  //   };
-  // }, [loading, hasMore]);
+    return () => {
+      if (observer.current) observer.current.disconnect();
+    };
+  }, [loading, hasMore]);
 
   const loadMoreCards = async () => {
     console.log("fetch");
@@ -50,7 +50,13 @@ const PostCardList = () => {
       console.log("response:", response);
 
       if (posts.length > 0) {
-        setDisplayedCards((prev) => [...prev, ...posts]);
+        // setDisplayedCards((prev) => [...prev, ...posts]);
+        setDisplayedCards((prev) => [
+          ...prev,
+          ...posts.map((item: any) => {
+            return { ...item, id: item._id };
+          }),
+        ]);
         setPage(page + 1);
         setHasMore(morePosts);
       }
@@ -71,9 +77,10 @@ const PostCardList = () => {
     <div className="space-y-4">
       {displayedCards.map((info, index) => (
         <PostCard
-          key={index}
+          key={info.id}
           id={info.id}
           hour={info.hour}
+          likeCounts={info.likeCounts}
           description={info.description}
           profile={info.profile}
           username={info.username}
@@ -83,7 +90,7 @@ const PostCardList = () => {
           onSave={() => console.log("Saved")}
         />
       ))}
-      {loading && (
+      {loading && hasMore && !error  && (
         <div className="space-y-4">
           {Array.from({ length: 5 }, (_, index) => (
             <PostCardSkeleton key={index} />

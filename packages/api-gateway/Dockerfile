@@ -8,8 +8,8 @@ COPY tsconfig.json ./
 COPY src ./src
 # Installs the latest version of npm globally in the containe
 RUN npm install -g npm@latest\
-# Installs dependencies based on the package-lock.json file.
-RUN npm ci && npm run build
+    # Installs dependencies based on the package-lock.json file.
+    RUN npm ci && npm run build
 
 FROM node:21-alpine3.18
 

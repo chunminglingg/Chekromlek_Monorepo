@@ -20,7 +20,6 @@ import { verificationToken } from "@post/middlewares/tokenVerify";
 import {
   IAnswer,
   IPost,
-  PostCategory,
   QueryParams,
 } from "@post/database/@types/post.interface";
 import CustomError from "@post/errors/customError";
@@ -76,6 +75,7 @@ export class PostController {
     }
   }
   @Get("/")
+  @SuccessResponse(StatusCode.OK, "Query a post successfully")
   public async FindPostByQueries(
     @Queries() queryParam: QueryParams
   ): Promise<any> {
@@ -87,7 +87,7 @@ export class PostController {
     }
   }
 
-  @SuccessResponse(StatusCode.Found, "Found the post")
+  @SuccessResponse(StatusCode.OK, "Get a post successfully")
   @Get("/getpost/{postId}")
   public async GetPostById(@Path() postId: string): Promise<any> {
     try {
@@ -105,7 +105,7 @@ export class PostController {
       throw error;
     }
   }
-  @SuccessResponse(StatusCode.Found, "Found the post")
+  @SuccessResponse(StatusCode.OK, "Get a Post successfully")
   @Get("/getpost")
   public async GetPostAllPost(): Promise<any> {
     try {
@@ -123,23 +123,25 @@ export class PostController {
       throw error;
     }
   }
-  @SuccessResponse(StatusCode.Found, "Found the posts")
-  @Get("category/{category}")
-  public async getPostsByCategory(@Path() category: string): Promise<any> {
-    try {
-      const validCategories = Object.values(PostCategory);
-      if (!validCategories.includes(category as PostCategory)) {
-        return { message: "Invalid category", data: [] };
-      }
+  // @SuccessResponse(StatusCode.OK, "Get Category")
+  // @Get("category/{category}")
+  // public async getPostsByCategory(
+  //   @Path() category: PostCategory
+  // ): Promise<any> {
+  //   try {
+  //     const validCategories = Object.values(PostCategory);
+  //     if (!validCategories.includes(category as PostCategory)) {
+  //       return { message: "Invalid category", data: [] };
+  //     }
 
-      const posts = await this.postService.getPostsByCategory(
-        category as PostCategory
-      );
-      return { message: "Posts found successfully", data: posts };
-    } catch (error) {
-      return { message: "Internal Server Error", data: [] };
-    }
-  }
+  //     const posts = await this.postService.getPostsByCategory(
+  //       category as PostCategory
+  //     );
+  //     return { message: "Posts found successfully", data: posts };
+  //   } catch (error) {
+  //     return { message: "Internal Server Error", data: [] };
+  //   }
+  // }
   @SuccessResponse(StatusCode.Created, "Updated successfully")
   @Patch("/:id")
   @Middlewares(validateInput(PostSaveSchema))
@@ -200,6 +202,35 @@ export class PostController {
       logger.error(`Controller Answer method error: ${error.message}`);
       throw new CustomError(
         `Failed to create answer: ${error.message}`,
+        StatusCode.InternalServerError
+      );
+    }
+  }
+
+  @Get("/:postId/answers/:userId")
+  @SuccessResponse(StatusCode.OK, "User answers fetched successfully")
+  public async getUserAnswersOnPost(
+    @Path() postId: string,
+    @Path() userId: string
+  ): Promise<any> {
+    try {
+      const answers = await this.postService.findAnswersByUserOnPost(
+        postId,
+        userId
+      );
+      return {
+        message: "User answers fetched successfully",
+        data: answers,
+      };
+    } catch (error: any) {
+      logger.error(`Error fetching user's answers on post: ${error.message}`);
+
+      if (error instanceof APIError) {
+        throw new CustomError(error.message, error.statusCode);
+      }
+
+      throw new CustomError(
+        `Failed to fetch user's answers on post: ${error.message}`,
         StatusCode.InternalServerError
       );
     }
