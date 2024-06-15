@@ -26,92 +26,50 @@ export class UserController {
   constructor() {
     this.userService = new UserService();
   }
-
-  @Post('/save/{postId}')
-  @Middlewares(verificationToken)
-  public async addFavoEvent(
-    @Request() request: any,
-    @Path() postId: string,
-  ): Promise<any> {
-    try {
-      console.log('Post /:postId', request.userId);
-      const user = await this.userService.getUserById(request.userId);
-
-      // Validate objectId
-      if (!mongoose.Types.ObjectId.isValid(postId)) {
-        throw new Error('Invalid event ID format');
-      }
-      console.log('=================', postId);
-      // const objectId = new mongoose.Types.ObjectId(postId);
-
-      const post = await axios.get(
-        `http://post:3005/v1/post?page=1&limit=6_&id=${postId}`,
-      );
-      console.log('Post /:postId', post);
-      // Check for existing favorite using findIndex
-      const existingFavoriteIndex = user?.saves.findIndex((item) =>
-        item.equals(post.data[0]._id),
-      );
-
-      if (existingFavoriteIndex !== -1) {
-        // Remove event from favorites
-        user?.saves.splice(existingFavoriteIndex!, 1);
-        await user?.save();
-
-        return {
-          message: 'Post removed from save successfully',
-          data: user,
-        };
-      }
-
-      // Add event to favorites
-      user?.saves.push(post.data[0]._id);
-      await user?.save();
-
-      return {
-        message: 'Post added to save successfully',
-        data: user,
-      };
-    } catch (error: any) {
-      // console.log(error.message);
-      console.error('Error adding/removing save:', error.message);
-      // You can customize the error response here based on error type
-      throw new APIError(
-        `Error adding/removing save ${error.message}`,
-        StatusCode.BadRequest,
-      );
-    }
-  }
   @Get('/save')
   @Middlewares(verificationToken)
-  public async FindSavePost(@Request() request: any): Promise<any> {
+  public async findSavePost(@Request() req: any): Promise<any> {
     try {
-      const user = await this.userService.getUserById(request.userId);
-      const postIdArray = user?.saves;
-      const postPromises = postIdArray!.map(async (postId) => {
+      const user = await this.userService.getAuthById(req.userId);
+      const postIds = user?.saves;
+      if (!postIds || postIds.length === 0) {
+        // console.log('No saved posts found for the user.');
+        return {
+          message: 'No saved posts found',
+          data: [],
+        };
+      }
+      // console.log(`User's saved post IDs: ${postIds}`);
+
+      const postPro = postIds.map(async (postId) => {
         try {
-          const response = await axios.get(
-            `http://post:3005/v1/post?page=1&limit=5&id=${postId}`,
+          const postReponse = await axios.get(
+            `http://localhost:3005/v1/post?page=1&limit=5&id=${postId}`,
           );
-          console.log(`Response for id ${postId}: ${response.data}`);
-          return response.data[0];
+          // console.log(`Response for id ${postId}: ${postReponse.data}`);
+          const posts = postReponse.data.posts[0];
+          // console.log('Response post:', posts);
+          return posts;
         } catch (error) {
           console.error(`Error fetching data for id ${postId}:`, error);
-          return null; // Return null on error to handle gracefully
+          return null; // or handle differently if needed
         }
       });
-
-      const posts = (await Promise.all(postPromises)).filter(
+      const posts = (await Promise.all(postPro)).filter(
         (post) => post !== null,
       );
-
+      if (posts.length === 0) {
+        console.log('No valid posts found from the saved post IDs.');
+      } else {
+        console.log(`Found posts: ${JSON.stringify(posts)}`);
+      }
       return {
-        message: 'Saved posts fetched successfully',
+        message: 'Save post found successfully',
         data: posts,
       };
-    } catch (error: unknown | any) {
-      throw new CustomError(
-        `Error fetching saved posts ${error.message}`,
+    } catch (error: unknown) {
+      throw new APIError(
+        'Error fetching favorite events',
         StatusCode.BadRequest,
       );
     }
@@ -146,7 +104,7 @@ export class UserController {
     }
   }
 
-  @SuccessResponse(StatusCode.Accepted, 'Accepted')
+  @SuccessResponse(StatusCode.OK, 'Accepted')
   @Get('/profile')
   @Middlewares(verificationToken)
   public async FindUserById(@Request() request: any): Promise<any> {
@@ -165,7 +123,7 @@ export class UserController {
     }
   }
 
-  @SuccessResponse(StatusCode.Accepted, 'Accepted')
+  @SuccessResponse(StatusCode.OK, 'Accepted')
   @Patch('/update')
   @Middlewares(verificationToken)
   public async UpdateUserProfile(
@@ -173,7 +131,7 @@ export class UserController {
     @Body() reqBody: IUser,
   ): Promise<any> {
     try {
-      const authId = request.authId;
+      const authId = request.userId;
       logger.debug(`user request: ${request.authId}`);
       if (!authId) {
         logger.error(`Could not find user: ${authId}`);
@@ -218,7 +176,7 @@ export class UserController {
     }
   }
 
-  @SuccessResponse(StatusCode.Accepted, 'Get User Successfully')
+  @SuccessResponse(StatusCode.OK, 'Get User Successfully')
   @Get('{userId}')
   // @Middlewares(verificationToken)
   public async GetById(@Path() userId: string): Promise<any> {
@@ -292,12 +250,59 @@ export class UserController {
           data: user,
         };
       }
-    } catch (error: unknown | any) {
-      console.error('Error in AddPost:', error);
-      throw new CustomError(`Error: ${error.message}`);
+    } catch (error) {
+      throw new CustomError(`${error}`);
     }
   }
 
+  @SuccessResponse(StatusCode.OK, 'Add/Remove Save successfully')
+  @Post('/save/{postId}')
+  @Middlewares(verificationToken)
+  public async toggleSavePost(
+    @Request() request: any,
+    @Path() postId: string,
+  ): Promise<any> {
+    try {
+      if (!mongoose.Types.ObjectId.isValid(postId)) {
+        throw new Error('Invalid event ID format');
+      }
+      console.log('POST ID: ', postId);
+      const user = await this.userService.getAuthById(request.userId);
+      console.log(`fount user ${user}`);
+      const postResponse = await axios.get(
+        `http://localhost:3005/v1/post?page=1&limit=5&id=${postId}`,
+      );
+      console.log('found posts: ', postResponse.data);
+      const post = postResponse.data.posts[0];
+
+      const existingFavoriteIndex = user?.saves.findIndex((item) =>
+        item.equals(post._id),
+      );
+      console.log('Existing Favorite Index: ', existingFavoriteIndex);
+
+      if (existingFavoriteIndex !== -1) {
+        // Remove event from favorites
+        user?.saves.splice(existingFavoriteIndex!, 1);
+        await user?.save();
+
+        return {
+          message: 'Post removed from saves successfully',
+          data: user,
+        };
+      }
+
+      // Add event to favorites
+      user?.saves.push(post._id);
+      await user?.save();
+
+      return {
+        message: 'Post added to save successfully',
+        data: user,
+      };
+    } catch (error) {
+      throw new CustomError(`${error}`);
+    }
+  }
   // @SuccessResponse(StatusCode.OK, 'Get a user successfully')
   // @Get('/profile')
   // @Middlewares(verificationToken)
