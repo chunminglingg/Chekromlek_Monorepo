@@ -19,17 +19,26 @@ export class UserRepository {
       throw error;
     }
   }
-  async findUserById(id: string) {
+  // In your userService file
+  public async FindUserById(userId: string) {
+    console.log(`Fetching user with ID: ${userId}`);
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      console.log(`Invalid user ID format: ${userId}`);
+      return null;
+    }
     try {
-      return await UserModel.findById(id);
-    } catch (error: unknown) {
-      throw error;
+      const user = await UserModel.findById(userId).exec();
+      console.log(`User found: ${user}`);
+      return user;
+    } catch (error: any) {
+      console.error(`Error fetching user: ${error.message}`);
+      return null;
     }
   }
 
-  async FindAuthById(authId: string) {
+  async FindAuthById(userId: string) {
     try {
-      const existingUser = await UserModel.findOne({ authId });
+      const existingUser = await UserModel.findOne({ userId });
 
       return existingUser;
     } catch (error) {
@@ -43,7 +52,7 @@ export class UserRepository {
         throw new CustomError('Invalid user ID', StatusCode.BadRequest);
       }
 
-      const isExist = await this.findUserById(id);
+      const isExist = await this.FindUserById(id);
       if (!isExist) {
         throw new CustomError('User not found', StatusCode.NotFound);
       }

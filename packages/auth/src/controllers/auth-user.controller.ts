@@ -446,7 +446,6 @@ export class UserAuthController {
       if (!isLogout) {
         throw new APIError("Unable to logout!");
       }
-
       return { message: "Success logout", isLogout: isLogout };
     } catch (error: unknown) {
       throw error;

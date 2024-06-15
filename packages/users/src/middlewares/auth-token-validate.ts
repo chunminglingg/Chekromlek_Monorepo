@@ -6,7 +6,7 @@ export const verificationToken = (req: any, res: any, next: any) => {
   if (!token) {
     return res.status(401).json({ message: 'Token not provided' });
   }
-  console.log('Token', token);
+  console.log('Token:', token);
   try {
     const decodedToken = jwt.verify(token, public_key, {
       algorithms: ['RS256'],
