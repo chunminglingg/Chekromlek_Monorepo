@@ -77,35 +77,6 @@
 		"contact": {}
 	},
 	"paths": {
-<<<<<<< HEAD
-=======
-		"/v1/users/save/{postId}": {
-			"post": {
-				"operationId": "AddFavoEvent",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "postId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
->>>>>>> 21099d401084cb69931daa5f8b78eb7394727a50
 		"/v1/users/save": {
 			"get": {
 				"operationId": "FindSavePost",
@@ -143,9 +114,6 @@
 					"content": {
 						"application/json": {
 							"schema": {
-<<<<<<< HEAD
-								"$ref": "#/components/schemas/IUser"
-=======
 								"allOf": [
 									{
 										"$ref": "#/components/schemas/IUser"
@@ -162,7 +130,6 @@
 										"type": "object"
 									}
 								]
->>>>>>> 21099d401084cb69931daa5f8b78eb7394727a50
 							}
 						}
 					}
@@ -266,11 +233,7 @@
 			"get": {
 				"operationId": "GetById",
 				"responses": {
-<<<<<<< HEAD
 					"200": {
-=======
-					"202": {
->>>>>>> 21099d401084cb69931daa5f8b78eb7394727a50
 						"description": "Get User Successfully",
 						"content": {
 							"application/json": {
@@ -332,8 +295,7 @@
 			"patch": {
 				"operationId": "AddPost",
 				"responses": {
-<<<<<<< HEAD
-					"201": {
+					"200": {
 						"description": "Add/Remove Save successfully",
 						"content": {
 							"application/json": {
@@ -355,12 +317,10 @@
 				]
 			}
 		},
-		"/v1/users/{postId}/save": {
+		"/v1/users/save/{postId}": {
 			"post": {
 				"operationId": "ToggleSavePost",
 				"responses": {
-=======
->>>>>>> 21099d401084cb69931daa5f8b78eb7394727a50
 					"200": {
 						"description": "Add/Remove Save successfully",
 						"content": {
