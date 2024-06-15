@@ -49,7 +49,7 @@ export class UserController {
   }
 
   @Get('/')
-  public async showAllUser(): Promise<any> {  
+  public async showAllUser(): Promise<any> {
     try {
       return await this.userService.showAllUser();
     } catch (error: unknown) {
@@ -84,7 +84,7 @@ export class UserController {
     @Body() reqBody: IUser,
   ): Promise<any> {
     try {
-      console.log(`Received request to update user with ID: ${userId}`);
+      logger.info(`Received request to update user with ID: ${userId}`);
       const modifiedUser = await this.userService.UpdateById(userId, reqBody);
 
       return {
