@@ -55,7 +55,7 @@ const PostSchema = new mongoose.Schema(
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     username: { type: mongoose.Schema.Types.String, ref: "User" },
     title: { type: String, required: true },
-    description: { type: String, required: true },
+    description: { type: String},
     postImage: { type: String },
     category: {
       type: String,
