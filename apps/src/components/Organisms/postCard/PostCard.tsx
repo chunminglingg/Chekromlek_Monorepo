@@ -26,7 +26,7 @@ export interface postCardProps {
 
 const PostCard: React.FC<postCardProps> = ({
   id,
-  profile,
+  profile="https://img.freepik.com/free-vector/isolated-young-handsome-man-different-poses-white-background-illustration_632498-859.jpg?t=st=1718526013~exp=1718529613~hmac=63a3547c33708a15863e421a97cf3ab52d35381fc743e487a07fce3fe9384adf&w=740",
   username,
   likeCounts,
   hour,

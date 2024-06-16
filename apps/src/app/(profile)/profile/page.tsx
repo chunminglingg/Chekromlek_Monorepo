@@ -13,7 +13,7 @@ interface userDataTypes {
   email: string;
   work: string;
   answers: number;
-  posts: number;
+  post: string[];
   bio: string;
   gender: string;
   profile: string;
@@ -32,7 +32,6 @@ const Page = () => {
           withCredentials: true,
         }
       );
-      console.log("=================================");
       
       if (response) {
         console.log("response: " , response.data.message);
@@ -61,7 +60,7 @@ const Page = () => {
     return <div>Loading...</div>;
   }
 
-  const { username, work, answers, posts, profile, bio } = userData;
+  const { username, work, answers, post , profile, bio } = userData;
 
   console.log("User data", userData);
 
@@ -84,7 +83,7 @@ const Page = () => {
                 {username}
               </div>
               <div className="been-post text-[#6C757D] text-[15px] font-sans flex flex-row gap-10">
-                <p>{posts} Posts</p>
+                <p>{post.length} Posts</p>
                 <p>{answers} Answers</p>
               </div>
               <div className="Category text-[#623cbb] text-[15px] font-medium">

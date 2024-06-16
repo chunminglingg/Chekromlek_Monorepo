@@ -146,11 +146,11 @@ const Like: React.FC<LikeProp> = ({ postId, likeCounts, isFavorite }) => {
       <p className={`text-[16px] max-sm:text-xs font-normal`}>{likeCount}</p>
       <Image
         src={
-          isFavorite
+          isLiked
             ? "/card-svg/like/Afterlike.svg"
             : "/card-svg/like/like.svg"
         }
-        alt={isFavorite ? "after-like" : "like"}
+        alt={isLiked ? "after-like" : "like"}
         width={16}
         height={16}
       />
