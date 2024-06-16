@@ -7,7 +7,7 @@ import Link from "next/link";
 export interface ViewPostProps {
   profile: string;
   username: string;
-  hour: number;
+  createdAt: number;
   title?: string;
   description?: string;
   postImage?: string | undefined;
@@ -16,7 +16,7 @@ export interface ViewPostProps {
 const ViewPost: React.FC<ViewPostProps> = ({
   profile,
   username,
-  hour,
+  createdAt,
   title,
   description,
   postImage,
@@ -96,7 +96,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
                   height={13}
                 />
                 <p className="font-normal text-[12px] text-[#6C757D]">
-                  {hour} hour ago
+                  {createdAt}
                 </p>
               </div>
             </div>

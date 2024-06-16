@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import PostCard, { postCardProps } from "./PostCard"; // Ensure this is the correct path to your PostCard component
 import PostCardSkeleton from "./CardSkeleton";
+import { formattedData } from "@/utils/formattedData";
 
 const PostCardList = () => {
   const [loading, setLoading] = useState(false);
@@ -51,11 +52,10 @@ const PostCardList = () => {
 
       if (posts.length > 0) {
         // setDisplayedCards((prev) => [...prev, ...posts]);
+        const formateData = formattedData(posts);
         setDisplayedCards((prev) => [
           ...prev,
-          ...posts.map((item: any) => {
-            return { ...item, id: item._id };
-          }),
+          ...formateData
         ]);
         setPage(page + 1);
         setHasMore(morePosts);
@@ -79,10 +79,10 @@ const PostCardList = () => {
         <PostCard
           key={info.id}
           id={info.id}
-          hour={info.hour}
+          createdAt={info.createdAt}
           likeCounts={info.likeCounts}
           description={info.description}
-          profile={info.profile}
+          profile={info.profile || "/profile.svg"}
           username={info.username}
           postImage={info.postImage}
           title={info.title}
