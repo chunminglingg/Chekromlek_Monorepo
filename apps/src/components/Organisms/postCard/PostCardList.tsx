@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import PostCard, { postCardProps } from "./PostCard"; // Ensure this is the correct path to your PostCard component
 import PostCardSkeleton from "./CardSkeleton";
+import { formattedData } from "@/utils/formattedData";
 
 const PostCardList = () => {
   const [loading, setLoading] = useState(false);
@@ -12,6 +13,40 @@ const PostCardList = () => {
   const observer = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
   const [page, setPage] = useState(1);
+  const [userId, setUserId] = useState<null | string>(null);
+
+  // const loadMoreCards = async () => {
+  //   setLoading(true);
+  //   setError(null);
+  //   try {
+  //     const response = await axios.get(
+  //       `http://localhost:3000/v1/post?page=${page}&limit=5`
+  //     );
+  //     const { posts, hasMore: morePosts } = response.data; // Destructure according to expected structure
+
+  //     if (posts.length > 0) {
+  //       // setDisplayedCards((prev) => [...prev, ...posts]);
+  //       setDisplayedCards((prev) => [
+  //         ...prev,
+  //         ...posts.map((item: any) => {
+  //           return { ...item, id: item._id };
+  //         }),
+  //       ]);
+  //       setPage(page + 1);
+  //       setHasMore(morePosts);
+  //     }
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.error("Error fetching more cards:", error);
+  //     setError("Failed to load more cards. Please try again later.");
+  //     setLoading(false);
+  //   }
+  // };
+
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    setUserId(userId);
+  }, []);
 
   useEffect(() => {
     loadMoreCards();
@@ -51,11 +86,10 @@ const PostCardList = () => {
 
       if (posts.length > 0) {
         // setDisplayedCards((prev) => [...prev, ...posts]);
+        const formateData = formattedData(posts);
         setDisplayedCards((prev) => [
           ...prev,
-          ...posts.map((item: any) => {
-            return { ...item, id: item._id };
-          }),
+          ...formateData
         ]);
         setPage(page + 1);
         setHasMore(morePosts);
@@ -77,20 +111,22 @@ const PostCardList = () => {
     <div className="space-y-4">
       {displayedCards.map((info, index) => (
         <PostCard
+          userId={userId}
           key={info.id}
           id={info.id}
-          hour={info.hour}
+          createdAt={info.createdAt}
           likeCounts={info.likeCounts}
           description={info.description}
           profile={info.profile}
           username={info.username}
           postImage={info.postImage}
           title={info.title}
+          postlikedBy={info.postlikedBy}
           onLike={() => console.log("Liked")}
           onSave={() => console.log("Saved")}
         />
       ))}
-      {loading && hasMore && !error  && (
+      {loading && hasMore && !error && (
         <div className="space-y-4">
           {Array.from({ length: 5 }, (_, index) => (
             <PostCardSkeleton key={index} />

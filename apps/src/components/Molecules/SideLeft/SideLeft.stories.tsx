@@ -4,7 +4,7 @@ import { action } from "@storybook/addon-actions";
 import { Meta, StoryFn } from "@storybook/react";
 import SideStyle from "./SideLeft";
 import { userEvent, within } from "@storybook/testing-library";
-import { SideStyleProps } from './SideLeftLogin';
+
 
 export default {
   title: "chekromlek/Components/Molecules/SideStyle",
@@ -28,7 +28,7 @@ export default {
   tags: ["autodocs"],
 } as Meta<typeof SideStyle>;
 
-const Template: StoryFn<SideStyleProps> = (args) => <SideStyle {...args} />;
+const Template: StoryFn = (args) => <SideStyle {...args} />;
 export const Default = Template.bind({});
 Default.args = {
   isHomeClick: false,

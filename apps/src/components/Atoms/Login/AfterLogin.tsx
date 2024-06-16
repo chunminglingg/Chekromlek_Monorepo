@@ -20,8 +20,9 @@ const AfteLogin = () => {
         }
       );
       if (response && response.data) {
-        const { username } = response.data.user;
+        const { _id, username } = response.data.user;
         setUsername(username);
+        localStorage.setItem("userId", _id);
       }
     } catch (error: any) {
       if (error.response) {
@@ -41,9 +42,21 @@ const AfteLogin = () => {
 
   const handleOnLogout = async () => {
     try {
-      await axios.get("http://localhost:3000/v1/auth/logout", {
-        withCredentials: true,
-      });
+      const logoutResponse = await axios.get(
+        "http://localhost:3000/v1/auth/logout",
+        {
+          withCredentials: true,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      if (logoutResponse.data.status === 200) {
+        console.log(logoutResponse.data);
+      }
+      // Clear state and local storage
+      setUsername(null);
+      localStorage.removeItem("userId");
+
+      // Redirect to login page
       window.location.href = "/login";
     } catch (error: unknown | any) {
       // AxiosError is used to handle specific axios errors
@@ -131,14 +144,12 @@ const AfteLogin = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/login">
-                  <button
-                    onClick={handleOnLogout}
-                    className="text-red-400 hover:font-medium items-start justify-start"
-                  >
-                    Log Out
-                  </button>
-                </Link>
+                <button
+                  onClick={handleOnLogout}
+                  className="text-red-400 hover:font-medium items-start justify-start"
+                >
+                  Log Out
+                </button>
               </li>
             </ul>
           </div>

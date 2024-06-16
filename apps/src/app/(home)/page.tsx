@@ -1,4 +1,3 @@
-import { Alert } from "@/components/Molecules/fix/alert";
 import { PostCard, PostCardList } from "@/components/Organisms";
 import React from "react";
 

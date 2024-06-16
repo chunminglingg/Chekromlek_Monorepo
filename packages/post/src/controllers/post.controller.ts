@@ -56,7 +56,7 @@ export class PostController {
       );
 
       await axios.patch(
-        `http://localhost:4000/v1/users/${postId}/addpost`,
+        `http://user-profile:4000/v1/users/${postId}/addpost`,
         {
           userId: request._id,
         },

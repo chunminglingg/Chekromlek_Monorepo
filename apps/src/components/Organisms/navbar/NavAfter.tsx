@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { AfteLogin, BurgerLogin } from "@/components/Atoms";
 import Logo from "@/components/Atoms/Logo/Logo";
 import SearchInput from "@/components/Molecules/Search/SearchInput";
@@ -17,15 +17,11 @@ function NavAfter() {
           </Link>
         </div>
         <div className=" mt-2   max-sm:me-[20%] max-md:me-[35%] max-sm:w-[160px]">
-          <SearchInput setSearch={setSearchQuery}/>
+          <SearchInput setSearch={setSearchQuery} />
         </div>
-      <div className="hidden md:flex md:flex-row gap-4 items-center pr-8">
-       
-          <AfteLogin/>
-    
-        </div>
+        <div className="hidden md:flex md:flex-row gap-4 items-center pr-8"><AfteLogin/></div>
         <div className="block md:hidden   mt-4 absolute right-5">
-          <BurgerLogin/>
+          <BurgerLogin />
         </div>
       </div>
     </nav>

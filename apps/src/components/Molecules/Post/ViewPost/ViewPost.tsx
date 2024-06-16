@@ -9,7 +9,7 @@ export interface ViewPostProps {
   id: string | string[]; // Add id here
   profile: string;
   username: string;
-  hour: number;
+  createdAt: number;
   title?: string;
   description?: string;
   postImage?: string | undefined;
@@ -19,7 +19,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
   id, // Receive id here
   profile,
   username,
-  hour,
+  createdAt,
   title,
   description,
   postImage,
@@ -101,7 +101,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
                   height={13}
                 />
                 <p className="font-normal text-[12px] text-[#6C757D]">
-                  {hour} hour ago
+                  {createdAt}
                 </p>
               </div>
             </div>

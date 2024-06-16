@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../globals.css";
 import NavAfter from "@/components/Organisms/navbar/NavAfter";
-import CardContext from "@/contexts/PostCardContext/PostCardContext";
 import SideRight from "@/components/Molecules/SideRight/SideRight";
 import { SideBarLogin } from "@/components/Organisms/sidebar/SieBarLogin";
 import { KhFont } from "@/utils/font";
 const inter = Inter({ subsets: ["latin"] });
 import { Toaster } from "@/components/ui/toaster"
+import { AfteLogin } from "@/components";
 
 export const metadata: Metadata = {
   title: "Chekromlek",

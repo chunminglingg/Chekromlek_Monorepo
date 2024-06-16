@@ -159,14 +159,16 @@ const proxyConfigs: ProxyConfig = {
 
           try {
             responseBody = JSON.parse(bodyString);
-
+          
             // If Response Error
             if (responseBody.errors) {
+              console.log(responseBody , "===============================");
               return res.status(proxyRes.statusCode!).json(responseBody);
             }
 
             return res.status(proxyRes.statusCode!).json(responseBody);
           } catch (error: any) {
+            console.log( "===============================");
             console.log("Error:", error);
             return res.status(500).json({ message: error.message });
           }
