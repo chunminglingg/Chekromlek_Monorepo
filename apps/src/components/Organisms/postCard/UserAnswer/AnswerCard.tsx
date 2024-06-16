@@ -7,7 +7,7 @@ import { Typography } from "@/components/Atoms";
 export interface AnswerCardProps {
   profile: string;
   username: string;
-  hour?: number;
+  createdAt?: number;
   answer: string;
   postImage?: string | undefined;
 }
@@ -15,7 +15,7 @@ export interface AnswerCardProps {
 const AnswerCard: React.FC<AnswerCardProps> = ({
   profile,
   username,
-  hour,
+  createdAt,
   answer,
   postImage,
 }) => {
@@ -53,8 +53,7 @@ const AnswerCard: React.FC<AnswerCardProps> = ({
                 {username}
               </p>
               <p className="text-[12px] text-gray-500">
-                {/* update {hour} hour ago */}
-                answer
+                answer{createdAt}
               </p>
             </div>
           </div>
