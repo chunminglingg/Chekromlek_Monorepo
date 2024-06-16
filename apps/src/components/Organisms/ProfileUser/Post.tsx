@@ -6,7 +6,7 @@ export default function Post() {
     <div>
       <div className="flex flex-col gap-2 mt-4">
         <PostCard
-        likeCounts={0}
+          likeCounts={0}
           profile="/card-svg/avatar.svg"
           createdAt={0}
           username="Kimlang Tieng"

@@ -22,7 +22,7 @@ interface CreatePostDialogProps {
   onImageDelete?: () => void;
   onDialogOpen?: () => void;
   onDialogClose?: () => void;
-  onNewPost?: (postData: any) => void;
+  onNewPost? : (postData: any) => void;
 }
 
 const CreatePostDialog: React.FC<CreatePostDialogProps> = ({
