@@ -1,4 +1,3 @@
-// src/components/Organisms/ProfileUser/Page.tsx
 'use client';
 import { EditProfile } from "@/components/Organisms/editProfile/EditPro";
 import Post from "@/components/Organisms/ProfileUser/Post";
@@ -55,9 +54,9 @@ const Page = () => {
   if (!userData) {
     return <div>Loading...</div>;
   }
-
+ 
   const { _id, username, work, answers, profile, bio, post } = userData;
-
+  console.log("id",_id)
   return (
     <div className="content flex flex-col justify-center items-center">
       <div className="h-[90px]"></div>
@@ -121,7 +120,7 @@ const Page = () => {
 
       {/* Conditionally render Post or SavedPost */}
       <div className="content-section flex flex-col gap-2 mt-4">
-        {view === "Post" ? <Post userId={_id} /> : <SavedPost />}
+        {view === "Post" ? <Post userId={_id} /> : <SavedPost userId={_id} />}
       </div>
     </div>
   );

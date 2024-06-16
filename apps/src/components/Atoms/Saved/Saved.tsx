@@ -4,13 +4,17 @@ import axios from 'axios'; // Import axios
 import Image from 'next/image';
 import { toast } from '@/components/ui/use-toast';
 
-const Saved = () => {
+interface SavedProps {
+  postId: string; // Accept postId as a prop
+}
+
+const Saved: React.FC<SavedProps> = ({ postId }) => {
   const [isSaved, setIsSaved] = useState(false);
 
   const handleClick = async () => {
     try {
       const response = await axios.post(
-        'http://localhost:3000/v1/users/save/6667d196ffa700cfb12d2a89', 
+        `http://localhost:3000/v1/users/save/${postId}`, // Use dynamic postId in the URL
         { isSaved }, // Pass isSaved as an object
         {
           withCredentials: true,
@@ -19,10 +23,12 @@ const Saved = () => {
           },
         }
       );
+
+      console.log(response.data.message);
       toast({
-        description: 'Your post has been successfully created',
+        description: 'The post has been successfully saved',
       });
-      console.log(isSaved)
+
       // Toggle the saved state only if the request is successful
       setIsSaved(!isSaved);
     } catch (error: any) {
@@ -39,7 +45,7 @@ const Saved = () => {
       onClick={handleClick}
     >
       <p className="text-[16px] max-sm:text-sm font-normal">
-        {isSaved ? 'Unsaved' : 'Save'}
+        {isSaved ? 'Unsave' : 'Save'}
       </p>
       <Image
         src={isSaved ? '/card-svg/save/AfterSave.svg' : '/card-svg/save/saved.svg'}
