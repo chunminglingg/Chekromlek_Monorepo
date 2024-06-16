@@ -1,6 +1,6 @@
-// src/components/Organisms/ProfileUser/Page.tsx
-'use client';
+"use client";
 import { EditProfile } from "@/components/Organisms/editProfile/EditPro";
+import Edit from "@/components/Organisms/postCard/Edit";
 import Post from "@/components/Organisms/ProfileUser/Post";
 import SavedPost from "@/components/Organisms/ProfileUser/SavedPost";
 import React, { useEffect, useState } from "react";
@@ -17,7 +17,6 @@ interface userDataTypes {
   bio: string;
   gender: string;
   profile: string;
-  post: string[];
 }
 
 const Page = () => {
@@ -33,13 +32,14 @@ const Page = () => {
           withCredentials: true,
         }
       );
-      
+
       if (response) {
-        console.log("response: " , response.data.message);
-        
+        console.log("response: ", response.data.message);
+
         setUserData(response.data.user);
       }
     } catch (error: any) {
+      console.log(error.response.message);
 
       if (error.response) {
         console.error("Error response:", error.response.data);
@@ -60,9 +60,10 @@ const Page = () => {
     return <div>Loading...</div>;
   }
 
-  const { username, work, answers, posts,profile, bio } = userData;
-  
-  
+  const { username, work, answers, post, profile, bio } = userData;
+
+  console.log("User data", userData);
+
   return (
     <>
       <div className="content flex flex-col justify-center items-center">
@@ -72,7 +73,7 @@ const Page = () => {
             <div className="user-profile max-sm:mt-2">
               <Image
                 alt="profile"
-                src={ `${profile}` || "/card-svg/avatar.svg"}
+                src={`${profile}` || "/card-svg/avatar.svg"}
                 width={98}
                 height={98}
               />
@@ -82,13 +83,15 @@ const Page = () => {
                 {username}
               </div>
               <div className="been-post text-[#6C757D] text-[15px] font-sans flex flex-row gap-10">
-                <p>{posts} Posts</p>
+                <p>{post.length} Posts</p>
                 <p>{answers} Answers</p>
               </div>
               <div className="Category text-[#623cbb] text-[15px] font-medium">
                 {work}
               </div>
-              <div className="bio text-[#6C757D] font-light text-base">{bio}</div>
+              <div className="bio text-[#6C757D] font-light text-base">
+                {bio}
+              </div>
             </div>
           </div>
           <div className="header-right pb-28 pr-8">
@@ -131,11 +134,12 @@ const Page = () => {
           </div>
         </div>
 
-      {/* Conditionally render Post or SavedPost */}
-      <div className="content-section flex flex-col gap-2 mt-4">
-        {view === "Post" ? <Post userId={_id} /> : <SavedPost />}
+        {/* Conditionally render Post or SavedPost */}
+        <div className="content-section flex flex-col gap-2 mt-4">
+          {view === "Post" ? <Post /> : <SavedPost />}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
