@@ -6,6 +6,7 @@ import { logger } from "@post/utils/logger";
 import mongoose from "mongoose";
 import APIError from "@post/errors/api-error";
 import axios from "axios";
+import getConfig from "@post/utils/config";
 
 export class postRepository {
   // Create Post
@@ -162,8 +163,9 @@ export class postRepository {
       );
 
       // Fetch user details from the user service
+      const userService = getConfig().userServiceUrl || 'http://localhost:4000'
       const userResponse = await axios.get(
-        `http://localhost:4000/v1/users/${userId}`
+        `${userService}/v1/users/${userId}`
       );
       const user = userResponse.data;
 

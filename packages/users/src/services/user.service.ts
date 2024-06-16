@@ -75,12 +75,4 @@ export class UserService {
     }
   }
 
-  // async getUserProfile(id: string){
-  //   try {
-  //     return await this.userRepo.FindUserProfile(id);
-  //   } catch (error) {
-  //     logger.error('Get user error:', error);
-  //     throw error;
-  //   }
-  // }
 }

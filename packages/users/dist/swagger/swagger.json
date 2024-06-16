@@ -19,7 +19,8 @@
 						"type": "string"
 					},
 					"profile": {
-						"type": "string"
+						"type": "string",
+						"nullable": true
 					},
 					"saves": {
 						"items": {

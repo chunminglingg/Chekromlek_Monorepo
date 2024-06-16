@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Like from "@/components/Atoms/Like/Like";
 import Saved from "@/components/Atoms/Saved/Saved";
@@ -7,7 +7,7 @@ import Link from "next/link";
 import { HideCard } from "./HideCard";
 import { Button } from "@/components/Atoms/Button/Button";
 import { Typography } from "@/components/Atoms";
-import Edit from "./Edit";
+import { useParams } from "next/navigation";
 
 export interface postCardProps {
   id: string;
@@ -18,6 +18,8 @@ export interface postCardProps {
   title?: string;
   description?: string;
   postImage?: string | undefined;
+  userId?: string | null;
+  postlikedBy?: string[] | undefined;
   onLike?: () => void;
   onSave?: () => void;
 }
@@ -31,6 +33,8 @@ const PostCard: React.FC<postCardProps> = ({
   description,
   title,
   postImage,
+  userId,
+  postlikedBy,
 }) => {
   // Calculate the height dynamically based on whether postImage is provided
   const cardHeight = postImage ? "h-[100%]" : "h-[100%]";
@@ -38,6 +42,16 @@ const PostCard: React.FC<postCardProps> = ({
   // State to track whether the caption is truncated
   const [isCaptionTruncated, setIsCaptionTruncated] = useState(true);
   const [isVisible, setIsVisible] = useState(true);
+
+  // Check If Post is Favorite
+  const isFavorite =
+    postlikedBy &&
+    postlikedBy.length > 0 &&
+    postlikedBy.some((eachFavoriteId) => eachFavoriteId === userId);
+
+  console.log("user id: " + userId);
+  console.log(postlikedBy);
+  console.log("Is Favorite", isFavorite);
 
   // Function to toggle the truncation of the caption
   const toggleCaptionTruncation = () => {
@@ -55,7 +69,8 @@ const PostCard: React.FC<postCardProps> = ({
 
   // Maximum length for the caption before truncation
   const maxCaptionLength = 100;
-  
+
+  // fetch and increase Like
 
   return (
     <div>
@@ -125,7 +140,7 @@ const PostCard: React.FC<postCardProps> = ({
                   )}
                 </p>
                 {postImage && (
-                <div className="w-[100%] h-full md:w-[100%] flex  border-b p-2 mb-2">
+                  <div className="w-[100%] h-full md:w-[100%] flex  border-b p-2 mb-2">
                     <Image
                       alt="content post"
                       src={postImage}
@@ -143,7 +158,11 @@ const PostCard: React.FC<postCardProps> = ({
                   {/* Like */}
                   <div className=" flex flex-row justify-between items-center gap-6">
                     <div className="like">
-                      <Like like={likeCounts} />
+                      <Like
+                        postId={`${id}`}
+                        likeCounts={likeCounts}
+                        isFavorite={isFavorite ? isFavorite : false}
+                      />
                     </div>
                     {/* Save */}
                     <div className="Saved">

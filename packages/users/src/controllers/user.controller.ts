@@ -3,6 +3,7 @@ import APIError from '@users/errors/api-error';
 import CustomError from '@users/errors/custom-erorrs';
 import { verificationToken } from '@users/middlewares/auth-token-validate';
 import { UserService } from '@users/services/user.service';
+import getConfig from '@users/utils/config';
 import { StatusCode } from '@users/utils/consts';
 import { logger } from '@users/utils/logger';
 import axios from 'axios';
@@ -43,8 +44,10 @@ export class UserController {
 
       const postPro = postIds.map(async (postId) => {
         try {
+          const postService =
+            getConfig().postServiceUrl || 'http://localhost:3005';
           const postReponse = await axios.get(
-            `http://localhost:3005/v1/post?page=1&limit=5&id=${postId}`,
+            `${postService}/v1/post?page=1&limit=5&id=${postId}`,
           );
           // console.log(`Response for id ${postId}: ${postReponse.data}`);
           const posts = postReponse.data.posts[0];
@@ -55,6 +58,7 @@ export class UserController {
           return null; // or handle differently if needed
         }
       });
+
       const posts = (await Promise.all(postPro)).filter(
         (post) => post !== null,
       );
@@ -91,18 +95,19 @@ export class UserController {
 
       const postPro = postIds.map(async (postId) => {
         try {
+          const postService =
+            getConfig().postServiceUrl || 'http://localhost:3005';
           const postReponse = await axios.get(
-            `http://localhost:3005/v1/post?page=1&limit=5&id=${postId}`,
+            `${postService}/v1/post?page=1&limit=5&id=${postId}`,
           );
-          console.log(`Response for id ${postId}: ${postReponse.data}`);
           const posts = postReponse.data.posts[0];
-          // console.log('Response post:', posts);
           return posts;
         } catch (error) {
           console.error(`Error fetching data for id ${postId}:`, error);
           return null; // or handle differently if needed
         }
       });
+
       const posts = (await Promise.all(postPro)).filter(
         (post) => post !== null,
       );
@@ -124,7 +129,6 @@ export class UserController {
   }
   @SuccessResponse(StatusCode.Created, 'Created')
   @Post('/')
-  // @Middlewares(validateInput(UserSaveSchema))
   public async SaveProfile(
     @Body() reqBody: IUser & { userId: string },
   ): Promise<any> {
@@ -158,7 +162,7 @@ export class UserController {
   public async FindUserById(@Request() request: any): Promise<any> {
     try {
       const user = await this.userService.getAuthById(request.userId);
-      console.log(request.authId);
+      console.log(request.userId);
       if (!user) {
         throw new APIError('User Not Found!!', StatusCode.NotFound);
       }
@@ -167,7 +171,7 @@ export class UserController {
         user: user,
       };
     } catch (error: unknown) {
-      throw error;
+      logger.error("error:" , error);
     }
   }
 
@@ -179,13 +183,13 @@ export class UserController {
     @Body() reqBody: IUser,
   ): Promise<any> {
     try {
-      const authId = request.userId;
-      logger.debug(`user request: ${request.authId}`);
-      if (!authId) {
-        logger.error(`Could not find user: ${authId}`);
+      const user = request.userId;
+      logger.debug(`user request: ${request.userId}`);
+      if (!user) {
+        logger.error(`Could not find user: ${user}`);
       }
-      const findUser = await this.userService.getAuthById(authId);
-      logger.debug(`findUser: ${findUser?.id}`);
+      const findUser = await this.userService.getAuthById(user);
+      logger.debug(`findUser: ${findUser}`);
       if (!findUser) {
         throw new APIError('User Not Found!!', StatusCode.NotFound);
       }
@@ -314,11 +318,10 @@ export class UserController {
       if (!mongoose.Types.ObjectId.isValid(postId)) {
         throw new Error('Invalid event ID format');
       }
-      console.log('POST ID: ', postId);
       const user = await this.userService.getAuthById(request.userId);
-      console.log(`fount user ${user}`);
+      const postService = getConfig().postServiceUrl || 'http://localhost:3005';
       const postResponse = await axios.get(
-        `http://localhost:3005/v1/post?page=1&limit=5&id=${postId}`,
+        `${postService}/v1/post?page=1&limit=5&id=${postId}`,
       );
       console.log('found posts: ', postResponse.data);
       const post = postResponse.data.posts[0];
@@ -351,29 +354,4 @@ export class UserController {
       throw new CustomError(`${error}`);
     }
   }
-  // @SuccessResponse(StatusCode.OK, 'Get a user successfully')
-  // @Get('/profile')
-  // @Middlewares(verificationToken)
-  // public async getUserProfile(@Path() request: any): Promise<any> {
-
-  //   const userId = request.authId
-  //   logger.debug(request)
-  //   logger.debug(`authId: ${userId}`);
-
-  //   try {
-
-  //     const user = await this.userService.getUserProfile(userId);
-  //     if (!user) {
-  //       throw new Error('User not found');
-  //     }
-
-  //     return {
-  //       message: 'User profile fetched successfully',
-  //       data: user,
-  //     };
-  //   } catch (error: any) {
-  //     logger.error('Controller Get User Profile Error:', error.message);
-  //     throw new Error('Failed to fetch user profile: ' + error.message);
-  //   }
-  // }
 }
