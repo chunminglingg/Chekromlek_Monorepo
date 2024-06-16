@@ -103,10 +103,9 @@ export function EditProfile() {
       };
       reader.readAsDataURL(uploadedFile); // or use readAsText(uploadedFile) if you want to read it as plain text
     } else {
-      setProfile(null);
+      setProfile("");
     }
   };
-
 
   const handleSubmit = () => {
     const formErrors = {
@@ -128,6 +127,7 @@ export function EditProfile() {
       gender,
       profile,
     };
+    console.log("formdata: " + formData);
 
     const handleUpdate = async () => {
       try {
@@ -146,8 +146,6 @@ export function EditProfile() {
         throw error;
       }
     };
-    console.log("Submitting form data:", formData);
-    console.log("request:", handleUpdate);
 
     // Simulate a loading process with a timeout
     setTimeout(() => {

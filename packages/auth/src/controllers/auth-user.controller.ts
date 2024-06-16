@@ -115,10 +115,14 @@ export class UserAuthController {
         throw new APIError(`User not found`, StatusCode.NotFound);
       }
 
+     const userService = getConfig().user_service_url || "http://localhost:4000" ;
+
       // dev: localhost
       // docker: http://user-profile:4000...
-      await axios.post("http://localhost:4000/v1/users", {
-        authId: userDetail.id,
+
+
+      await axios.post(`${userService}/v1/users`, {
+        userId: userDetail.id,
         username: userDetail.username,
         email: userDetail.email,
       });
@@ -181,12 +185,6 @@ export class UserAuthController {
         );
       }
 
-      // console.log(`User found: ${user.id}`);
-
-      // const response = await axios.get(
-      //   `http://localhost:4000/v1/users/auth/${user.id}`
-      // );
-      // console.log("Response", response);
       const token = await generateSignature({
         userId: user._id,
         username: user.username,
@@ -438,18 +436,17 @@ export class UserAuthController {
   }
   @Get("/logout")
   async logout(@Header("authorization") authorization: string): Promise<any> {
-    try{
+    try {
       const token = authorization?.split(" ")[1];
       const decodedUser = await decodedToken(token);
-      const isLogout = await this.userService.logout(decodedUser)
-      
-      if(!isLogout){
-        throw new APIError("Unable to logout!")
+      const isLogout = await this.userService.logout(decodedUser);
+
+      if (!isLogout) {
+        throw new APIError("Unable to logout!");
       }
-      return {message: "Success logout", isLogout: isLogout}
-    }catch(error: unknown){
-      throw error
+      return { message: "Success logout", isLogout: isLogout };
+    } catch (error: unknown) {
+      throw error;
     }
   }
-
 }

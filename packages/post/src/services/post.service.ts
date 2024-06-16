@@ -111,6 +111,21 @@ export class PostService {
       throw error;
     }
   }
+  // async findAllUsersWhoCommentedOnPost(postId: string) {
+  //   const post = await this.postRepo.findPostById(postId);
+
+  //   if (!post) {
+  //     throw new Error("Post not found");
+  //   }
+
+  //   const users = post.answers.map((answer) => ({
+  //     userId: answer.id,
+  //     username: answer.username,
+  //     profile: answer.profile,
+  //   }));
+
+  //   return users;
+  // }
   public async findAnswersByUserOnPost(postId: string, userId: string) {
     try {
       return await this.postRepo.findAnswersByUserOnPost(postId, userId);

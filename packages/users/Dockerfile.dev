@@ -12,6 +12,7 @@ COPY tsconfig.json ./
 COPY src ./src
 COPY dist ./dist
 COPY public_key.pem /app/public_key.pem
+COPY configs ./configs
 
 # List all files and directories to verify the build directory
 RUN ls -a

@@ -6,9 +6,50 @@ interface UploadProProps {
   onUpload: (uploadedFile: File | null) => void;
   username: string;
 }
-
+interface userDataTypes {
+  _id: string;
+  username: string;
+  email: string;
+  work: string;
+  answers: number;
+  posts: number;
+  bio: string;
+  gender: string;
+  profile: string;
+}
 
 const UploadPro: React.FC<UploadProProps> = ({ onUpload , username }) => {
+
+  const [userData, setUserData] = useState<userDataTypes | null>(null);
+
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/v1/users/profile",
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+      if (response) {
+        setUserData(response.data.user);
+      }
+    } catch (error: any) {
+      if (error.response) {
+        console.error("Error response:", error.response.data);
+      } else if (error.request) {
+        console.error("Error request:", error.request);
+      } else {
+        console.error("Error message:", error.message);
+      }
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,7 +80,7 @@ const UploadPro: React.FC<UploadProProps> = ({ onUpload , username }) => {
                 alt="selected"
                 width={50}
                 height={55}
-                className="object-cover w-full h-full"
+                className="object-cover w-full h-full rounded-full"
               />
             ) : (
               <Image

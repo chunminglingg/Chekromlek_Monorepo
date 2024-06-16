@@ -7,7 +7,6 @@ import signupValidation from "@/schema/Auth@Validation";
 import { Button } from "@/components/Atoms/Button/Button";
 import { Typography } from "@/components";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 
 interface DataTypes {
   email: string;
@@ -19,7 +18,6 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -42,10 +40,10 @@ const LoginPage: React.FC = () => {
           withCredentials: true,
         }
       );
-
-      // Handle success response
-      router.push("/afterlogin");
-      console.log("Form data is valid!");
+      if (response.data.message === "Login Successfully") {
+        // Handle success response
+        window.location.href = "/afterlogin";
+      }
     } catch (error: any) {
       const fieldErrors: { [key: string]: string } = {};
 
@@ -57,7 +55,9 @@ const LoginPage: React.FC = () => {
         // Handling server-side error
         const { status, data } = error.response;
         if (status === 401 || status === 400) {
-          setError(data.message || "Invalid email or password. Please try again.");
+          setError(
+            data.message || "Invalid email or password. Please try again."
+          );
         } else {
           setError("Email or Password  is Incorrect, Please try again.");
         }
@@ -68,7 +68,6 @@ const LoginPage: React.FC = () => {
       setErrors(fieldErrors);
     }
   };
-
   return (
     <div className="flex justify-between h-screen w-screen">
       {/* left */}

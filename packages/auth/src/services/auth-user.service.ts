@@ -15,6 +15,7 @@ import { UserSignInResult } from "./@types/auth-user.types";
 import DuplicateError from "../errors/duplicate-error";
 import mongoose from "mongoose";
 import axios from "axios";
+import getConfig from "../utils/config";
 
 export class UserAuthService {
   private userRepo: UserAuthRpository;
@@ -112,14 +113,14 @@ export class UserAuthService {
     }
   }
 
-  // TODO:
+  async VerifyEmailToken({ token }: { token: string }) {
+      // TODO:
   // 1. find token is the token exist or not
   // 2. find user is the user exist or not
   // 3. If the user exist then mark the user to true
   // 4. save user in database
   // 5. delete the token from database
-
-  async VerifyEmailToken({ token }: { token: string }) {
+  
     try {
       const exitedToken =
         await this.verificationRepo.FindAccountVerificationToken({ token });
@@ -266,10 +267,9 @@ export class UserAuthService {
   async logout(decodedUser: any) {
     try {
       const { id } = decodedUser;
-      console.log("id from service: ", id);
-      const existingUser = await axios.get(
-        `http://user-profile:4000/v1/users/${id}`
-      );
+      const userService =
+        getConfig().user_service_url || "https://localhost:4000";
+      const existingUser = await axios.get(`${userService}/v1/users/${id}`);
       console.log("exist User : ", existingUser);
       if (!existingUser) {
         throw new APIError("No user found!", StatusCode.NotFound);

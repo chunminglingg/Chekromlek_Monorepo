@@ -17,6 +17,7 @@ export const app = express();
 
 // Get the Configs
 const config = getConfig(process.env.NODE_ENV);
+const gatewayService = getConfig().apiGatewayUrl || 'http://localhost:3000'
 
 // =======================
 // Security Middlewares
@@ -26,7 +27,7 @@ app.use(hpp());
 app.use(helmet());
 app.use(
   cors({
-    origin: [config.apiGatewayUrl as string, "http://localhost:3000"],
+    origin: [config.apiGatewayUrl as string, `${gatewayService}`],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   })
