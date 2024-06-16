@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Typography } from "@/components/Atoms";
 import Link from "next/link";
@@ -27,9 +27,32 @@ const ViewPost: React.FC<ViewPostProps> = ({
   const [isCaptionTruncated, setIsCaptionTruncated] = useState(true);
   const [inputValue, setInputValue] = useState("");
   const [isButtonClicked, setIsButtonClicked] = useState(false);
+  const [answers, setAnswers] = useState([]); // State to store answers
 
   // Log the post ID to verify it's being received correctly
   console.log("Post ID:", id);
+
+  // Fetch answers when component mounts
+  useEffect(() => {
+    const fetchAnswers = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/v1/post/${id}/answer`,
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        setAnswers(response.data.answers); // Assuming the response contains an "answers" array
+      } catch (error) {
+        console.log("Failed to fetch answers", error);
+      }
+    };
+
+    fetchAnswers();
+  }, [id]);
 
   const toggleCaptionTruncation = () => {
     setIsCaptionTruncated(!isCaptionTruncated);
@@ -158,6 +181,19 @@ const ViewPost: React.FC<ViewPostProps> = ({
               className="-translate-x-3"
             />
           </button>
+        </div>
+        <div className="mt-4">
+          <h3 className="font-medium text-[16px] text-[#343A40]">Answers:</h3>
+          <ul className="list-disc list-inside">
+            {answers.map((answer, index) => (
+              <li
+                key={index}
+                className="text-[14px] text-[#6C757D] font-medium"
+              >
+                {answer}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>

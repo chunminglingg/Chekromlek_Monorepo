@@ -87,10 +87,7 @@ const PostCardList = () => {
       if (posts.length > 0) {
         // setDisplayedCards((prev) => [...prev, ...posts]);
         const formateData = formattedData(posts);
-        setDisplayedCards((prev) => [
-          ...prev,
-          ...formateData
-        ]);
+        setDisplayedCards((prev) => [...prev, ...formateData]);
         setPage(page + 1);
         setHasMore(morePosts);
       }
