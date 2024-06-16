@@ -20,7 +20,6 @@ WithActionLogs.args = {
   onTitleChange: action('Title changed'),
   onDescriptionChange: action('Description changed'),
   onSubmit: action('Form Post'),
-  onImageUpload: action('Image uploaded'),
   onImageDelete: action('Image deleted'),
   onDialogOpen: action('Dialog opened'),
   onDialogClose: action('Dialog closed'),

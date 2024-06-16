@@ -90,7 +90,7 @@ const AnswerCard: React.FC<AnswerCardProps> = ({
 
       <div className="flex items-end justify-end gap-2 mb-1 ms-1">
         <div className="like">
-          <Like like={0} />
+          <Like likeCounts={12} isFavorite />
         </div>
       </div>
       <div className=" mb-[2%] ms-1 border-t rounded-sm border-gray-300 "></div>

@@ -117,7 +117,7 @@ const PostCardList = () => {
           createdAt={info.createdAt}
           likeCounts={info.likeCounts}
           description={info.description}
-          profile={info.profile || "/profile.svg"}
+          profile={info.profile}
           username={info.username}
           postImage={info.postImage}
           title={info.title}
