@@ -3,8 +3,10 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { Typography } from "@/components/Atoms";
 import Link from "next/link";
+import axios from "axios";
 
 export interface ViewPostProps {
+  id: string | string[]; // Add id here
   profile: string;
   username: string;
   createdAt: number;
@@ -14,6 +16,7 @@ export interface ViewPostProps {
 }
 
 const ViewPost: React.FC<ViewPostProps> = ({
+  id, // Receive id here
   profile,
   username,
   createdAt,
@@ -21,45 +24,49 @@ const ViewPost: React.FC<ViewPostProps> = ({
   description,
   postImage,
 }) => {
-  // State to track whether the caption is truncated
   const [isCaptionTruncated, setIsCaptionTruncated] = useState(true);
-
-  // State to store the input value
   const [inputValue, setInputValue] = useState("");
-
-  // State to track if the button has been clicked
   const [isButtonClicked, setIsButtonClicked] = useState(false);
 
-  // Function to toggle the truncation of the caption
+  // Log the post ID to verify it's being received correctly
+  console.log("Post ID:", id);
+
   const toggleCaptionTruncation = () => {
     setIsCaptionTruncated(!isCaptionTruncated);
   };
 
-  // Function to truncate the caption if it exceeds a certain number of characters
   const truncateCaption = (text: string, maxLength: number) => {
     return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
   };
 
-  // Maximum length for the caption before truncation
   const maxCaptionLength = 100;
 
-  // Event handler to update the input value
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
 
-  // Event handler for input submission
-  const handleInputSubmit = () => {
-    // Perform your desired action with the input value
+  const handleInputSubmit = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:3000/v1/post/${id}/answer`, // Use the id here
+        { answer: inputValue }, // Wrapping inputValue in an object
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(response.data.message);
+    } catch (error) {
+      console.log("post not success", error);
+    }
     console.log("answer:", inputValue);
-    // Set the button click state to true
     setIsButtonClicked(true);
-    // Clear the input after submission if desired
     setInputValue("");
     setTimeout(() => setIsButtonClicked(false), 1000);
   };
 
-  // Event handler to submit input on pressing Enter key
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       handleInputSubmit();
@@ -70,23 +77,21 @@ const ViewPost: React.FC<ViewPostProps> = ({
     <div className="w-auto max-sm:w-[315px] h-auto min-md:mt-[10%] p-2 max-sm:m-4">
       <div>
         <div className="flex items-center justify-between gap-5">
-          {/* Profile */}
           <div className="flex items-center">
-          <Link href={"/profile/"}>
-            <Image
-              src={profile}
-              width={42}
-              height={42}
-              className="w-10 h-10 rounded-full"
-              alt="profile"
-            />
+            <Link href={`/profile/${username}`}>
+              <Image
+                src={profile}
+                width={42}
+                height={42}
+                className="w-10 h-10 rounded-full"
+                alt="profile"
+              />
             </Link>
-            {/* Detail */}
-            <div className="ml-2 ">
-            <Link href={"/profile/"}>
-              <h3 className="font-medium text-[16px] text-[#343A40]">
-                {username}
-              </h3>
+            <div className="ml-2">
+              <Link href={`/profile/${username}`}>
+                <h3 className="font-medium text-[16px] text-[#343A40]">
+                  {username}
+                </h3>
               </Link>
               <div className="flex flex-row gap-1">
                 <Image
@@ -102,14 +107,13 @@ const ViewPost: React.FC<ViewPostProps> = ({
             </div>
           </div>
         </div>
-        {/* Caption */}
-        <div className="card-content flex flex-col gap-4 ">
-          {/* Render truncated caption with "See more" link */}
-          {/* #tittle */}
-          <div className=" mt-1 w-auto title font-semibold text-[#343A40] text-2xl hover:underline max-sm:text-lg max-sm:font-medium pt-2 hover:cursor-pointer break-words">
-            <Typography fontSize="title" align="left" className="">
-              {title}
-            </Typography>
+        <div className="card-content flex flex-col gap-4 pt-2 pb-2">
+          <div className="mt-1 w-auto title font-semibold text-[#343A40] text-2xl hover:underline max-sm:text-lg max-sm:font-medium pt-2 hover:cursor-pointer break-words">
+            <Link href={`/post/${id}`}>
+              <Typography fontSize="title" align="left" className="">
+                {title}
+              </Typography>
+            </Link>
           </div>
           <p className="text-[14px] text-[#6C757D] font-medium break-words">
             {isCaptionTruncated
@@ -136,8 +140,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
             </div>
           )}
         </div>
-        {/* Footer */}
-        <div className="h-[47px] flex items-center justify-center border rounded-md mt-2">
+        <div className="h-[47px] flex items-center justify-center border rounded-md">
           <input
             type="text"
             placeholder="Answer question..."
