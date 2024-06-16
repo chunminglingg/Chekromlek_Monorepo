@@ -141,7 +141,7 @@ const Like: React.FC<LikeProp> = ({ postId, likeCounts, isFavorite }) => {
       className={`flex flex-row gap-1 justify-center items-center ${
         isFavorite ? "text-[#E53E4F]" : "text-[#343A40]"
       }`}
-      onClick={handleClick}
+      onClick={handleLike}
     >
       <p className={`text-[16px] max-sm:text-xs font-normal`}>{likeCount}</p>
       <Image

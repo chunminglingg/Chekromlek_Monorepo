@@ -121,12 +121,12 @@ const PostCard: React.FC<postCardProps> = ({
               <div className="card-content w-auto flex flex-col gap-2 ">
                 <Link href={`/post/${encodeURIComponent(id)}`}>
                   <div className="mt-1 title font-semibold text-[#343A40] text-2xl hover:underline max-sm:text-lg max-sm:font-medium pt-2 hover:cursor-pointer break-words">
-                    <Typography fontSize="title" align="left" className="">
+                    <Typography fontSize="title" align="left" className="break-words">
                       {title}
                     </Typography>
                   </div>
                 </Link>
-                <p className="text-[14px]  text-[#343A40] font-light hover:cursor-pointer break-words">
+                <p className="text-[14px] text-[#343A40] font-light hover:cursor-pointer break-words">
                   {isCaptionTruncated
                     ? truncateCaption(description || "", maxCaptionLength)
                     : description}

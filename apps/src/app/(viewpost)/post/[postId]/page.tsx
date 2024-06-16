@@ -3,10 +3,11 @@ import { Key, useEffect, useState } from "react";
 import axios from "axios";
 import ViewPost, { ViewPostProps } from "@/components/Molecules/Post/ViewPost/ViewPost";
 import { useParams } from "next/navigation";
-import { UserCard } from "@/components/Organisms/postCard/UserAnswer/UserCard";
+import {AnswerCard , AnswerCardProps} from "@/components/Organisms/postCard/UserAnswer/AnswerCard"
 
 const ViewPostPage = () => {
   const [post, setPost] = useState<ViewPostProps>();
+  const [answer, setAnswer] = useState<[AnswerCardProps]>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { postId } = useParams(); 
@@ -25,6 +26,7 @@ const ViewPostPage = () => {
       console.log(response);
       
       setPost(response.data.data);
+      setAnswer(response.data.data.answers);
       setLoading(false);
     } catch (err) {
       setError(error);
@@ -56,6 +58,19 @@ const ViewPostPage = () => {
           />
         </div> : <div></div>
         }
+          { 
+          answer?
+          answer.map((a:any,i:number)=>(<div key={i} className="flex items-center justify-center mb-1">
+        <AnswerCard
+          profile={a.profile || "/profile.svg"}
+          // hour={1}
+          username={a.username}
+          // postImage=""
+          answer={a.answer}
+        />
+        </div>))
+        :<div></div>}
+      
       </div>
     </div>
   );

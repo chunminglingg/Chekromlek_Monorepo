@@ -1,7 +1,8 @@
+import getConfig from '@users/utils/config';
 import mongoose from 'mongoose';
 
 export interface IUser {
-  authId?: string;
+  userId?: string;
   username?: string;
   email?: string;
   profile?: string | null; // Use string to store file path or URL
@@ -17,14 +18,17 @@ export interface IUser {
 
 const userSchema = new mongoose.Schema(
   {
-    authId: { type: mongoose.Schema.Types.ObjectId, ref: 'Auth' },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'Auth' },
     username: { type: String, require: true },
     email: { type: String, required: true, unique: true },
-    profile: { type: String }, // Store the file path as a string
+    profile: {
+      type: String,
+      default: getConfig().profileImage,
+    },
     saves: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
     post: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
-    bio: { type: String },
-    gender: { type: String, enum: ['Male', 'Female', 'Other'] },
+    bio: { type: String, default: 'bio' },
+    gender: { type: String, enum: ['Male', 'Female', 'other'] },
     work: {
       type: String,
       default: 'Student',

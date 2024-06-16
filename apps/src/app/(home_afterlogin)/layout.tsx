@@ -8,6 +8,7 @@ import { SideBarLogin } from "@/components/Organisms/sidebar/SieBarLogin";
 import { KhFont } from "@/utils/font";
 const inter = Inter({ subsets: ["latin"] });
 import { Toaster } from "@/components/ui/toaster"
+import { AfteLogin } from "@/components";
 
 export const metadata: Metadata = {
   title: "Chekromlek",

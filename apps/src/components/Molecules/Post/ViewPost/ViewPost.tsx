@@ -103,7 +103,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
           </div>
         </div>
         {/* Caption */}
-        <div className="card-content flex flex-col gap-4  pt-2 pb-2">
+        <div className="card-content flex flex-col gap-4 ">
           {/* Render truncated caption with "See more" link */}
           {/* #tittle */}
           <div className=" mt-1 w-auto title font-semibold text-[#343A40] text-2xl hover:underline max-sm:text-lg max-sm:font-medium pt-2 hover:cursor-pointer break-words">
@@ -111,7 +111,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
               {title}
             </Typography>
           </div>
-          <p className="text-[18px] text-[#6C757D] font-medium break-words">
+          <p className="text-[14px] text-[#6C757D] font-medium break-words">
             {isCaptionTruncated
               ? truncateCaption(description || "", maxCaptionLength)
               : description}
@@ -137,7 +137,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
           )}
         </div>
         {/* Footer */}
-        <div className="h-[47px] flex items-center justify-center border rounded-md">
+        <div className="h-[47px] flex items-center justify-center border rounded-md mt-2">
           <input
             type="text"
             placeholder="Answer question..."

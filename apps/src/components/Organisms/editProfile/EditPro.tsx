@@ -107,7 +107,6 @@ export function EditProfile() {
     }
   };
 
-
   const handleSubmit = () => {
     const formErrors = {
       bio: !bio,
@@ -128,10 +127,11 @@ export function EditProfile() {
       gender,
       profile,
     };
+    console.log("formdata: " + formData);
 
     const handleUpdate = async () => {
       try {
-        const response = await axios.put(
+        const response = await axios.patch(
           "http://localhost:3000/v1/users/update",
           formData,
           {
@@ -146,8 +146,6 @@ export function EditProfile() {
         throw error;
       }
     };
-    console.log("Submitting form data:", formData);
-    console.log("request:", handleUpdate);
 
     // Simulate a loading process with a timeout
     setTimeout(() => {

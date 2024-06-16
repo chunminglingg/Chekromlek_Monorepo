@@ -6,14 +6,14 @@ export const verificationToken = (req: any, res: any, next: any) => {
   if (!token) {
     return res.status(401).json({ message: 'Token not provided' });
   }
-  console.log('Token', token);
+  console.log('Token:', token);
   try {
     const decodedToken = jwt.verify(token, public_key, {
       algorithms: ['RS256'],
     }) as {
       userId: string;
     };
-    req.authId = decodedToken.userId;
+    req.userId = decodedToken.userId;
     next();
   } catch (error: any) {
     return res.status(401).json({ message: 'Invalid token: ' + error.message });

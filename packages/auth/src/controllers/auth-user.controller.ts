@@ -115,10 +115,14 @@ export class UserAuthController {
         throw new APIError(`User not found`, StatusCode.NotFound);
       }
 
+     const userService = getConfig().user_service_url || "http://localhost:4000" ;
+
       // dev: localhost
       // docker: http://user-profile:4000...
-      await axios.post("http://user-profile:4000/v1/users", {
-        authId: userDetail.id,
+
+
+      await axios.post(`${userService}/v1/users`, {
+        userId: userDetail.id,
         username: userDetail.username,
         email: userDetail.email,
       });
@@ -181,12 +185,6 @@ export class UserAuthController {
         );
       }
 
-      // console.log(`User found: ${user.id}`);
-
-      // const response = await axios.get(
-      //   `http://localhost:4000/v1/users/auth/${user.id}`
-      // );
-      // console.log("Response", response);
       const token = await generateSignature({
         userId: user._id,
         username: user.username,

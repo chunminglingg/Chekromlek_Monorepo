@@ -2,20 +2,21 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Like from "@/components/Atoms/Like/Like";
+import { Typography } from "@/components/Atoms";
 
-interface UserCardProps {
+export interface AnswerCardProps {
   profile: string;
   username: string;
-  hour: number;
-  caption: string;
+  hour?: number;
+  answer: string;
   postImage?: string | undefined;
 }
 
-const UserCard: React.FC<UserCardProps> = ({
+const AnswerCard: React.FC<AnswerCardProps> = ({
   profile,
   username,
   hour,
-  caption,
+  answer,
   postImage,
 }) => {
   // State to track whether the caption is truncated
@@ -34,8 +35,8 @@ const UserCard: React.FC<UserCardProps> = ({
   // Maximum length for the caption before truncation
   const maxCaptionLength = 100;
   return (
-    <div className="m-auto">
-      <div className="mt-[2%] w-[420px] max-sm:w-[310px] h-auto max-sm:mt-[5%] min-md:mt-[10%] max-sm:border-none ">
+    <div className="m-auto w-full p-1">
+      <div className="mt-[2%] w-full max-sm:w-[310px] h-auto max-sm:mt-[5%] min-md:mt-[10%] max-sm:border-none p-2 ">
         <div className="flex items-center justify-between ">
           {/* Profile */}
           <div className="flex items-center">
@@ -52,19 +53,20 @@ const UserCard: React.FC<UserCardProps> = ({
                 {username}
               </p>
               <p className="text-[12px] text-gray-500">
-                update {hour} hour ago
+                {/* update {hour} hour ago */}
+                answer
               </p>
             </div>
           </div>
         </div>
         {/* Caption */}
-        <div className="card-content flex flex-col gap-2 items-center justify-center mt-1 ms-2">
+        <div className="card-content flex flex-col gap-2 items-start justify-center mt-1 ms-2">
           {/* Render truncated caption with "See more" link */}
-          <p className="text-[14px] text-[#6C757D]">
+          <Typography align="left" className="text-[14px] text-[#6C757D]">
             {isCaptionTruncated
-              ? truncateCaption(caption || "", maxCaptionLength)
-              : caption}
-            {caption && caption.length > maxCaptionLength && (
+              ? truncateCaption(answer || "", maxCaptionLength)
+              : answer}
+            {answer && answer.length > maxCaptionLength && (
               <button
                 className="text-[14px] text-[#4b81ed] font-medium underline cursor-pointer ml-1"
                 onClick={toggleCaptionTruncation}
@@ -72,27 +74,28 @@ const UserCard: React.FC<UserCardProps> = ({
                 {isCaptionTruncated ? " See more" : "See less"}
               </button>
             )}
-          </p>
-          {postImage && (
-            <div className="w-[320px] h-[320px] rounded-md">
-              <Image
-                alt="content post"
-                src={postImage}
-                width={320}
-                height={320}
-              />
-            </div>
-          )}
+          </Typography>
         </div>
-        {/* Footer */}
-        <div className=" mb-[2%] ms-1 border-t rounded-sm border-gray-300 "></div>
-        <div className="flex items-end justify-end gap-2 mb-1 ms-1">
-          <div className="like">
-            <Like like={0} />
+        {postImage && (
+          <div className="w-[320px] h-[320px] rounded-md">
+            <Image
+              alt="content post"
+              src={postImage}
+              width={320}
+              height={320}
+            />
           </div>
+        )}
+      </div>
+      {/* Footer */}
+
+      <div className="flex items-end justify-end gap-2 mb-1 ms-1">
+        <div className="like">
+          <Like like={0} />
         </div>
       </div>
+      <div className=" mb-[2%] ms-1 border-t rounded-sm border-gray-300 "></div>
     </div>
   );
 };
-export { UserCard };
+export { AnswerCard };
