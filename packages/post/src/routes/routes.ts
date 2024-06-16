@@ -22,6 +22,7 @@ const models: TsoaRoute.Models = {
             "answer": {"dataType":"string"},
             "likeCounts": {"dataType":"double"},
             "answerlikedBy": {"dataType":"array","array":{"dataType":"refAlias","ref":"mongoose.Types.ObjectId"}},
+            "createdAt": {"dataType":"datetime"},
         },
         "additionalProperties": false,
     },

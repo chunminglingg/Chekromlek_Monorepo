@@ -24,6 +24,10 @@
 							"$ref": "#/components/schemas/mongoose.Types.ObjectId"
 						},
 						"type": "array"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
 					}
 				},
 				"type": "object",
