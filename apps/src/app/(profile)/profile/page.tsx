@@ -12,7 +12,7 @@ interface userDataTypes {
   username: string;
   email: string;
   work: string;
-  answers: number;
+  saved: number;
   post: string[];
   bio: string;
   gender: string;
@@ -60,7 +60,7 @@ const Page = () => {
     return <div>Loading...</div>;
   }
 
-  const { username, work, answers, post , profile, bio } = userData;
+  const { username, work, saved, post , profile, bio } = userData;
 
   console.log("User data", userData);
 
@@ -84,7 +84,7 @@ const Page = () => {
               </div>
               <div className="been-post text-[#6C757D] text-[15px] font-sans flex flex-row gap-10">
                 <p>{post.length} Posts</p>
-                <p>{answers} Answers</p>
+                <p>{saved} Saved</p>
               </div>
               <div className="Category text-[#623cbb] text-[15px] font-medium">
                 {work}
@@ -106,7 +106,7 @@ const Page = () => {
               className="flex flex-row gap-1"
               onClick={() => setView("Post")}
             >
-              <p>Post</p>
+              <p>Posts</p>
               <Image
                 alt="post"
                 src={"/profile-page/postss.svg"}
