@@ -117,8 +117,8 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({
           },
         }
       );
-      console.log("responseData:" , response);
-      
+      console.log("responseData:", response);
+
       toast({
         description: "Your post has been successfully created",
       });
