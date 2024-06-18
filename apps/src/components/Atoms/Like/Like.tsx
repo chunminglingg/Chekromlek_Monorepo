@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import axios from "axios";
 
 interface LikeProp {
-  postId: string;
+  postId?: string;
   likeCounts: number;
   isFavorite: boolean;
 }

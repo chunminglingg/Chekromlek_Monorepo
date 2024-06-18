@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import "../globals.css";
 import Nav from "@/components/Organisms/navbar/Nav";
 import { Sidebar } from "@/components/Organisms/sidebar/Sidebar";
-import CardContext from "@/contexts/PostCardContext/PostCardContext";
 import SideRight from "@/components/Molecules/SideRight/SideRight";
 import { KhFont } from "@/utils/font";
 const inter = Inter({ subsets: ["latin"] });

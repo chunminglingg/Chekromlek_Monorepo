@@ -4,6 +4,7 @@ import axios from "axios";
 import ViewPost, { ViewPostProps } from "@/components/Molecules/Post/ViewPost/ViewPost";
 import { useParams } from "next/navigation";
 import {AnswerCard , AnswerCardProps} from "@/components/Organisms/postCard/UserAnswer/AnswerCard"
+import { formattedData } from "@/utils/formattedData";
 
 const ViewPostPage = () => {
   const [post, setPost] = useState<ViewPostProps>();
@@ -25,8 +26,12 @@ const ViewPostPage = () => {
       });
       console.log(response);
       
-      setPost(response.data.data);
-      setAnswer(response.data.data.answers);
+      const postData = response.data.data;
+      const formattedPost = formattedData([postData])[0]; // Format the post data
+      const formattedAnswers = formattedData(postData.answers); // Format the answers data
+
+      setPost(formattedPost);
+      setAnswer(formattedAnswers);
       setLoading(false);
     } catch (err) {
       setError(error);
@@ -49,8 +54,9 @@ const ViewPostPage = () => {
         {
           post ? <div className="flex flex-col">
           <ViewPost
+            id={postId}
             profile={post.profile || "/profile.svg"}
-            hour={post.hour || 2}
+            createdAt={post.createdAt}
             username={post.username || "Unknown"}
             postImage={post.postImage}
             title={post.title || "none"}

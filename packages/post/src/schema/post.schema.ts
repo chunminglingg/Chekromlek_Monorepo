@@ -6,7 +6,7 @@ export const PostSaveSchema = z.object({
   description: z.string().optional(),
   postImage: z.string().optional(),
   category: z.string().optional(),
-  createdAt: z.date().optional(),
+  // createdAt: z.date().optional(),
 });
 
 export const PostUpdateSchema = z.object({
