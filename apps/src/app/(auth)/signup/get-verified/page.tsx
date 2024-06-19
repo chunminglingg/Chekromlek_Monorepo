@@ -27,7 +27,7 @@ const Page = () => {
         setVerificationStatus(status);
       } else {
         setVerificationStatus("success");
-        window.location.href = "/afterlogin";
+        window.location.href = "/";
       }
     } else {
       setVerificationStatus("no-token");

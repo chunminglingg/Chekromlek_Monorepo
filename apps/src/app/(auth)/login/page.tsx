@@ -42,7 +42,7 @@ const LoginPage: React.FC = () => {
       );
       if (response.data.message === "Login Successfully") {
         // Handle success response
-        window.location.href = "/afterlogin";
+        window.location.href = "/";
       }
     } catch (error: any) {
       const fieldErrors: { [key: string]: string } = {};
