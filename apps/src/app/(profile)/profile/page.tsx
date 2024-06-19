@@ -1,5 +1,6 @@
 "use client";
 import { EditProfile } from "@/components/Organisms/editProfile/EditPro";
+import Edit from "@/components/Organisms/postCard/Edit";
 import Post from "@/components/Organisms/ProfileUser/Post";
 import SavedPost from "@/components/Organisms/ProfileUser/SavedPost";
 import React, { useEffect, useState } from "react";
@@ -31,15 +32,19 @@ const Page = () => {
           withCredentials: true,
         }
       );
-      
+
       if (response) {
-        console.log("response: " , response.data.message);
-        
+        console.log("response: ", response.data.message);
+
         setUserData(response.data.user);
       }
     } catch (error: any) {
       console.log(error.response.message);
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> f4d792f1a742eaba90b5bd5a617c672d68f2988b
       if (error.response) {
         console.error("Error response:", error.response.data);
       } else if (error.request) {
@@ -59,7 +64,11 @@ const Page = () => {
     return <div>Loading...</div>;
   }
 
+<<<<<<< HEAD
   const { username, work, answers, post , profile, bio } = userData;
+=======
+  const { username, work, answers, post, profile, bio } = userData;
+>>>>>>> f4d792f1a742eaba90b5bd5a617c672d68f2988b
 
   console.log("User data", userData);
 
@@ -135,7 +144,11 @@ const Page = () => {
 
         {/* Conditionally render Post or SavedPost */}
         <div className="content-section flex flex-col gap-2 mt-4">
+<<<<<<< HEAD
           {view === "Post" ? <Post userId={"_id"} /> : <SavedPost />}
+=======
+          {view === "Post" ? <Post /> : <SavedPost />}
+>>>>>>> f4d792f1a742eaba90b5bd5a617c672d68f2988b
         </div>
       </div>
     </>

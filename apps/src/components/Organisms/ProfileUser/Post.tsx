@@ -1,81 +1,18 @@
+<<<<<<< HEAD
 'use client';
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+=======
+import React from "react";
+>>>>>>> f4d792f1a742eaba90b5bd5a617c672d68f2988b
 import { PostCard } from "../postCard";
 
-interface PostType {
-  id: string;
-  title: string;
-  content: string;
-  profile?: string;
-  hour?: number;
-  username: string;
-  postImage?: string;
-}
-
-interface ApiResponse {
-  message: string;
-  data: PostType[];
-}
-
-interface PostProps {
-  userId: string;
-}
-
-const Post: React.FC<PostProps> = ({ userId }) => {
-  const [posts, setPosts] = useState<PostType[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await axios.get<ApiResponse>(
-          `http://localhost:3000/v1/post/getpost/`, // Updated to use userId
-          {
-            headers: { "Content-Type": "application/json" },
-            withCredentials: true,
-          }
-        );
-
-        console.log("API Response:", response.data); // Log the entire response
-
-        if (response.data.message === "Post found successfully" && Array.isArray(response.data.data)) {
-          setPosts(response.data.data);
-        } else {
-          console.error("API response is not as expected:", response.data);
-          setError("Invalid response format from API");
-        }
-      } catch (error: any) {
-        console.error("Error fetching posts:", error.message);
-        console.error("Error details:", error.response ? error.response.data : error);
-        setError("Error fetching posts. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPosts();
-  }, [userId]);
-
-  console.log("Fetched posts:", posts); // Debugging log
-
-  if (loading) {
-    return <div>Loading...</div>; // Display loading state
-  }
-
-  if (error) {
-    return <div>{error}</div>; // Display error message
-  }
-
-  if (!Array.isArray(posts) || posts.length === 0) {
-    return <div>No posts available</div>;
-  }
-
+export default function Post() {
   return (
-    <div className="flex flex-col gap-2 mt-4">
-      {posts.map((post) => (
+    <div>
+      <div className="flex flex-col gap-2 mt-4">
         <PostCard
+<<<<<<< HEAD
           key={post.id}
           profile={post.profile || "/card-svg/avatar.svg"}
           hour={post.hour || 2}
@@ -86,15 +23,58 @@ const Post: React.FC<PostProps> = ({ userId }) => {
           postImage={post.postImage}
           onLike={() => {
             console.log(`Liked post ${post.id}`);
-          }}
-          onSave={() => {
-            console.log(`Saved post ${post.id}`);
-          }}
+=======
           likeCounts={0}
+          profile="/card-svg/avatar.svg"
+          createdAt={0}
+          username="Kimlang Tieng"
+          description="Why is it  s it that although China is already the second largest  in the world..already the second largest  in the worldalready the second largest  in the worldthat although China is already the second largest  in the world"
+          id={"1"}
+          title="HELLO"
+          onLike={function (): void {
+            throw new Error("Function not implemented.");
+>>>>>>> f4d792f1a742eaba90b5bd5a617c672d68f2988b
+          }}
+          onSave={function (): void {
+            throw new Error("Function not implemented.");
+          }}
         />
+<<<<<<< HEAD
       ))}
+=======
+        <PostCard
+          likeCounts={0}
+          profile="/card-svg/avatar.svg"
+          createdAt={0}
+          username="Kimlang Tieng"
+          title="Why??"
+          description="Why is it that although China is already the second largest  in the world."
+          postImage="/socialMedia/imageContent.svg"
+          id={"2"}
+          onLike={function (): void {
+            throw new Error("Function not implemented.");
+          }}
+          onSave={function (): void {
+            throw new Error("Function not implemented.");
+          }}
+        />
+        <PostCard
+          likeCounts={0}
+          profile="/card-svg/avatar.svg"
+          createdAt={0}
+          username="Kimlang Tieng"
+          description="Why is it that although China is already the second largest  in the world."
+          postImage="/socialMedia/imageContent.svg"
+          id={"3"}
+          onLike={function (): void {
+            throw new Error("Function not implemented.");
+          }}
+          onSave={function (): void {
+            throw new Error("Function not implemented.");
+          }}
+        />
+      </div>
+>>>>>>> f4d792f1a742eaba90b5bd5a617c672d68f2988b
     </div>
   );
-};
-
-export default Post;
+}
