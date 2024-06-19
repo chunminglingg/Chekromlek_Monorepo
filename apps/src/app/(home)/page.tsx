@@ -1,16 +1,22 @@
-import { PostCard, PostCardList } from "@/components/Organisms";
-import React from "react";
+// app/page.tsx
+import React from 'react';
+import PageContent from '@/components/Organisms/PageContent/PageContent';
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
-const page = () => {
+interface pageProps {
+  session: RequestCookie | undefined;
+  sigSession: RequestCookie | undefined;
+}
 
-
+const Page: React.FC<pageProps> = ({session , sigSession}) => {
+  
+  let isLoggedIn = true;
+  if (!session || !sigSession) {
+    isLoggedIn = false;
+  } 
   return (
-    <>
-      <div className="flex flex-col gap-2 items-center mt-[7%] min-md:mt-[12%] max-lg:mt-[8%] max-md:mt-[15%] max-sm:mt-[20%] mb-5 ">
-          <PostCardList/>
-      </div>
-    </>
+    <PageContent isLoggedIn={isLoggedIn} />
   );
 };
 
-export default page;
+export default Page;

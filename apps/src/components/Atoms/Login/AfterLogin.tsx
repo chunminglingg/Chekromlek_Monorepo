@@ -4,42 +4,13 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
 
-const AfteLogin = () => {
+const AfteLogin = ({username} : {username: string}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [username, setUsername] = useState<string | null>(null);
+ 
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
-  const fetchUserData = async () => {
-    try {
-      const response = await axios.get(
-        "http://localhost:3000/v1/users/profile",
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
-      if (response && response.data) {
-        const { _id, username } = response.data.user;
-        setUsername(username);
-        localStorage.setItem("userId", _id);
-      }
-    } catch (error: any) {
-      if (error.response) {
-        console.error("Error response:", error.response.data);
-      } else if (error.request) {
-        console.error("Error request:", error.request);
-      } else {
-        console.error("Error message:", error.message);
-      }
-      console.error("Error fetching user data:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchUserData();
-  }, []);
-
+ 
   const handleOnLogout = async () => {
     try {
       const logoutResponse = await axios.get(
@@ -52,12 +23,8 @@ const AfteLogin = () => {
       if (logoutResponse.data.status === 200) {
         console.log(logoutResponse.data);
       }
-      // Clear state and local storage
-      setUsername(null);
-      localStorage.removeItem("userId");
 
-      // Redirect to login page
-      window.location.href = "/login";
+      window.location.href = "/";
     } catch (error: unknown | any) {
       // AxiosError is used to handle specific axios errors
       if (axios.isAxiosError(error)) {
@@ -90,6 +57,7 @@ const AfteLogin = () => {
       }
     }
   };
+
 
   return (
     <>
