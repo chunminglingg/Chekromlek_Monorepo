@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-
 const AnswerSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   username: { type: mongoose.Schema.Types.String, ref: "User" },
@@ -8,7 +7,8 @@ const AnswerSchema = new mongoose.Schema({
   answerlikedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   answer: { type: String },
   likeCounts: { type: Number, default: 0 },
-  createdAt: { type: Date, default: Date.now },
+  // createdAt: { type: Date, default: Date.now() },
+
 });
 
 const PostSchema = new mongoose.Schema(

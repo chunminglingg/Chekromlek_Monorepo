@@ -16,7 +16,7 @@ export default function UserMaintenance() {
           className="max-sm:w-[280px] max-sm:h-[300px]"
         />
         <Typography
-          color="maintenance"
+          color="primary"
           fontSize="title"
           align="center"
           Inter="inter 28"

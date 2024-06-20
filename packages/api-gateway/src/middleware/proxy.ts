@@ -50,7 +50,6 @@ const proxyConfigs: ProxyConfig = {
         console.log(originalBody);
         proxyRes.on("end", function () {
           const bodyString = Buffer.concat(originalBody).toString("utf8");
-
           let responseBody: {
             message?: string;
             token?: string;
@@ -152,29 +151,36 @@ const proxyConfigs: ProxyConfig = {
         });
         proxyRes.on("end", function () {
           const bodyString = Buffer.concat(originalBody).toString("utf8");
-          let responseBody: {
-            message?: string;
-            token?: string;
-            errors?: Array<object>;
-          };
+
+          // Log the received response body for debugging
+          console.log("Received response body:", bodyString);
+
+          // Handle empty response
+          if (!bodyString.trim()) {
+            return res
+              .status(proxyRes.statusCode!)
+              .json({ message: "Empty response received." });
+          }
 
           try {
-            responseBody = JSON.parse(bodyString);
-          
-            // If Response Error
+            const responseBody = JSON.parse(bodyString);
+
+            // Check if response contains errors
             if (responseBody.errors) {
-              console.log(responseBody , "===============================");
               return res.status(proxyRes.statusCode!).json(responseBody);
             }
 
+            // Handle successful response
             return res.status(proxyRes.statusCode!).json(responseBody);
-          } catch (error: any) {
-            console.log( "===============================");
-            console.log("Error:", error);
-            return res.status(500).json({ message: error.message });
+          } catch (error) {
+            console.error("Error parsing JSON:", error);
+            return res
+              .status(500)
+              .json({ message: "Failed to parse server response." });
           }
         });
       },
+
       error: (err: NetworkError, _req, res) => {
         switch (err.code) {
           case "ECONNREFUSED":

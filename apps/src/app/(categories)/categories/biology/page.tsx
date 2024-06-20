@@ -26,27 +26,30 @@ const Biology = () => {
       </div>
       <div className="flex flex-col gap-2 mt-4">
         <PostCard
+        likeCounts={0}
           profile="/card-svg/avatar.svg"
-          hour={2}
+          createdAt={2}
           username="Kimlang Tieng"
-          caption="Why is it  s it that although China is already the second largest  in the world..already the second largest  in the worldalready the second largest  in the worldthat although China is already the second largest  in the world"
+          description="Why is it  s it that although China is already the second largest  in the world..already the second largest  in the worldalready the second largest  in the worldthat although China is already the second largest  in the world"
           id={"1"}
          
         />
         <PostCard
+        likeCounts={0}
           profile="/card-svg/avatar.svg"
-          hour={2}
+          createdAt={2}
           username="Kimlang Tieng"
-          caption="Why is it that although China is already the second largest  in the world."
+          description="Why is it that although China is already the second largest  in the world."
           postImage="/socialMedia/imageContent.svg"
           id={"2"}
          
         />
         <PostCard
+        likeCounts={0}
           profile="/card-svg/avatar.svg"
-          hour={2}
+          createdAt={2}
           username="Kimlang Tieng"
-          caption="Why is it that although China is already the second largest  in the world."
+          description="Why is it that although China is already the second largest  in the world."
           postImage="/socialMedia/imageContent.svg"
           id={"3"}
           

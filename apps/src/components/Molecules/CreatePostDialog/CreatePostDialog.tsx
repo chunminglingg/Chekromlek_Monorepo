@@ -97,15 +97,17 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({
     console.log("Uploaded Image URL:", postImage);
     onSubmit?.();
 
+    const currentTime = new Date();
+
     const postData = {
       title,
       description,
       postImage,
       category,
       username: "",
-      // profile: '/images/profile.jpg', // Updated profile image path
-      // hour: new Date().getHours(),
+      createdAt: currentTime, // Send the actual Date object
     };
+
     try {
       const response = await axios.post(
         "http://localhost:3000/v1/post",

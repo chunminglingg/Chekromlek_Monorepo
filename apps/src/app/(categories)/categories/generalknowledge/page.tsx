@@ -19,36 +19,41 @@ const GeneralKnowledge = () => {
         </button>
       </div>
       <div className="items-center w-[420px] flex-row">
-        <p className="text-purple-600 font-bold text-[23px]">General Knowledge</p>
-       
+        <p className="text-purple-600 font-bold text-[23px]">Biology</p>
       </div>
     </div>
     <div className="flex flex-col gap-2 mt-4">
-        <PostCard
-          profile="/card-svg/avatar.svg"
-          hour={2}
-          username="Kimlang Tieng"
-          caption="Why is it  s it that although China is already the second largest  in the world..already the second largest  in the worldalready the second largest  in the worldthat although China is already the second largest  in the world"
-          id={"1"}
-        />
-        <PostCard
-          profile="/card-svg/avatar.svg"
-          hour={2}
-          username="Kimlang Tieng"
-          caption="Why is it that although China is already the second largest  in the world."
-          postImage="/socialMedia/imageContent.svg"
-          id={"2"}
-        />
-        <PostCard
-          profile="/card-svg/avatar.svg"
-          hour={2}
-          username="Kimlang Tieng"
-          caption="Why is it that although China is already the second largest  in the world."
-          postImage="/socialMedia/imageContent.svg"
-          id={"3"}
-        />
-      </div>
+      <PostCard
+      likeCounts={0}
+        profile="/card-svg/avatar.svg"
+        createdAt={2}
+        username="Kimlang Tieng"
+        description="Why is it  s it that although China is already the second largest  in the world..already the second largest  in the worldalready the second largest  in the worldthat although China is already the second largest  in the world"
+        id={"1"}
+       
+      />
+      <PostCard
+      likeCounts={0}
+        profile="/card-svg/avatar.svg"
+        createdAt={2}
+        username="Kimlang Tieng"
+        description="Why is it that although China is already the second largest  in the world."
+        postImage="/socialMedia/imageContent.svg"
+        id={"2"}
+       
+      />
+      <PostCard
+      likeCounts={0}
+        profile="/card-svg/avatar.svg"
+        createdAt={2}
+        username="Kimlang Tieng"
+        description="Why is it that although China is already the second largest  in the world."
+        postImage="/socialMedia/imageContent.svg"
+        id={"3"}
+        
+      />
     </div>
+  </div>
   );
 };
 

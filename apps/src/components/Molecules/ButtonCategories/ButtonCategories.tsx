@@ -26,7 +26,7 @@ const ButtonCategories: React.FC<ButtonCategoriesProps> = ({
             <div className="flex flex-col">
               <Typography
                 align="left"
-                color="categories"
+                color="primary"
                 fontSize="title"
                 className=" items-start mt-1 text-[#7B2CBF] text-sm lg:text-base w-full max-w-[270px] whitespace-nowrap line-clamp-1">
                 {title}

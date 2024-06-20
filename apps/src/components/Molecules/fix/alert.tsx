@@ -19,7 +19,7 @@ export function Alert() {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <div className="flex flex-col items-center justify-center gap-4">
-          <Typography color="categories" fontSize="caption">
+          <Typography color="primary" fontSize="caption">
             Welcome to Chekromlek
           </Typography>
           <Image

@@ -32,15 +32,15 @@ const Page = () => {
           withCredentials: true,
         }
       );
-      
+
       if (response) {
-        console.log("response: " , response.data.message);
-        
+        console.log("response: ", response.data.message);
+
         setUserData(response.data.user);
       }
     } catch (error: any) {
       console.log(error.response.message);
-      
+
       if (error.response) {
         console.error("Error response:", error.response.data);
       } else if (error.request) {
@@ -60,7 +60,7 @@ const Page = () => {
     return <div>Loading...</div>;
   }
 
-  const { username, work, answers, post , profile, bio } = userData;
+  const { username, work, answers, post, profile, bio } = userData;
 
   console.log("User data", userData);
 

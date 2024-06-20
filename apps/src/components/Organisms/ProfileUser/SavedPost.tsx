@@ -6,10 +6,11 @@ export default function savedPost() {
     <div>
       <div className="flex flex-col gap-2 mt-4">
         <PostCard
+        likeCounts={2}
           profile="/card-svg/avatar.svg"
-          hour={2}
+          createdAt={2}
           username="SaNa ViDa"
-          caption="Why is it that although China is already the second largest  in the world."
+          description="Why is it that although China is already the second largest  in the world."
           postImage="/socialMedia/imageContent.svg"
           id={"1"}
           onLike={function (): void {
