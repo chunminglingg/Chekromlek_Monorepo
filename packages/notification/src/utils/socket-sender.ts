@@ -1,28 +1,49 @@
-import { Server as HttpServer } from "http";
-import { Server, Socket } from "socket.io";
+import ApiError from '@notifications/errors/api-error';
+import { IMessageLocals, SocketApi } from './@types/socket-sender.type';
 
-let io: Server;
+export class SocketSender implements SocketApi {
+  private static SocketSenderInstance: SocketSender;
+  private isActive = false;
+  private socketApi: SocketApi | undefined;
+  private constructor() {}
 
-export function initSocket(server: HttpServer): void {
-    io = new Server(server, {
-        cors: {
-            origin: "*", // Adjust the origin as needed
-            methods: ["GET", "POST"]
-        }
-    });
-
-    io.on("connection", (socket: Socket) => {
-        console.log(`Client connected: ${socket.id}`);
-
-        socket.on("disconnect", () => {
-            console.log(`Client disconnected: ${socket.id}`);
-        });
-    });
-}
-
-export function getIo(): Server {
-    if (!io) {
-        throw new Error("Socket.io not initialized");
+  static getInstance(): SocketSender {
+    if (!this.SocketSenderInstance) {
+      this.SocketSenderInstance = new SocketSender();
     }
-    return io;
+    return this.SocketSenderInstance;
+  }
+
+  activate(): void {
+    this.isActive = true;
+  }
+
+  deactivate(): void {
+    this.isActive = false;
+  }
+
+  sendSocketApi(socketApi: SocketApi): void {
+    this.socketApi = socketApi;
+  }
+
+  async sendNotification(
+    template: string,
+    receiver: string,
+    locals: IMessageLocals,
+  ): Promise<void> {
+    try {
+      this.validateSocketSender();
+      this.socketApi!.sendNotification(template, receiver, locals);
+    } catch (error: unknown) {
+      throw error;
+    }
+  }
+  validateSocketSender(): void {
+    if (!this.isActive) {
+      throw new ApiError('SocketApi is not Acitve!');
+    }
+    if (!this.socketApi) {
+      throw new ApiError('SocketApi is not set!');
+    }
+  }
 }

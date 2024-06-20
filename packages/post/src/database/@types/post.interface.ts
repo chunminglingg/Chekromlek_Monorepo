@@ -3,6 +3,8 @@ export interface IAnswer {
   answer: string;
   likeCounts?: number;
   answerlikedBy?: mongoose.Types.ObjectId[];
+  createdAt?: Date;
+  elapsedTime?: string;
 }
 export interface IPost {
   _id?: string;
@@ -28,6 +30,7 @@ export interface IPost {
   answer?: string;
   createdAt?: Date;
   answers?: IAnswer[];
+  elapsedTime?: string;
 }
 export enum PostCategory {
   GeneralKnowledge = "General Knowledge",

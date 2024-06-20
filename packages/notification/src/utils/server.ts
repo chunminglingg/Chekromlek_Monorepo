@@ -1,35 +1,34 @@
-
 import getConfig from './config';
 import EmailSender from './email-sender';
 import { logInit, logger } from './logger';
 import NodemailerEmailApi from './nodemailer-email-api';
 import { app } from '../app';
 import { startQueue } from '@notifications/queues/connection';
-import { initSocket } from './socket-sender';
-import http from 'http';
+import { SocketSender } from './socket-sender';
+import { SocketNotificationEmailApi } from './sockeet-notification-api';
+// import http from 'http';
 
 export async function run() {
-
   try {
-    const servers = http.createServer(app)
     const config = getConfig();
 
     // Activate Logger
     logInit({ env: process.env.NODE_ENV, logLevel: config.logLevel });
+
+    const socketSender = SocketSender.getInstance();
+    socketSender.activate();
+    socketSender.sendSocketApi(new SocketNotificationEmailApi());
 
     // Activate Email Sender with EmailAPI [NodeMailer]
     const emailSender = EmailSender.getInstance();
     emailSender.activate();
     emailSender.setEmailApi(new NodemailerEmailApi());
 
-    // Activate socket 
-    initSocket(servers)
-
     // Activate RabbitMQ
     await startQueue();
 
     logger.info(
-      `Worker with process id of ${process.pid} on notification server has started.`
+      `Worker with process id of ${process.pid} on notification server has started.`,
     );
     // Start Server
     const server = app.listen(config.port, () => {

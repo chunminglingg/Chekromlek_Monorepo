@@ -4,6 +4,7 @@ import getConfig from '@notifications/utils/config';
 import { Channel, ConsumeMessage } from 'amqplib';
 import { IEmailLocals } from '@notifications/utils/@types/email-sender.types';
 import EmailSender from '@notifications/utils/email-sender';
+import { SocketSender } from '@notifications/utils/socket-sender';
 
 // TODO:
 // 1. Check If Channel Exist. If Not Create Once
@@ -87,6 +88,52 @@ export async function consumeAuthEmailMessages(
     logger.error('Channel is undefined in consumeAuthEmailMessages');
     logger.error(
       `NotificationService EmailConsumer consumeAuthEmailMessages() method error: ${error}`,
+    );
+  }
+}
+
+export async function consumeNotificationMessages(
+  channel: Channel,
+): Promise<void> {
+  try {
+    if (!channel) {
+      channel = (await createQueueConnection()) as Channel;
+    }
+    const exchangeName = 'chekromlek-notification';
+    const routingKey = 'post-notification';
+    const queueName = 'post-notification-queue';
+    if (channel) {
+      await channel.assertExchange(exchangeName, 'direct');
+      const queue = await channel.assertQueue(queueName, {
+        durable: true,
+        autoDelete: false,
+      });
+      await channel.bindQueue(queue.queue, exchangeName, routingKey);
+      channel.consume(queue.queue, async (msg: ConsumeMessage | null) => {
+        if (msg) {
+          const { type, title, message, timestamp, template, receiver } =
+            JSON.parse(msg.content.toString());
+
+          const messageDetailsLocals = {
+            type,
+            title,
+            message,
+            timestamp,
+          };
+          const notificationUserSender = SocketSender.getInstance();
+          await notificationUserSender.sendNotification(
+            template,
+            receiver,
+            messageDetailsLocals,
+          );
+          channel.ack(msg);
+        }
+      });
+    }
+  } catch (error) {
+    logger.error('Channel is undefined in consumeNotificationMessages');
+    logger.error(
+      `NotificationService EmailConsumer consumeNotificationMessages() method error: ${error}`,
     );
   }
 }

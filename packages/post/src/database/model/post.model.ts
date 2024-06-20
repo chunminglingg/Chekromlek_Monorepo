@@ -9,12 +9,17 @@ const AnswerSchema = new mongoose.Schema({
   likeCounts: { type: Number, default: 0 },
   // createdAt: { type: Date, default: Date.now() },
 });
+
 const PostSchema = new mongoose.Schema(
   {
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     username: { type: mongoose.Schema.Types.String, ref: "User" },
     title: { type: String, required: true },
+<<<<<<< HEAD
     description: { type: String },
+=======
+    description: { type: String, required: true },
+>>>>>>> 6c44c63cee3437e645461e3fe3822fc6fd319a3b
     postImage: { type: String },
     category: {
       type: String,

@@ -26,7 +26,7 @@ export interface postCardProps {
 
 const PostCard: React.FC<postCardProps> = ({
   id,
-  profile="https://img.freepik.com/free-vector/isolated-young-handsome-man-different-poses-white-background-illustration_632498-859.jpg?t=st=1718526013~exp=1718529613~hmac=63a3547c33708a15863e421a97cf3ab52d35381fc743e487a07fce3fe9384adf&w=740",
+  profile = "https://img.freepik.com/free-vector/isolated-young-handsome-man-different-poses-white-background-illustration_632498-859.jpg?t=st=1718526013~exp=1718529613~hmac=63a3547c33708a15863e421a97cf3ab52d35381fc743e487a07fce3fe9384adf&w=740",
   username,
   likeCounts,
   createdAt,
@@ -121,7 +121,11 @@ const PostCard: React.FC<postCardProps> = ({
               <div className="card-content w-auto flex flex-col gap-1 ">
                 <Link href={`/post/${encodeURIComponent(id)}`}>
                   <div className="mt-1 title font-semibold text-[#343A40] text-2xl hover:underline max-sm:text-lg max-sm:font-medium pt-2 hover:cursor-pointer break-words">
-                    <Typography fontSize="title" align="left" className="break-words">
+                    <Typography
+                      fontSize="title"
+                      align="left"
+                      className="break-words"
+                    >
                       {title}
                     </Typography>
                   </div>
