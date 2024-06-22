@@ -11,7 +11,7 @@ export const UserSaveSchema = z.object({
   work: z.array(z.string()).optional(),
   answers: z.number().optional(),
   posts: z.number().optional(),
-  gender: z.string().optional(),
+  gender: z.enum(['male', 'female', 'other']).optional(), // Ensure enum values match
   createdAt: z.date().optional(),
 });
 
@@ -20,5 +20,5 @@ export const UserUpdateSchema = z.object({
   profile: z.string().optional(),
   bio: z.string().optional(),
   work: z.array(z.string()).optional(),
-  gender: z.string().optional(),
+  gender: z.enum(['male', 'female', 'other']).optional(), // Ensure enum values match
 });
