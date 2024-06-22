@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema(
     saves: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
     post: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
     bio: { type: String, default: 'bio' },
-    gender: { type: String, enum: ['Male', 'Female', 'other'] },
+    gender: { type: String, enum: ['male', 'female', 'other'] },
     work: {
       type: String,
       default: 'Student',
@@ -41,7 +41,7 @@ const userSchema = new mongoose.Schema(
   {
     toJSON: {
       transform(_doc, ret) {
-        delete ret.authId;
+        delete ret.userId;
         delete ret.__v;
       },
     },

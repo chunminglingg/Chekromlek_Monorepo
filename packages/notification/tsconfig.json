@@ -1,31 +1,36 @@
 {
   "compilerOptions": {
-    "target": "ES2015",
-    "lib": ["dom", "ES2015"],
     "module": "commonjs",
+    "esModuleInterop": true,
+    "target": "es6",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "rootDir": "./",
     "baseUrl": ".",
     "outDir": "./build",
-    "rootDir": ".",
     "strict": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "resolveJsonModule": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "sourceMap": true,
     "alwaysStrict": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "forceConsistentCasingInFileNames": true,
-    "allowSyntheticDefaultImports": true,
     "pretty": true,
-    "resolveJsonModule": true,
     "plugins": [
-      { "transform": "typescript-transform-paths" },
-      { "transform": "typescript-transform-paths", "afterDeclarations": true }
+      {
+        "transform": "typescript-transform-paths"
+      },
+      {
+        "transform": "typescript-transform-paths",
+        "afterDeclarations": true
+      }
     ],
     "paths": {
-      "@notifications/*": ["src/*"]
+      "@notification/*": ["src/*"],
+      "tsoa": ["../../node_modules/tsoa/dist"]
     }
-  }
+  },
+  "include": ["src/**/*.ts", "src/custom.d.ts"],
+  "exclude": ["node_modules", "build"]
 }

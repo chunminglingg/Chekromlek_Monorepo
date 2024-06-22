@@ -5,7 +5,7 @@ import NodemailerEmailApi from './nodemailer-email-api';
 import { app } from '../app';
 import { startQueue } from '@notifications/queues/connection';
 import { SocketSender } from './socket-sender';
-import { SocketNotificationEmailApi } from './sockeet-notification-api';
+import { SocketNotificationEmailApi } from './socket-notification-api';
 // import http from 'http';
 
 export async function run() {

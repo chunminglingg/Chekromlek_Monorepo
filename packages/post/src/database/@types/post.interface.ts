@@ -1,9 +1,11 @@
 import mongoose from "mongoose";
 export interface IAnswer {
+  userId: mongoose.Types.ObjectId;
   answer: string;
   likeCounts?: number;
   answerlikedBy?: mongoose.Types.ObjectId[];
   createdAt?: Date;
+  username: string;
   elapsedTime?: string;
 }
 export interface IPost {

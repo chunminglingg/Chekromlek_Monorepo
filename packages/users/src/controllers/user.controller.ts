@@ -171,7 +171,7 @@ export class UserController {
         user: user,
       };
     } catch (error: unknown) {
-      logger.error("error:" , error);
+      logger.error('error:', error);
     }
   }
 

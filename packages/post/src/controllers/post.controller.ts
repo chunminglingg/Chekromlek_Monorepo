@@ -25,12 +25,16 @@ import {
 import CustomError from "@post/errors/customError";
 import APIError from "@post/errors/api-error";
 import axios from "axios";
+// import { NotificationService } from "@post/services/notification.service";
 
 @Route("v1/post")
 export class PostController {
   private postService: PostService;
+  // private notificationService: NotificationService;
+
   constructor() {
     this.postService = new PostService();
+    // this.notificationService = NotificationService.getInstance();
   }
 
   @SuccessResponse(StatusCode.Created, "Created successfully")
@@ -194,6 +198,16 @@ export class PostController {
       };
 
       const newAnswer = await this.postService.createAnswer(id, detailAnswer);
+      // const createdAtString = newAnswer.createdAt.toLocaleString();
+
+      // await this.notificationService.notifyUser(
+      //   "answer",
+      //   request.userId.toString(),
+      //   request.username,
+      //   "Your post has a new answer",
+      //   createdAtString
+      // );
+
       return {
         message: "Answer created successfully",
         data: newAnswer,
@@ -206,6 +220,24 @@ export class PostController {
       );
     }
   }
+  // @SuccessResponse(StatusCode.OK, "Notifications fetched successfully")
+  // @Get("/notifications")
+  // @Middlewares(verificationToken)
+  // public async fetchNotifications(@Request() request: any): Promise<any> {
+  //   try {
+  //     const userId = request.userId; // Assuming userId is available in request
+  //     const notifications =
+  //       await this.notificationService.fetchNotifications(userId);
+  //     return notifications; // Assuming notifications is an array of Notification objects
+  //   } catch (error: any) {
+  //     logger.error(`Failed to fetch notifications: ${error.message}`);
+  //     throw new CustomError(
+  //       `Failed to fetch notifications: ${error.message}`,
+  //       StatusCode.InternalServerError
+  //     );
+  //   }
+  // }
+
   // @Get("{postId}/users")
   // public async getUsersWhoCommentedOnPost(
   //   @Path() postId: string

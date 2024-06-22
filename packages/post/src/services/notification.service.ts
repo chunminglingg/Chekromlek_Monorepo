@@ -11,38 +11,44 @@ export class NotificationService {
     }
     return this.notificationServiceInstance;
   }
-
   public async notifyUser(
     type: "like" | "answer",
-    postOwnerId: string,
-    _username: string,
+    userId: string,
+    username: string,
     message: string,
-    template: string
+    template: string,
+    createdAt?: Date
   ) {
-    let channel: Channel | undefined;
+    try {
+      let channel: Channel | undefined;
 
-    channel = await createQueueConnection();
-    if (!channel) {
-      throw new Error("Failed to establish queue connection");
+      channel = await createQueueConnection();
+      if (!channel) {
+        throw new Error("Failed to establish queue connection");
+      }
+
+      const exchangeName = "chekromlek-notification";
+      const routingKey = "post-notification";
+      const msg = JSON.stringify({
+        type,
+        title: `New ${type.replace("_", " ")}`,
+        message: `${username}: ${message}`, // Include username in the message
+        timestamp: new Date(),
+        template,
+        receiver: userId,
+        createdAt,
+      });
+
+      await publishDirectMessage(
+        channel,
+        exchangeName,
+        routingKey,
+        msg,
+        `${type.charAt(0).toUpperCase() + type.slice(1).replace("_", " ")} notification sent`
+      );
+    } catch (error: any) {
+      console.log(error.message);
+      throw error;
     }
-
-    const exchangeName = "chekromlek-notification";
-    const routingKey = "post-notification";
-    const msg = JSON.stringify({
-      type,
-      title: `New ${type}`,
-      message,
-      timestamp: new Date(),
-      template,
-      receiver: postOwnerId,
-    });
-
-    await publishDirectMessage(
-      channel,
-      exchangeName,
-      routingKey,
-      msg,
-      `${type.charAt(0).toUpperCase() + type.slice(1)} notification sent`
-    );
   }
 }
