@@ -10,15 +10,15 @@ import CustomError from "@post/errors/customError";
 import { StatusCode } from "@post/utils/const";
 import { logger } from "@post/utils/logger";
 import axios from "axios";
-// import { NotificationService } from "./notification.service";
+import { NotificationService } from "./notification.service";
 
 export class PostService {
   private postRepo: postRepository;
-  // private notificationService: NotificationService;
+  private notificationService: NotificationService;
 
   constructor() {
     this.postRepo = new postRepository();
-    // this.notificationService = NotificationService.getInstance();
+    this.notificationService = NotificationService.getInstance();
   }
   async createPost(IPost: IPost) {
     try {
@@ -51,21 +51,12 @@ export class PostService {
           StatusCode.InternalServerError
         );
       }
-      // const postOwnerId = post.userId?.toString();
-      // if (!postOwnerId) {
-      //   return new APIError(
-      //     "Can't send message to post owner",
-      //     StatusCode.InternalServerError
-      //   );
-      // }
-      // await this.notificationService.notifyUser(
-      //   "answer",
-      //   postOwnerId,
-      //   answer.username,
-      //   "Your post has a new answer",
-      //   "new-answer",
-      //   new Date()
-      // );
+      await this.notificationService.sendAnswerCreatedNotification(
+        postId,
+        answer.userId,
+        updatedPost.userId ? updatedPost.userId.toString() : ""
+      );
+
       return updatedPost;
     } catch (error) {
       logger.error(`createAnswer() method error: ${error}`);

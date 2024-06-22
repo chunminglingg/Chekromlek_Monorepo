@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 export interface IAnswer {
-  userId: mongoose.Types.ObjectId;
-  answer: string;
+  userId: string;
+  answer?: string;
   likeCounts?: number;
   answerlikedBy?: mongoose.Types.ObjectId[];
   createdAt?: Date;
