@@ -125,7 +125,7 @@ const Page = () => {
             type="submit"
             className="hover:opacity-90"
           >
-            <Link href="/afterlogin">
+            <Link href="/">
               <Typography color="submit">Homepage</Typography>
             </Link>
           </Button>

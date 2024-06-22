@@ -1,6 +1,5 @@
 import { IUser } from '@users/database/models/user.model';
 import APIError from '@users/errors/api-error';
-import CustomError from '@users/errors/custom-erorrs';
 import { verificationToken } from '@users/middlewares/auth-token-validate';
 import { UserService } from '@users/services/user.service';
 import getConfig from '@users/utils/config';
@@ -27,106 +26,95 @@ export class UserController {
   constructor() {
     this.userService = new UserService();
   }
+
   @Get('/save')
   @Middlewares(verificationToken)
   public async findSavePost(@Request() req: any): Promise<any> {
     try {
       const user = await this.userService.getAuthById(req.userId);
+      if (!user) {
+        throw new APIError('Cannot find user in database', StatusCode.NotFound);
+      }
+
       const postIds = user?.saves;
       if (!postIds || postIds.length === 0) {
-        // console.log('No saved posts found for the user.');
         return {
           message: 'No saved posts found',
           data: [],
         };
       }
-      // console.log(`User's saved post IDs: ${postIds}`);
 
+      const postServiceUrl =
+        getConfig().postServiceUrl || 'http://localhost:3005';
       const postPro = postIds.map(async (postId) => {
         try {
-          const postService =
-            getConfig().postServiceUrl || 'http://localhost:3005';
-          const postReponse = await axios.get(
-            `${postService}/v1/post?page=1&limit=5&id=${postId}`,
+          const postResponse = await axios.get(
+            `${postServiceUrl}/v1/post?page=1&limit=5&id=${postId}`,
           );
-          // console.log(`Response for id ${postId}: ${postReponse.data}`);
-          const posts = postReponse.data.posts[0];
-          // console.log('Response post:', posts);
-          return posts;
+          return postResponse.data.posts[0];
         } catch (error) {
-          // console.error(`Error fetching data for id ${postId}:`, error);
-          return null; // or handle differently if needed
+          logger.error(`Error fetching data for id ${postId}: ${error}`);
+          return null;
         }
       });
 
       const posts = (await Promise.all(postPro)).filter(
         (post) => post !== null,
       );
-      if (posts.length === 0) {
-        console.log('No valid posts found from the saved post IDs.');
-      } else {
-        console.log(`Found posts: ${JSON.stringify(posts)}`);
-      }
       return {
         message: 'Save post found successfully',
         data: posts,
       };
-    } catch (error: unknown) {
-      throw new APIError(
-        'Error fetching favorite events',
-        StatusCode.BadRequest,
-      );
+    } catch (error) {
+      logger.error(`Error in findSavePost: ${error}`);
+      throw new APIError('Error fetching saved posts', StatusCode.BadRequest);
     }
   }
+
   @Get('/post')
   @Middlewares(verificationToken)
   public async findPost(@Request() req: any): Promise<any> {
     try {
       const user = await this.userService.getAuthById(req.userId);
+      if (!user) {
+        throw new APIError('Cannot find user in database', StatusCode.NotFound);
+      }
+
       const postIds = user?.post;
       if (!postIds || postIds.length === 0) {
-        console.log('No saved posts found for the user.');
         return {
           message: 'No saved posts found',
           data: [],
         };
       }
-      console.log(`User's saved post IDs: ${postIds}`);
 
+      const postServiceUrl =
+        getConfig().postServiceUrl || 'http://localhost:3005';
       const postPro = postIds.map(async (postId) => {
         try {
-          const postService =
-            getConfig().postServiceUrl || 'http://localhost:3005';
-          const postReponse = await axios.get(
-            `${postService}/v1/post?page=1&limit=5&id=${postId}`,
+          const postResponse = await axios.get(
+            `${postServiceUrl}/v1/post?page=1&limit=5&id=${postId}`,
           );
-          const posts = postReponse.data.posts[0];
-          return posts;
+          return postResponse.data.posts[0];
         } catch (error) {
-          console.error(`Error fetching data for id ${postId}:`, error);
-          return null; // or handle differently if needed
+          logger.error(`Error fetching data for id ${postId}: ${error}`);
+          return null;
         }
       });
 
       const posts = (await Promise.all(postPro)).filter(
         (post) => post !== null,
       );
-      if (posts.length === 0) {
-        console.log('No valid posts found from the saved post IDs.');
-      } else {
-        console.log(`Found posts: ${JSON.stringify(posts)}`);
-      }
       return {
         message: 'Save post found successfully',
         data: posts,
       };
-    } catch (error: unknown) {
-      throw new APIError(
-        'Error fetching favorite events',
-        StatusCode.BadRequest,
-      );
+    } catch (error) {
+      logger.error(`Error in findPost: ${error}`);
+      throw new APIError('Error fetching posts', StatusCode.BadRequest);
     }
   }
+
   @SuccessResponse(StatusCode.Created, 'Created')
   @Post('/')
   public async SaveProfile(
@@ -134,16 +122,13 @@ export class UserController {
   ): Promise<any> {
     try {
       const newUser = await this.userService.CreateUser(reqBody);
-
       return {
-        message: 'User profile create successfully',
+        message: 'User profile created successfully',
         data: newUser,
       };
     } catch (error) {
-      console.log('Error: ', error);
-
-      logger.error(`Service method error: ${error}`);
-      throw error;
+      logger.error(`Error in SaveProfile: ${error}`);
+      throw new APIError('Error creating user profile', StatusCode.BadRequest);
     }
   }
 
@@ -151,8 +136,9 @@ export class UserController {
   public async showAllUser(): Promise<any> {
     try {
       return await this.userService.showAllUser();
-    } catch (error: unknown) {
-      throw error;
+    } catch (error) {
+      logger.error(`Error in showAllUser: ${error}`);
+      throw new APIError('Error fetching all users', StatusCode.BadRequest);
     }
   }
 
@@ -162,16 +148,16 @@ export class UserController {
   public async FindUserById(@Request() request: any): Promise<any> {
     try {
       const user = await this.userService.getAuthById(request.userId);
-      console.log(request.userId);
       if (!user) {
-        throw new APIError('User Not Found!!', StatusCode.NotFound);
+        throw new APIError('User not found', StatusCode.NotFound);
       }
       return {
-        message: 'Get user info succesful',
-        user: user,
+        message: 'Get user info successful',
+        user,
       };
-    } catch (error: unknown) {
-      logger.error("error:" , error);
+    } catch (error) {
+      logger.error(`Error in FindUserById: ${error}`);
+      throw new APIError('Error fetching user info', StatusCode.BadRequest);
     }
   }
 
@@ -183,28 +169,20 @@ export class UserController {
     @Body() reqBody: IUser,
   ): Promise<any> {
     try {
-      const user = request.userId;
-      logger.debug(`user request: ${request.userId}`);
+      const user = await this.userService.getAuthById(request.userId);
       if (!user) {
-        logger.error(`Could not find user: ${user}`);
+        throw new APIError('User not found', StatusCode.NotFound);
       }
-      const findUser = await this.userService.getAuthById(user);
-      logger.debug(`findUser: ${findUser}`);
-      if (!findUser) {
-        throw new APIError('User Not Found!!', StatusCode.NotFound);
-      }
-      const modifiedUser = await this.userService.UpdateById(
-        findUser.id,
-        reqBody,
-      );
-      if (!modifiedUser) {
-        logger.error(`Update user error: ${modifiedUser}`);
-      }
+
+      const modifiedUser = await this.userService.UpdateById(user.id, reqBody);
       return {
-        message: 'Update user profile successfully!',
+        message: 'Update user profile successfully',
         data: modifiedUser,
       };
-    } catch (err) {}
+    } catch (error) {
+      logger.error(`Error in UpdateUserProfile: ${error}`);
+      throw new APIError('Error updating user profile', StatusCode.BadRequest);
+    }
   }
 
   @SuccessResponse(StatusCode.OK, 'OK')
@@ -215,32 +193,29 @@ export class UserController {
     @Body() reqBody: IUser,
   ): Promise<any> {
     try {
-      logger.info(`Received request to update user with ID: ${userId}`);
       const modifiedUser = await this.userService.UpdateById(userId, reqBody);
-
       return {
-        message: 'User profile update successfully',
+        message: 'User profile updated successfully',
         data: modifiedUser,
       };
     } catch (error) {
-      logger.error(`UserService controller method error: ${error}`);
-      throw error;
+      logger.error(`Error in UpdateProfile: ${error}`);
+      throw new APIError('Error updating user profile', StatusCode.BadRequest);
     }
   }
 
   @SuccessResponse(StatusCode.OK, 'Get User Successfully')
   @Get('{userId}')
-  // @Middlewares(verificationToken)
   public async GetById(@Path() userId: string): Promise<any> {
     try {
       const user = await this.userService.getUserById(userId);
       return {
-        message: 'Get Successfully',
+        message: 'Get successfully',
         data: user,
       };
     } catch (error) {
-      logger.error('Controller Get Auth Error:', error);
-      throw error;
+      logger.error(`Error in GetById: ${error}`);
+      throw new APIError('Error fetching user', StatusCode.BadRequest);
     }
   }
 
@@ -253,9 +228,11 @@ export class UserController {
     try {
       return await this.userService.updateUserPosts(userId, postId);
     } catch (error) {
-      throw error;
+      logger.error(`Error in addPostToUser: ${error}`);
+      throw new APIError('Error adding post to user', StatusCode.BadRequest);
     }
   }
+
   @SuccessResponse(StatusCode.OK, 'Add/Remove Save successfully')
   @Patch('/:postId/addpost')
   @Middlewares(verificationToken)
@@ -264,46 +241,37 @@ export class UserController {
     @Path() postId: string,
   ): Promise<any> {
     try {
-      console.log('UserID from request:', request.userId);
-
       if (!mongoose.Types.ObjectId.isValid(postId)) {
-        throw new Error('Invalid post ID format');
+        throw new APIError('Invalid post ID format', StatusCode.BadRequest);
       }
 
       const user = await this.userService.getAuthById(request.userId);
-      console.log('Retrieved USER:', user);
-
       if (!user) {
-        throw new Error('User not found');
+        throw new APIError('User not found', StatusCode.NotFound);
       }
 
       const objectId = new mongoose.Types.ObjectId(postId);
-
-      // Check if the post already exists in the user's post array
-      const existingPostIndex = user?.post.findIndex((item) =>
+      const existingPostIndex = user.post.findIndex((item) =>
         item.equals(objectId),
       );
 
       if (existingPostIndex === -1) {
-        // If the post does not exist, add it to the user's post array
-        user?.post.push(objectId);
-
-        // Save the updated user object
-        await user?.save();
+        user.post.push(objectId);
+        await user.save();
 
         return {
           message: 'Post added successfully',
           data: user,
         };
       } else {
-        // If the post already exists, return a message indicating it's already added
         return {
           message: "Post already added to the user's post array",
           data: user,
         };
       }
     } catch (error) {
-      throw new CustomError(`${error}`);
+      logger.error(`Error in AddPost: ${error}`);
+      throw new APIError('Error adding post to user', StatusCode.BadRequest);
     }
   }
 
@@ -316,42 +284,63 @@ export class UserController {
   ): Promise<any> {
     try {
       if (!mongoose.Types.ObjectId.isValid(postId)) {
-        throw new Error('Invalid event ID format');
+        throw new APIError('Invalid post ID format', StatusCode.BadRequest);
       }
-      const user = await this.userService.getAuthById(request.userId);
-      const postService = getConfig().postServiceUrl || 'http://localhost:3005';
-      const postResponse = await axios.get(
-        `${postService}/v1/post?page=1&limit=5&id=${postId}`,
-      );
-      console.log('found posts: ', postResponse.data);
-      const post = postResponse.data.posts[0];
 
-      const existingFavoriteIndex = user?.saves.findIndex((item) =>
+      const user = await this.userService.getAuthById(request.userId);
+      if (!user) {
+        throw new APIError('User not found', StatusCode.NotFound);
+      }
+
+      const postServiceUrl =
+        getConfig().postServiceUrl || 'http://localhost:3005';
+      const postResponse = await axios.get(
+        `${postServiceUrl}/v1/post?page=1&limit=5&id=${postId}`,
+      );
+      if (
+        !postResponse.data ||
+        !postResponse.data.posts ||
+        postResponse.data.posts.length === 0
+      ) {
+        throw new APIError('Post not found', StatusCode.NotFound);
+      }
+
+      const post = postResponse.data.posts[0];
+      const existingFavoriteIndex = user.saves.findIndex((item) =>
         item.equals(post._id),
       );
-      console.log('Existing Favorite Index: ', existingFavoriteIndex);
 
       if (existingFavoriteIndex !== -1) {
-        // Remove event from favorites
-        user?.saves.splice(existingFavoriteIndex!, 1);
-        await user?.save();
-
+        // Remove post from saves
+        user.saves.splice(existingFavoriteIndex, 1);
+        await user.save();
+        logger.info(
+          `Post ${postId} removed from saves for user ${request.userId}`,
+        );
         return {
           message: 'Post removed from saves successfully',
           data: user,
         };
+      } else {
+        // Add post to saves
+        user.saves.push(post._id);
+        await user.save();
+        logger.info(`Post ${postId} added to saves for user ${request.userId}`);
+        return {
+          message: 'Post added to saves successfully',
+          data: user,
+        };
       }
-
-      // Add event to favorites
-      user?.saves.push(post._id);
-      await user?.save();
-
-      return {
-        message: 'Post added to save successfully',
-        data: user,
-      };
-    } catch (error) {
-      throw new CustomError(`${error}`);
+    } catch (error:any) {
+      logger.error(
+        `Error in toggleSavePost for user ${request.userId} and post ${postId}: ${error.message}`,
+        {
+          userId: request.userId,
+          postId,
+          error: error.stack,
+        },
+      );
+      throw new APIError('Error toggling saved post', StatusCode.BadRequest);
     }
   }
 }
