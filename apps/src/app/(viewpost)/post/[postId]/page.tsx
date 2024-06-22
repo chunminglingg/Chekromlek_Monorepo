@@ -54,6 +54,7 @@ const ViewPostPage = () => {
         {
           post ? <div className="flex flex-col">
           <ViewPost
+            id={postId}
             profile={post.profile || "/profile.svg"}
             createdAt={post.createdAt}
             username={post.username || "Unknown"}

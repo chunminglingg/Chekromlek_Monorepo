@@ -32,15 +32,15 @@ const Page = () => {
           withCredentials: true,
         }
       );
-      
+
       if (response) {
-        console.log("response: " , response.data.message);
-        
+        console.log("response: ", response.data.message);
+
         setUserData(response.data.user);
       }
     } catch (error: any) {
       console.log(error.response.message);
-      
+
       if (error.response) {
         console.error("Error response:", error.response.data);
       } else if (error.request) {
@@ -60,7 +60,7 @@ const Page = () => {
     return <div>Loading...</div>;
   }
 
-  const { username, work, saved, post , profile, bio } = userData;
+  const { username, work, saved, post, profile, bio } = userData;
 
   console.log("User data", userData);
 
@@ -70,19 +70,22 @@ const Page = () => {
         <div className="h-[90px]"></div>
         <div className="card-header w-[680px] min-sm:w-[230px] max-sm:w-[380px] h-[186px] shadow-sm rounded-2xl flex justify-between items-center relative border">
           <div className="header-left flex flex-row gap-4 pl-10">
-            <div className="user-profile max-sm:mt-2">
+            <div className="user-profile max-sm:mt-2 mt-4 w-[78px] h-[78px] max-sm:w-[70px] max-sm:h-[60px]">
+              
               <Image
                 alt="profile"
                 src={`${profile}` || "/card-svg/avatar.svg"}
-                width={98}
-                height={98}
+                width={78}
+                height={78}
+                className="w-full h-full rounded-full"
               />
+          
             </div>
             <div className="user-info flex flex-col">
-              <div className="user-name font-medium text-[30px] text-[#343A40] max-sm:text-[14px] ">
+              <div className="user-name font-medium text-[30px] text-[#343A40] max-sm:text-[18px] ">
                 {username}
               </div>
-              <div className="been-post text-[#6C757D] text-[15px] font-sans flex flex-row gap-10">
+              <div className="been-post text-[#6C757D] text-[15px] font-sans flex flex-row gap-8">
                 <p>{post.length} Posts</p>
                 <p>{saved} Saved</p>
               </div>
