@@ -2,6 +2,7 @@
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const SideStyle = ({
   session,
@@ -12,6 +13,12 @@ const SideStyle = ({
 }) => {
   // Determine if the user is logged in based on the presence of session and sigSession cookies
   const isLoggedIn = session && sigSession;
+  const pathname = usePathname();
+  const isHome = pathname === "/"
+  const isCategory = pathname === "/categories"
+  const isNotification = pathname === "/notification"
+  const isSetting = pathname === "/setting";
+
 
   return (
     <>
@@ -20,7 +27,7 @@ const SideStyle = ({
           <button className="flex flex-row gap-2 items-start px-4 py-4 group rounded-xl w-[250px] hover:bg-gray-200 text-[#343A40]">
             <Image
               alt="home"
-              src={`/sideleft/home/index.svg`}
+              src={isHome ? `/sideleft/home/after.svg` : `/sideleft/home/index.svg`}
               height={24}
               width={24}
             />
@@ -33,7 +40,7 @@ const SideStyle = ({
           <button className="flex flex-row gap-2 items-start px-4 py-4 group rounded-xl w-[250px] hover:bg-gray-200 text-[#343A40]">
             <Image
               alt="category"
-              src={`/sideleft/category/index.svg`}
+              src={isCategory ? `/sideleft/category/after.svg` : `/sideleft/category/index.svg`}
               height={24}
               width={24}
             />
@@ -46,7 +53,7 @@ const SideStyle = ({
           <button className="flex flex-row gap-2 items-start px-4 py-4 group rounded-xl w-[250px] hover:bg-gray-200 text-[#343A40]">
             <Image
               alt="notification"
-              src={`/sideleft/notification/index.svg`}
+              src={isNotification ? `/sideleft/notification/after.svg` : `/sideleft/notification/index.svg`}
               height={24}
               width={24}
             />
@@ -59,7 +66,7 @@ const SideStyle = ({
           <button className="flex flex-row gap-2 items-start px-4 py-4 group rounded-xl w-[250px] hover:bg-gray-200 text-[#343A40]">
             <Image
               alt="setting"
-              src={`/sideleft/setting/index.svg`}
+              src={isSetting ? `/sideleft/setting/after.svg`: `/sideleft/setting/index.svg`}
               height={24}
               width={24}
             />

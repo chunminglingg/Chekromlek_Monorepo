@@ -41,7 +41,7 @@ const Page = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-10 lg:gap-6 mt-28 lg:border rounded-md lg:border-gray-200 lg:p-4 lg:shadow-lg">
+      <div className="flex flex-col gap-10 lg:gap-6 mt-28 lg:border rounded-md lg:border-gray-200 lg:p-4 lg:shadow-sm">
         <div>
           <Link href={"/setting/account"}>
             <div className="flex flex-row gap-2 ml-2">
@@ -65,7 +65,7 @@ const Page = () => {
               name=""
               id=""
               placeholder="your current name"
-              className=" w-[280px] lg:w-[350px] h-[50px] p-3 text-sm md:w-[330px] ml-14 lg:ml-0 border rounded-lg shadow-lg focus:outline-none"
+              className=" w-[280px] lg:w-[350px] h-[50px] p-3 text-sm md:w-[330px] ml-14 lg:ml-0 border rounded-lg shadow-sm focus:outline-none"
               value={currentName}
               onChange={(e) => setCurrentName(e.target.value)}
             />
@@ -78,7 +78,7 @@ const Page = () => {
               name=""
               id=""
               placeholder="your new name"
-              className=" w-[280px] lg:w-[350px] h-[50px] p-3 text-sm md:w-[330px] ml-14 lg:ml-0 border rounded-lg shadow-lg focus:outline-none"
+              className=" w-[280px] lg:w-[350px] h-[50px] p-3 text-sm md:w-[330px] ml-14 lg:ml-0 border rounded-lg shadow-sm focus:outline-none"
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
             />
@@ -97,7 +97,7 @@ const Page = () => {
               id=""
               type="password"
               placeholder="input password for confirm"
-              className=" w-[280px] lg:w-[350px] h-[50px] md:w-[330px] text-sm p-3 ml-14 lg:ml-0 border rounded-lg shadow-lg focus:outline-none"
+              className=" w-[280px] lg:w-[350px] h-[50px] md:w-[330px] text-sm p-3 ml-14 lg:ml-0 border rounded-lg shadow-sm focus:outline-none"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
