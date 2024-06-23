@@ -5,6 +5,7 @@ import SavedPost from "@/components/Organisms/ProfileUser/SavedPost";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
+import { formattedData } from "@/utils/formattedData";
 
 interface PostType {
   _id: string;
@@ -15,7 +16,7 @@ interface PostType {
   category: string;
   postlikedBy: string[];
   likeCounts: number;
-  createdAt: string;
+  createdAt: number;
   answers: any[];
 }
 
@@ -57,16 +58,30 @@ const Page = () => {
         withCredentials: true,
       });
 
-      if (response.data && response.data.data) {
-        setUserData((prevUserData) => ({
-          ...prevUserData!,
-          posts: Array.isArray(response.data.data) ? response.data.data.filter((post: null) => post !== null) : [],
-        }));
+        if (response.data && response.data.data) {
+          const formattedPosts = formattedData(
+            Array.isArray(response.data.data) ? response.data.data.filter((post: null) => post !== null) : []
+          );
+    
+          if (formattedPosts.length === 0) {
+            console.log('No posts available for this user.');
+          }
+    
+          setUserData((prevUserData) => ({
+            ...prevUserData!,
+            posts: formattedPosts,
+          }));
+        } else {
+          console.log('No posts available for this user.');
+          setUserData((prevUserData) => ({
+            ...prevUserData!,
+            posts: [],
+          }));
+        }
+      } catch (error: any) {
+        console.error('Error fetching user posts:', error);
       }
-    } catch (error: any) {
-      console.error('Error fetching user posts:', error);
-    }
-  };
+    };
 
   useEffect(() => {
     fetchUserData();
@@ -98,7 +113,7 @@ const Page = () => {
             </div>
             <div className="been-post text-[#6C757D] text-[15px] font-sans flex flex-row gap-10">
               <p>{posts.length} Posts</p>
-              <p>{answers} Answers</p>
+              <p>{answers} Saved</p>
             </div>
             <div className="Category text-[#623cbb] text-[15px] font-medium">
               {work}
@@ -138,7 +153,15 @@ const Page = () => {
 
       {/* Conditionally render Post or SavedPost */}
       <div className="content-section flex flex-col gap-2 mt-4">
-        {view === 'Post' ? <Post posts={posts} /> : <SavedPost />}
+        {view === 'Post' ? (
+          posts.length > 0 ? (
+            <Post posts={posts} />
+          ) : (
+            <div>No posts available.</div>
+          )
+        ) : (
+          <SavedPost />
+        )}
       </div>
     </div>
   );

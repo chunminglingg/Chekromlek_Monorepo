@@ -1,4 +1,4 @@
-const calculateElapsedTime = (isoString: string) => {
+const formatDate = (isoString: string) => {
   const date = new Date(isoString);
   const now = new Date();
 
@@ -8,19 +8,19 @@ const calculateElapsedTime = (isoString: string) => {
     return "Just now";
   } else if (secondsElapsed < 3600) {
     const minutesElapsed = Math.floor(secondsElapsed / 60);
-    return `${minutesElapsed} minute${minutesElapsed !== 1 ? "s" : ""} ago`;
+    return `${minutesElapsed}minute${minutesElapsed !== 1 ? "s" : ""} ago`;
   } else if (secondsElapsed < 86400) {
     const hoursElapsed = Math.floor(secondsElapsed / 3600);
-    return `${hoursElapsed} hour${hoursElapsed !== 1 ? "s" : ""} ago`;
+    return `${hoursElapsed}hour${hoursElapsed !== 1 ? "s" : ""} ago`;
   } else if (secondsElapsed < 2592000) {
     const daysElapsed = Math.floor(secondsElapsed / 86400);
-    return `${daysElapsed} day${daysElapsed !== 1 ? "s" : ""} ago`;
+    return `${daysElapsed}day${daysElapsed !== 1 ? "s" : ""} ago`;
   } else if (secondsElapsed < 31536000) {
     const monthsElapsed = Math.floor(secondsElapsed / 2592000);
-    return `${monthsElapsed} month${monthsElapsed !== 1 ? "s" : ""} ago`;
+    return `${monthsElapsed}month${monthsElapsed !== 1 ? "s" : ""} ago`;
   } else {
     const yearsElapsed = Math.floor(secondsElapsed / 31536000);
-    return `${yearsElapsed} year${yearsElapsed !== 1 ? "s" : ""} ago`;
+    return `${yearsElapsed}year${yearsElapsed !== 1 ? "s" : ""} ago`;
   }
 };
 
@@ -29,7 +29,7 @@ export const formattedData = (data: any) => {
     return {
       ...item,
       id: item._id,
-      createdAt: calculateElapsedTime(item.createdAt),
+      createdAt: formatDate(item.createdAt),
     };
   });
 };

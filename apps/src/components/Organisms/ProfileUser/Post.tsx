@@ -10,7 +10,7 @@ interface PostType {
   category: string;
   postlikedBy: string[];
   likeCounts: number;
-  createdAt: string;
+  createdAt: number;
   answers: any[];
 }
 
@@ -29,7 +29,7 @@ const Post: React.FC<PostProps> = ({ posts }) => {
       {posts.map((post) => (
         <PostCard
           key={post._id}
-          _id={post._id}
+          id={post._id}
           username={post.username}
           title={post.title}
           description={post.description}
