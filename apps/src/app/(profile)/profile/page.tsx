@@ -113,7 +113,7 @@ const Page = () => {
             </div>
             <div className="been-post text-[#6C757D] text-[15px] font-sans flex flex-row gap-10">
               <p>{posts.length} Posts</p>
-              <p>{answers} Answers</p>
+              <p>{answers} Saved</p>
             </div>
             <div className="Category text-[#623cbb] text-[15px] font-medium">
               {work}
