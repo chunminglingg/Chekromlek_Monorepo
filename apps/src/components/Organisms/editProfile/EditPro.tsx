@@ -188,9 +188,9 @@ export function EditProfile() {
               <SelectContent className="focus:outline-none">
                 <SelectGroup className="focus:outline-none">
                   <SelectLabel>Select Job</SelectLabel>
-                  <SelectItem value="student">Student</SelectItem>
+                  <SelectItem value="Student">Student</SelectItem>
                   <SelectItem value="General">General</SelectItem>
-                  <SelectItem value="developer">Developer</SelectItem>
+                  <SelectItem value="Developer">Developer</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -219,8 +219,9 @@ export function EditProfile() {
               <SelectContent className="focus:outline-none">
                 <SelectGroup className="focus:outline-none">
                   <SelectLabel>Select Gender</SelectLabel>
-                  <SelectItem value="male">Male</SelectItem>
-                  <SelectItem value="female">Female</SelectItem>
+                  <SelectItem value="Male">Male</SelectItem>
+                  <SelectItem value="Female">Female</SelectItem>
+                  <SelectItem value="Other">Other</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>

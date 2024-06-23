@@ -14,7 +14,7 @@ const ButtonCategories: React.FC<ButtonCategoriesProps> = ({
   return (
     <div className=" mt-2 ">
       <div className=" w-[250] lg:m-auto flex">
-        <button className=" flex-1 w-[123px] lg:w-[450px] lg:h-[100px] m-2 h-[80px] px-[3px] flex items-center justify-between rounded-[16px] border border-gray-200 max-sm:justify-center hover:bg-gray-50">
+        <button className=" flex-1 w-[250px] lg:w-[450px] lg:h-[100px] m-2 h-[80px] px-[3px] flex items-center justify-between rounded-[16px] border border-gray-200 max-sm:justify-center hover:bg-gray-50">
           <div className="flex gap-4 max-sm:justify-center">
             <Image
               src={icon}
@@ -31,12 +31,12 @@ const ButtonCategories: React.FC<ButtonCategoriesProps> = ({
                 className=" items-start mt-1 text-[#7B2CBF] text-sm lg:text-base w-full max-w-[270px] whitespace-nowrap line-clamp-1">
                 {title}
               </Typography>
-              <Typography className="text-[10px] text-zinc-500" fontSize="caption" align="center">
+              <Typography className="text-base text-zinc-400 max-md:hidden" fontSize="caption"  align="left">
                 {description}
               </Typography>
             </div>
           </div>
-          <div className="pr-6 ">
+          <div className="">
             <svg
               width="24"
               height="24"

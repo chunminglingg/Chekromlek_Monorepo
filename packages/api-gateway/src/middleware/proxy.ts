@@ -228,9 +228,6 @@ const proxyConfigs: ProxyConfig = {
           logger.info(`Response status code: ${proxyRes.statusCode}`);
           logger.info(`Response headers: ${JSON.stringify(proxyRes.headers)}`);
           logger.info(`Response body: ${bodyString}`);
-          if (proxyRes.statusCode === 304) {
-            return res.status(304).end();
-          }
 
           try {
             if (!bodyString) {

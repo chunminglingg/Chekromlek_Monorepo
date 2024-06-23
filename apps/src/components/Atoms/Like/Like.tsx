@@ -10,36 +10,8 @@ interface LikeProp {
 }
 
 const Like: React.FC<LikeProp> = ({ postId, likeCounts, isFavorite }) => {
-  console.log("isFavorite", isFavorite);
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCounts] = useState(likeCounts);
-
-  let clickTimeout: NodeJS.Timeout;
-
-  const handleLikes = async () => {
-    try {
-      const response = await axios.post(
-        `http://localhost:3000/v1/post/${postId}/likepost`,
-        {},
-        {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      console.log(response);
-
-      if (response.status === 200) {
-        setIsLiked(!isLiked);
-        setLikeCounts((prevCount) => (isLiked ? prevCount + 1 : prevCount - 1));
-      } else {
-        setIsLiked(!isLiked);
-      }
-    } catch (error) {
-      console.error("Error toggling like:", error);
-    }
-  };
 
   const handleUnlike = async () => {
     try {
@@ -59,25 +31,13 @@ const Like: React.FC<LikeProp> = ({ postId, likeCounts, isFavorite }) => {
         const newLikeStatus = !isLiked;
         setIsLiked(newLikeStatus);
         setLikeCounts((prevCount) =>
-          newLikeStatus ? prevCount + 1 : prevCount - 1
+          newLikeStatus ? prevCount - 1 : prevCount
         );
       } else {
         setIsLiked(!isLiked);
       }
     } catch (error) {
       console.error("Error toggling unlike:", error);
-    }
-  };
-
-  const handleClick = () => {
-    if (clickTimeout) {
-      clearTimeout(clickTimeout);
-      // handleDoubleClick();
-    } else {
-      clickTimeout = setTimeout(() => {
-        handleLike();
-        clearTimeout(clickTimeout);
-      }, 300);
     }
   };
 
@@ -97,44 +57,20 @@ const Like: React.FC<LikeProp> = ({ postId, likeCounts, isFavorite }) => {
       if (response.status === 200) {
         setIsLiked(!isLiked);
         setLikeCounts(likeCount + 1);
-      } else if (
-        response.data.message ===
-        "Failed to Like post: User has already liked this post"
-      ) {
-        setIsLiked(isLiked);
-        setLikeCounts(likeCounts - 1);
       }
+      if (response) {}
     } catch (err: any) {
-      console.log("error of catch :", err);
+      console.log("error of catch:", err);
+      if (
+        err.response &&
+        err.response.data.errors &&
+        err.response.data.errors[0].message === "Failed to Like post: User has already liked this post"
+      ) {
+        setLikeCounts(likeCount - 1);
+        handleUnlike();
+      }
     }
   };
-
-  // const handleDoubleClick = async () => {
-  //   try {
-  //     const response = await axios.post(`http://localhost:3000/v1/post/${postId}/likepost`, {}, {
-  //       withCredentials: true,
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  //     console.log(response);
-
-  //     if (response.status === 200) {
-  //       const newLikeStatus = !isLiked;
-  //       setIsLiked(newLikeStatus);
-  //       setLikeCounts(prevCount => newLikeStatus ? prevCount + 1 : prevCount - 1);
-  //     } else if (response.data.errors && response.data.errors[0].message.includes("User has already liked this post")) {
-  //       handleUnlike();
-  //     }
-  //   } catch (error: any) {
-  //     if (error.response.data.errors && error.response.data.errors[0].message.includes("User has not liked this post")) {
-  //       handleLike();
-  //     } else {
-  //       console.error('Error handling double click:', error);
-  //     }
-  //   }
-  // };
-  // console.log("like: " , likeCounts);
 
   return (
     <button

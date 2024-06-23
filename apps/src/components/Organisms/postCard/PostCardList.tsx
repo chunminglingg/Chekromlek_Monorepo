@@ -93,8 +93,7 @@ const PostCardList = () => {
           title={info.title}
           postlikedBy={info.postlikedBy}
           onLike={() => console.log("Liked")}
-          onSave={() => console.log("Saved")}
-        />
+          onSave={() => console.log("Saved")} category={""}        />
       ))}
       {loading && hasMore && !error && (
         <div className="space-y-4">

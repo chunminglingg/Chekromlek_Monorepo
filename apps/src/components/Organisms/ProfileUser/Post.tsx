@@ -1,57 +1,49 @@
-import React from "react";
-import { PostCard } from "../postCard";
+import React from 'react';
+import { PostCard } from '../postCard';
 
-export default function Post() {
+interface PostType {
+  _id: string;
+  username: string;
+  title: string;
+  description: string;
+  postImage: string;
+  category: string;
+  postlikedBy: string[];
+  likeCounts: number;
+  createdAt: number;
+  answers: any[];
+}
+
+interface PostProps {
+  posts: PostType[];
+}
+
+const Post: React.FC<PostProps> = ({ posts }) => {
+  if (!Array.isArray(posts)) {
+    console.error("posts is not an array:", posts);
+    return <div>Error loading posts.</div>;
+  }
+
   return (
-    <div>
-      <div className="flex flex-col gap-2 mt-4">
+    <div className="post-section w-full max-w-2xl mx-auto">
+      {posts.map((post) => (
         <PostCard
-          likeCounts={0}
-          profile="/card-svg/avatar.svg"
-          createdAt={0}
-          username="Kimlang Tieng"
-          description="Why is it  s it that although China is already the second largest  in the world..already the second largest  in the worldalready the second largest  in the worldthat although China is already the second largest  in the world"
-          id={"1"}
-          title="HELLO"
-          onLike={function (): void {
-            throw new Error("Function not implemented.");
-          }}
-          onSave={function (): void {
-            throw new Error("Function not implemented.");
-          }}
+          key={post._id}
+          id={post._id}
+          username={post.username}
+          title={post.title}
+          description={post.description}
+          postImage={post.postImage}
+          category={post.category}
+          postlikedBy={post.postlikedBy}
+          likeCounts={post.likeCounts}
+          createdAt={post.createdAt}
+          onLike={() => console.log("Liked")}
+          onSave={() => console.log("Saved")}
         />
-        <PostCard
-          likeCounts={0}
-          profile="/card-svg/avatar.svg"
-          createdAt={0}
-          username="Kimlang Tieng"
-          title="Why??"
-          description="Why is it that although China is already the second largest  in the world."
-          postImage="/socialMedia/imageContent.svg"
-          id={"2"}
-          onLike={function (): void {
-            throw new Error("Function not implemented.");
-          }}
-          onSave={function (): void {
-            throw new Error("Function not implemented.");
-          }}
-        />
-        <PostCard
-          likeCounts={0}
-          profile="/card-svg/avatar.svg"
-          createdAt={0}
-          username="Kimlang Tieng"
-          description="Why is it that although China is already the second largest  in the world."
-          postImage="/socialMedia/imageContent.svg"
-          id={"3"}
-          onLike={function (): void {
-            throw new Error("Function not implemented.");
-          }}
-          onSave={function (): void {
-            throw new Error("Function not implemented.");
-          }}
-        />
-      </div>
+      ))}
     </div>
   );
-}
+};
+
+export default Post;
