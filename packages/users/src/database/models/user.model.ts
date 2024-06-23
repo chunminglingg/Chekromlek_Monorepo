@@ -28,11 +28,7 @@ const userSchema = new mongoose.Schema(
     saves: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
     post: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
     bio: { type: String, default: 'bio' },
-<<<<<<< HEAD
-    gender: { type: String, enum: ['male', 'female', 'other'] },
-=======
     gender: { type: String, enum: ['male', 'Female', 'other'] },
->>>>>>> f566f6116e5bcbba06608b5334ef17d2c28457d7
     work: {
       type: String,
       default: 'Student',

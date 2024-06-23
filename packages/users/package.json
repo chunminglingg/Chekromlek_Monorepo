@@ -44,7 +44,8 @@
     "on-headers": "^1.0.2",
     "supertest": "^7.0.0",
     "swagger-ui-express": "^5.0.0",
-    "tsoa": "^6.2.1",
+    "tsoa": "^6.3.1",
+    "typescript": "^5.5.2",
     "winston": "^3.13.0"
   },
   "devDependencies": {
