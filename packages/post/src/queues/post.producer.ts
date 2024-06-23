@@ -1,19 +1,21 @@
 import { Channel } from "amqplib";
 import { createQueueConnection } from "./connection.queue";
 import { logger } from "../utils/logger";
-interface NotificationTemplate {
-  exchangeName: string;
-  routingKey: string;
-  logMessage: string;
-}
+// interface NotificationTemplate {
+//   exchangeName: string;
+//   routingKey: string;
+//   logMessage: string;
+// }
 export async function publishDirectMessage(
   channel: Channel,
-  template: NotificationTemplate,
+  template: { exchangeName: string; routingKey: string; logMessage: string },
   message: string
 ): Promise<void> {
   try {
+    channel = (await createQueueConnection()) as Channel;
+
     if (!channel) {
-      channel = (await createQueueConnection()) as Channel;
+      throw new Error("Failed to establish queue connection");
     }
     logger.info(
       `ExchangeName: ${template.exchangeName}, routingKey: ${template.routingKey}, message: ${message}`

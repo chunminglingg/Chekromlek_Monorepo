@@ -47,14 +47,13 @@ export class NotificationService {
     userId: string,
     answerOwnerId: string
   ): Promise<void> {
-    let channel: Channel | undefined;
-
-    channel = await createQueueConnection();
+    const channel = await createQueueConnection();
     if (!channel) {
       throw new Error("Failed to establish queue connection");
     }
+
     const template: NotificationTemplate = {
-      eventName: "AnswerCreated",
+      eventName: "PostAnswered",
       exchangeName: "chekromlek-notification",
       routingKey: "post-notification",
       logMessage: `Notification sent for answer creation (Post ID: ${postId})`,

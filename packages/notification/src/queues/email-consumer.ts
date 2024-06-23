@@ -1,11 +1,3 @@
-import { logger } from '@notifications/utils/logger';
-import { createQueueConnection } from './connection';
-import getConfig from '@notifications/utils/config';
-import { Channel, ConsumeMessage } from 'amqplib';
-import { IEmailLocals } from '@notifications/utils/@types/email-sender.types';
-import EmailSender from '@notifications/utils/email-sender';
-import { SocketSender } from '@notifications/utils/socket-sender';
-
 // TODO:
 // 1. Check If Channel Exist. If Not Create Once
 // 2. Define ExchangeName, RoutingKey, QueueName
@@ -13,6 +5,14 @@ import { SocketSender } from '@notifications/utils/socket-sender';
 // 4. Check if Queue Exist, If Not Create Once
 // 5. Bind the Exchange to Queue by Routing Key
 // 6. Consumer: Send Email When there is a message from Queue
+
+import { Channel, ConsumeMessage } from 'amqplib';
+import { createQueueConnection } from './connection';
+import { IEmailLocals } from '@notifications/utils/@types/email-sender.types';
+import getConfig from '@notifications/utils/config';
+import { logger } from '@notifications/utils/logger';
+import EmailSender from '@notifications/utils/email-sender';
+import { SocketSender } from '@notifications/utils/socket-sender';
 
 export async function consumeAuthEmailMessages(
   channel: Channel,

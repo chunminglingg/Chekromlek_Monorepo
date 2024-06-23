@@ -17,8 +17,8 @@ export async function createQueueConnection(): Promise<Channel | undefined> {
     logger.info("Connected to queue successfully...");
     closeQueueConnection(channel, connection);
     return channel;
-  } catch (error) {
-    logger.error(`Error in createQueueConnection() method: ${error}`);
+  } catch (error: any) {
+    logger.error(`Error in createQueueConnection() method: ${error.message}`);
     return undefined;
   }
 }
