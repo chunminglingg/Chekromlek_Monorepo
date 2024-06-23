@@ -6,6 +6,7 @@ import { NavFetching } from "@/components/Organisms/navbar/NavFetching";
 import SideRight from "@/components/Molecules/SideRight/SideRight";
 import { SideLeft } from "@/components";
 import Page from "./page";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Chekromlek",
@@ -27,6 +28,7 @@ export default function RootLayout({
         <div className="flex justify-center items-center h-full ">
           <NavFetching session={session} sigSession={sigSession} />
           <Page session={session} sigSession={sigSession}/>
+          <Toaster/>
         </div>
         <div className="fixed  top-5 left-5 z-30 w-62 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 lg:translate-x-0 max-lg:border-hidden flex flex-col gap-4 max-sm:hidden">
           <SideLeft session={session} sigSession={sigSession} />

@@ -58,7 +58,7 @@ export class PostController {
       await axios.patch(
         `http://user-profile:4000/v1/users/${postId}/addpost`,
         {
-          userId: request._id,
+          userId: request.userId,
         },
         {
           headers: { Authorization: `Bearer ${token}` },
