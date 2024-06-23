@@ -21,7 +21,7 @@ export default function page() {
       </Link>
       {/* Change Name */}
       <Link href={"/setting/account/changename"}>
-        <button className="mt-[6%] w-full h-[70px] max-sm:h-[60px] flex-row flex items-center justify-between  border rounded-md shadow-md p-5 hover:bg-slate-50">
+        <button className="mt-[6%] w-full h-[70px] max-sm:h-[60px] flex-row flex items-center justify-between  border rounded-md shadow-sm p-5 hover:bg-slate-50">
           <div className="flex items-center justify-start gap-1">
             <p className=" items-center justify-center text-[16px] text-gray-600">
               Change Name
@@ -32,7 +32,7 @@ export default function page() {
       </Link>
       {/* Change Password */}
       <Link href={"/setting/account/changepassword"}>
-        <button className="mt-[3%] w-full h-[70px] max-sm:h-[60px] flex-row flex items-center justify-between  border rounded-md shadow-md p-5 hover:bg-slate-50">
+        <button className="mt-[3%] w-full h-[70px] max-sm:h-[60px] flex-row flex items-center justify-between  border rounded-md shadow-sm p-5 hover:bg-slate-50">
           <div className="flex items-center justify-start gap-1">
             <p className=" items-center justify-center text-[16px] text-gray-600">
               Change Password

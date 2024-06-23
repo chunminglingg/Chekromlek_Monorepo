@@ -62,7 +62,7 @@ const Page = () => {
   };
   return (
     <>
-      <div className="flex flex-col gap-3 lg:gap-3 mt-24 lg:border rounded-md lg:border-gray-200 lg:p-4 lg:shadow-lg">
+      <div className="flex flex-col gap-3 lg:gap-3 mt-24 lg:border rounded-md lg:border-gray-200 lg:p-4 lg:shadow-sm">
         <div>
           <Link href={"/setting/account"}>
             <div className="flex flex-row gap-2 ml-2">
