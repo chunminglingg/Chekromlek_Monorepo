@@ -6,7 +6,7 @@ export default function savedPost() {
     <div>
       <div className="flex flex-col gap-2 mt-4">
         <PostCard
-        likeCounts={2}
+          likeCounts={2}
           profile="/card-svg/avatar.svg"
           createdAt={2}
           username="SaNa ViDa"
@@ -15,11 +15,10 @@ export default function savedPost() {
           id={"1"}
           onLike={function (): void {
             throw new Error("Function not implemented.");
-          }}
+          } }
           onSave={function (): void {
             throw new Error("Function not implemented.");
-          }}
-        />
+          } } category={""}        />
       </div>
     </div>
   );

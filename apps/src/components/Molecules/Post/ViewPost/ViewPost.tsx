@@ -69,6 +69,10 @@ const ViewPost: React.FC<ViewPostProps> = ({
   };
 
   const handleInputSubmit = async () => {
+    if (inputValue.trim() === " ") {
+      console.log("Cannot submit empty answer");
+      return;
+    }
     try {
       const response = await axios.post(
         `http://localhost:3000/v1/post/${id}/answer`, // Use the id here
@@ -81,13 +85,14 @@ const ViewPost: React.FC<ViewPostProps> = ({
         }
       );
       console.log(response.data.message);
+      // setAnswers([...answers, inputValue]); // Add the new answer to the state
     } catch (error) {
       console.log("post not success", error);
     }
     console.log("answer:", inputValue);
     setIsButtonClicked(true);
     setInputValue("");
-    setTimeout(() => setIsButtonClicked(false), 1000);
+    setTimeout(() => setIsButtonClicked(false), 2000);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -172,7 +177,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
             onChange={handleInputChange}
             onKeyPress={handleKeyPress}
           />
-          <button onClick={handleInputSubmit}>
+          <button onClick={handleInputSubmit} disabled={inputValue.trim() === ""}>
             <Image
               alt="post"
               src={isButtonClicked ? "/icons/done.svg" : "/icons/sent.svg"}
