@@ -3,7 +3,7 @@ import { IMessageLocals, SocketApi } from './@types/socket-sender.type';
 import http from 'http';
 import { logger } from './logger';
 
-export class SocketNotificationEmailApi implements SocketApi {
+export class SocketNotificationApi implements SocketApi {
   private io: Server;
 
   constructor() {

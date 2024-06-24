@@ -25,7 +25,6 @@ import {
 import CustomError from "@post/errors/customError";
 import APIError from "@post/errors/api-error";
 import axios from "axios";
-// import { NotificationService } from "@post/services/notification.service";
 
 @Route("v1/post")
 export class PostController {
@@ -39,8 +38,7 @@ export class PostController {
 
   @SuccessResponse(StatusCode.Created, "Created successfully")
   @Post("/")
-  @Middlewares(validateInput(PostSaveSchema))
-  @Middlewares(verificationToken)
+  @Middlewares([validateInput(PostSaveSchema), verificationToken])
   public async CreatePost(
     @Body() requestBody: IPost,
     @Request() request: any
@@ -60,7 +58,7 @@ export class PostController {
       );
 
       await axios.patch(
-        `http://localhost:4000/v1/users/${postId}/addpost`,
+        `http://user-profile:4000/v1/users/${postId}/addpost`,
         {
           userId: request._id,
         },
@@ -73,9 +71,16 @@ export class PostController {
         message: "Post created successfully",
         data: post,
       };
-    } catch (error) {
-      logger.error(`Service method error: ${error}`);
-      throw error;
+    } catch (error: unknown | any) {
+      if (error instanceof axios.AxiosError) {
+        logger.error(
+          `Axios error in CreatePost: ${error.response?.data || error.message}`
+        );
+      } else {
+        logger.error(`Service method error in CreatePost: ${error.message}`);
+      }
+
+      throw new APIError("Error creating post", StatusCode.InternalServerError);
     }
   }
   @Get("/")
@@ -198,16 +203,12 @@ export class PostController {
       };
 
       const newAnswer = await this.postService.createAnswer(id, detailAnswer);
-      // const createdAtString = newAnswer.createdAt.toLocaleString();
-
-      // await this.notificationService.notifyUser(
-      //   "answer",
-      //   request.userId.toString(),
-      //   request.username,
-      //   "Your post has a new answer",
-      //   createdAtString
+      // const notification = new NotificationService();
+      // await notification.sendAnswerCreatedNotification(
+      //   detailAnswer.postId,
+      //   answer.userId,
+      //   detailAnswer.userId
       // );
-
       return {
         message: "Answer created successfully",
         data: newAnswer,

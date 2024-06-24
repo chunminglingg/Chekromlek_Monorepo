@@ -33,5 +33,8 @@
     "aws-cdk-lib": "^2.144.0",
     "construct": "^1.0.0",
     "sst": "^2.43.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.2"
   }
 }

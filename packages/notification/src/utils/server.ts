@@ -5,7 +5,7 @@ import NodemailerEmailApi from './nodemailer-email-api';
 import { app } from '../app';
 import { startQueue } from '@notifications/queues/connection';
 import { SocketSender } from './socket-sender';
-import { SocketNotificationEmailApi } from './socket-notification-api';
+import { SocketNotificationApi } from './socket-notification-api';
 // import http from 'http';
 
 export async function run() {
@@ -17,8 +17,8 @@ export async function run() {
 
     const socketSender = SocketSender.getInstance();
     socketSender.activate();
-    socketSender.sendSocketApi(new SocketNotificationEmailApi());
-
+    socketSender.sendSocketApi(new SocketNotificationApi());
+    
     // Activate Email Sender with EmailAPI [NodeMailer]
     const emailSender = EmailSender.getInstance();
     emailSender.activate();

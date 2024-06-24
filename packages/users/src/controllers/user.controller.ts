@@ -233,47 +233,50 @@ export class UserController {
     }
   }
 
-@SuccessResponse(StatusCode.OK, 'Add/Remove Save successfully')
-@Patch('/:postId/addpost')
-@Middlewares(verificationToken)
-public async AddPost(
-  @Request() request: any,
-  @Path() postId: string,
-): Promise<any> {
-  try {
-    if (!mongoose.Types.ObjectId.isValid(postId)) {
-      throw new APIError('Invalid post ID format', StatusCode.BadRequest);
+  @SuccessResponse(StatusCode.OK, 'Add/Remove Save successfully')
+  @Patch('/:postId/addpost')
+  @Middlewares(verificationToken)
+  public async AddPost(
+    @Request() request: any,
+    @Path() postId: string,
+  ): Promise<any> {
+    try {
+      if (!mongoose.Types.ObjectId.isValid(postId)) {
+        throw new APIError('Invalid post ID format', StatusCode.BadRequest);
+      }
+
+      const user = await this.userService.getAuthById(request.userId);
+      if (!user) {
+        throw new APIError('User not found', StatusCode.NotFound);
+      }
+
+      const objectId = new mongoose.Types.ObjectId(postId);
+      const existingPostIndex = user.post.findIndex((item) =>
+        item.equals(objectId),
+      );
+
+      if (existingPostIndex === -1) {
+        user.post.push(objectId);
+        await user.save();
+
+        return {
+          message: 'Post added successfully',
+          data: user,
+        };
+      } else {
+        return {
+          message: "Post already added to the user's post array",
+          data: user,
+        };
+      }
+    } catch (error) {
+      logger.error(`Error in AddPost: ${error}`);
+      throw new APIError(
+        'Error adding post to user',
+        StatusCode.InternalServerError,
+      );
     }
-
-    const user = await this.userService.getAuthById(request.userId);
-    if (!user) {
-      throw new APIError('User not found', StatusCode.NotFound);
-    }
-
-    const objectId = new mongoose.Types.ObjectId(postId);
-    const existingPostIndex = user.post.findIndex((item) =>
-      item.equals(objectId),
-    );
-
-    if (existingPostIndex === -1) {
-      user.post.push(objectId);
-      await user.save();
-
-      return {
-        message: 'Post added successfully',
-        data: user,
-      };
-    } else {
-      return {
-        message: "Post already added to the user's post array",
-        data: user,
-      };
-    }
-  } catch (error) {
-    logger.error(`Error in AddPost: ${error}`);
-    throw new APIError('Error adding post to user', StatusCode.InternalServerError);
   }
-}
 
   @SuccessResponse(StatusCode.OK, 'Add/Remove Save successfully')
   @Post('/save/{postId}')
@@ -321,16 +324,14 @@ public async AddPost(
           message: 'Post removed from saves successfully',
           data: user,
         };
-      } else {
-        // Add post to saves
-        user.saves.push(post._id);
-        await user.save();
-        logger.info(`Post ${postId} added to saves for user ${request.userId}`);
-        return {
-          message: 'Post added to saves successfully',
-          data: user,
-        };
       }
+      user.saves.push(post._id);
+      await user.save();
+      logger.info(`Post ${postId} added to saves for user ${request.userId}`);
+      return {
+        message: 'Post added to saves successfully',
+        data: user,
+      };
     } catch (error: any) {
       logger.error(
         `Error in toggleSavePost for user ${request.userId} and post ${postId}: ${error.message}`,

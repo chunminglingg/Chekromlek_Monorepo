@@ -1,10 +1,8 @@
-import { Channel } from "amqplib";
 import { app } from "../app";
 import getConfig from "./config";
 import connectMongoDB from "./db-connection";
 import { logInit, logger } from "./logger";
-import { createQueueConnection } from "@post/queues/connection.queue";
-export let userChannel: Channel;
+// export let userChannel: Channel;
 
 export async function run() {
   try {
@@ -13,10 +11,8 @@ export async function run() {
     // Activate Logger
     logInit({ env: config.env, logLevel: config.logLevel });
     //Activate RabbitMQ
-    async function initializeQueueConnection() {
-      return (await createQueueConnection()) as Channel;
-    }
-    userChannel = await initializeQueueConnection();
+
+    // userChannel = (await createQueueConnection()) as Channel;
 
     // Activate Database
     const mongodb = connectMongoDB.getInstance();
