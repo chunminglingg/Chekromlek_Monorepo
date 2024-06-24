@@ -9190,7 +9190,7 @@
 
 "@types/moment-timezone@^0.5.30":
   version "0.5.30"
-  resolved "https://registry.yarnpkg.com/@types/moment-timezone/-/moment-timezone-0.5.30.tgz#340ed45fe3e715f4a011f5cfceb7cb52aad46fc7"
+  resolved "https://registry.npmjs.org/@types/moment-timezone/-/moment-timezone-0.5.30.tgz"
   integrity sha512-aDVfCsjYnAQaV/E9Qc24C5Njx1CoDjXsEgkxtp9NyXDpYu4CCbmclb6QhWloS9UTU/8YROUEEdEkWI0D7DxnKg==
   dependencies:
     moment-timezone "*"
@@ -10440,7 +10440,7 @@ available-typed-arrays@^1.0.7:
 
 aws-cdk-lib@2.142.1:
   version "2.142.1"
-  resolved "https://registry.yarnpkg.com/aws-cdk-lib/-/aws-cdk-lib-2.142.1.tgz#aa5f4789f55d549d50337e4aec0272ddd9a8acf9"
+  resolved "https://registry.npmjs.org/aws-cdk-lib/-/aws-cdk-lib-2.142.1.tgz"
   integrity sha512-xs4NRoml5/Zh30YHSk/Wwmr7VcZOZHyIInuBye3gC/BYwCh1lsUe9/ChWIeLUCRhUrELd5npyoBOJiHb3ql7Rg==
   dependencies:
     "@aws-cdk/asset-awscli-v1" "^2.2.202"
@@ -13807,9 +13807,6 @@ file-system-cache@2.3.0:
   version "2.3.0"
   resolved "https://registry.npmjs.org/file-system-cache/-/file-system-cache-2.3.0.tgz"
   integrity sha512-l4DMNdsIPsVnKrgEXbJwDJsA5mB8rGwHYERMgqQx/xAUtChPJMre1bXBzDEqqVbWv9AIbFezXMxeEkZDSrXUOQ==
-  dependencies:
-    fs-extra "11.1.1"
-    ramda "0.29.0"
 
 file-uri-to-path@1.0.0:
   version "1.0.0"
@@ -17543,14 +17540,14 @@ module-alias@^2.2.3:
 
 moment-timezone@*, moment-timezone@^0.5.45:
   version "0.5.45"
-  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.45.tgz#cb685acd56bac10e69d93c536366eb65aa6bcf5c"
+  resolved "https://registry.npmjs.org/moment-timezone/-/moment-timezone-0.5.45.tgz"
   integrity sha512-HIWmqA86KcmCAhnMAN0wuDOARV/525R2+lOLotuGFzn4HO+FH+/645z2wx0Dt3iDv6/p61SIvKnDstISainhLQ==
   dependencies:
     moment "^2.29.4"
 
 moment@^2.29.4:
   version "2.30.1"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.30.1.tgz#f8c91c07b7a786e30c59926df530b4eac96974ae"
+  resolved "https://registry.npmjs.org/moment/-/moment-2.30.1.tgz"
   integrity sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==
 
 mongodb-connection-string-url@^3.0.0:
@@ -21821,6 +21818,14 @@ tsoa@^6.2.0, tsoa@^6.2.1:
     "@tsoa/cli" "^6.3.1"
     "@tsoa/runtime" "^6.3.0"
 
+tsoa@^6.3.1:
+  version "6.3.1"
+  resolved "https://registry.yarnpkg.com/tsoa/-/tsoa-6.3.1.tgz#5968d8a83099d8d466c7325a5d512c70a2048022"
+  integrity sha512-w2INTVkjqQDlWo5aLv/ZIVAgWSfOOUstOW1WWVYOa+9mY2Er/W9E9BcBpIdaoJ5BtUZimhhhs5BQ2Nn76OfQpw==
+  dependencies:
+    "@tsoa/cli" "^6.3.1"
+    "@tsoa/runtime" "^6.3.0"
+
 tsscmp@1.0.6:
   version "1.0.6"
   resolved "https://registry.npmjs.org/tsscmp/-/tsscmp-1.0.6.tgz"
@@ -21966,10 +21971,15 @@ typescript-transform-paths@^3.4.7:
   dependencies:
     minimatch "^3.0.4"
 
-typescript@5.4.5, typescript@^5, typescript@^5.3.3, typescript@^5.4.4, typescript@^5.4.5:
+typescript@5.4.5:
   version "5.4.5"
   resolved "https://registry.npmjs.org/typescript/-/typescript-5.4.5.tgz"
   integrity sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ==
+
+typescript@^5, typescript@^5.3.3, typescript@^5.4.4, typescript@^5.4.5, typescript@^5.5.2:
+  version "5.5.2"
+  resolved "https://registry.npmjs.org/typescript/-/typescript-5.5.2.tgz"
+  integrity sha512-NcRtPEOsPFFWjobJEtfihkLCZCXZt/os3zf8nTxjVH3RvTSxjrCamJpbExGvYOF+tFHc3pA65qpdwPbzjohhew==
 
 uc.micro@^2.0.0:
   version "2.1.0"

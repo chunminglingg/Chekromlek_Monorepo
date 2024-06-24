@@ -5,6 +5,7 @@ export interface IAnswer {
   likeCounts?: number;
   answerlikedBy?: mongoose.Types.ObjectId[];
   createdAt?: Date;
+  username: string;
   elapsedTime?: string;
 }
 export interface IPost {

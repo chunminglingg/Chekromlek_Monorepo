@@ -1,4 +1,4 @@
-import ApiError from '@notifications/errors/api-error';
+import APIError from '@notifications/errors/api-error';
 import { IMessageLocals, SocketApi } from './@types/socket-sender.type';
 
 export class SocketSender implements SocketApi {
@@ -40,10 +40,10 @@ export class SocketSender implements SocketApi {
   }
   validateSocketSender(): void {
     if (!this.isActive) {
-      throw new ApiError('SocketApi is not Acitve!');
+      throw new APIError('SocketApi is not Acitve!');
     }
     if (!this.socketApi) {
-      throw new ApiError('SocketApi is not set!');
+      throw new APIError('SocketApi is not set!');
     }
   }
 }

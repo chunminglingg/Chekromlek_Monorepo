@@ -2,11 +2,10 @@ import getConfig from '@notifications/utils/config';
 import client, { Channel, Connection } from 'amqplib';
 import { consumeAuthEmailMessages } from './email-consumer';
 import { logger } from '@notifications/utils/logger';
+import { consumeNotificationMessages } from './notification-consumer';
 
 export async function createQueueConnection(): Promise<Channel | undefined> {
   try {
-    console.log('Hello from RabbitMQ');
-
     const connection: Connection = await client.connect(
       `${getConfig().rabbitMQ}`,
     );
@@ -39,6 +38,7 @@ export async function startQueue(): Promise<void> {
   try {
     const emailChannel: Channel = (await createQueueConnection()) as Channel;
     await consumeAuthEmailMessages(emailChannel);
+    await consumeNotificationMessages(emailChannel); // Start consuming notification messages
   } catch (error) {
     logger.error(`NotificationService startQueue() method error: ${error}`);
     throw error; // Re-throw for handling at a higher level

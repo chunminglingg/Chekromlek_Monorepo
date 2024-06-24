@@ -29,14 +29,16 @@ import axios from "axios";
 @Route("v1/post")
 export class PostController {
   private postService: PostService;
+  // private notificationService: NotificationService;
+
   constructor() {
     this.postService = new PostService();
+    // this.notificationService = NotificationService.getInstance();
   }
 
   @SuccessResponse(StatusCode.Created, "Created successfully")
   @Post("/")
-  @Middlewares(validateInput(PostSaveSchema))
-  @Middlewares(verificationToken)
+  @Middlewares([validateInput(PostSaveSchema), verificationToken])
   public async CreatePost(
     @Body() requestBody: IPost,
     @Request() request: any
@@ -56,7 +58,7 @@ export class PostController {
       );
 
       await axios.patch(
-        `http://localhost:4000/v1/users/${postId}/addpost`,
+        `http://user-profile:4000/v1/users/${postId}/addpost`,
         {
           userId: request._id,
         },
@@ -69,9 +71,16 @@ export class PostController {
         message: "Post created successfully",
         data: post,
       };
-    } catch (error) {
-      logger.error(`Service method error: ${error}`);
-      throw error;
+    } catch (error: unknown | any) {
+      if (error instanceof axios.AxiosError) {
+        logger.error(
+          `Axios error in CreatePost: ${error.response?.data || error.message}`
+        );
+      } else {
+        logger.error(`Service method error in CreatePost: ${error.message}`);
+      }
+
+      throw new APIError("Error creating post", StatusCode.InternalServerError);
     }
   }
   @Get("/")
@@ -194,6 +203,12 @@ export class PostController {
       };
 
       const newAnswer = await this.postService.createAnswer(id, detailAnswer);
+      // const notification = new NotificationService();
+      // await notification.sendAnswerCreatedNotification(
+      //   detailAnswer.postId,
+      //   answer.userId,
+      //   detailAnswer.userId
+      // );
       return {
         message: "Answer created successfully",
         data: newAnswer,
@@ -206,6 +221,24 @@ export class PostController {
       );
     }
   }
+  // @SuccessResponse(StatusCode.OK, "Notifications fetched successfully")
+  // @Get("/notifications")
+  // @Middlewares(verificationToken)
+  // public async fetchNotifications(@Request() request: any): Promise<any> {
+  //   try {
+  //     const userId = request.userId; // Assuming userId is available in request
+  //     const notifications =
+  //       await this.notificationService.fetchNotifications(userId);
+  //     return notifications; // Assuming notifications is an array of Notification objects
+  //   } catch (error: any) {
+  //     logger.error(`Failed to fetch notifications: ${error.message}`);
+  //     throw new CustomError(
+  //       `Failed to fetch notifications: ${error.message}`,
+  //       StatusCode.InternalServerError
+  //     );
+  //   }
+  // }
+
   // @Get("{postId}/users")
   // public async getUsersWhoCommentedOnPost(
   //   @Path() postId: string

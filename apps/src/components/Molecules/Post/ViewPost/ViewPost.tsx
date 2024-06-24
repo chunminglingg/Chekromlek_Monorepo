@@ -188,7 +188,7 @@ const ViewPost: React.FC<ViewPostProps> = ({
           </button>
         </div>
         <div className="mt-4">
-          <h3 className="font-medium text-[16px] text-[#343A40]">Answers:</h3>
+          {/* <h3 className="font-medium text-[16px] text-[#343A40]">Answers:</h3> */}
           <ul className="list-disc list-inside">
             {answers.map((answer, index) => (
               <li

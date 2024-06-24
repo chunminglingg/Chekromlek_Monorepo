@@ -1,13 +1,7 @@
 import { createQueueConnection } from "@post/queues/connection.queue";
-import { publishDirectMessage } from "@post/queues/post.producer";
-import { Channel } from "amqplib";
 
-interface NotificationTemplate {
-  eventName: string;
-  exchangeName: string;
-  routingKey: string;
-  logMessage: string;
-}
+import { publishDirectMessage } from "@post/queues/post-producer";
+import { userChannel } from "@post/utils/server";
 
 export class NotificationService {
   private static notificationServiceInstance: NotificationService;
@@ -23,21 +17,14 @@ export class NotificationService {
     postId: string,
     userId: string
   ): Promise<void> {
-    let channel: Channel | undefined;
+    // const template: NotificationTemplate = {
+    //   eventName: "PostCreated",
+    //   exchangeName: "chekromlek-notification",
+    //   routingKey: "post-notification",
+    //   logMessage: `Notification sent for post creation (Post ID: ${postId})`,
+    // };
 
-    channel = await createQueueConnection();
-    if (!channel) {
-      throw new Error("Failed to establish queue connection");
-    }
-
-    const template: NotificationTemplate = {
-      eventName: "PostCreated",
-      exchangeName: "chekromlek-notification",
-      routingKey: "post-notification",
-      logMessage: `Notification sent for post creation (Post ID: ${postId})`,
-    };
-
-    const message = JSON.stringify({
+    const messageDetails = JSON.stringify({
       eventType: "PostCreated",
       eventData: {
         postId,
@@ -45,7 +32,13 @@ export class NotificationService {
       },
     });
 
-    await publishDirectMessage(channel, template, message);
+    await publishDirectMessage(
+      userChannel,
+      "chekromlek-notification",
+      "post-notification",
+      JSON.stringify(messageDetails),
+      `Notification sent for answer creation (Post ID: ${postId})`
+    );
   }
 
   async sendAnswerCreatedNotification(
@@ -53,21 +46,13 @@ export class NotificationService {
     userId: string,
     answerOwnerId: string
   ): Promise<void> {
-    let channel: Channel | undefined;
-
-    channel = await createQueueConnection();
+    const channel = await createQueueConnection();
     if (!channel) {
       throw new Error("Failed to establish queue connection");
     }
-    const template: NotificationTemplate = {
-      eventName: "AnswerCreated",
-      exchangeName: "chekromlek-notification",
-      routingKey: "post-notification",
-      logMessage: `Notification sent for answer creation (Post ID: ${postId})`,
-    };
 
-    const message = JSON.stringify({
-      eventType: "AnswerCreated",
+    const messageDetails = JSON.stringify({
+      eventType: "PostAnswered",
       eventData: {
         postId,
         userId,
@@ -75,7 +60,30 @@ export class NotificationService {
       },
     });
 
-    await publishDirectMessage(channel, template, message);
+    await publishDirectMessage(
+      userChannel,
+      "chekromlek-notification",
+      "post-notification",
+      JSON.stringify(messageDetails),
+      `Notification sent for answer creation (Post ID: ${postId})`
+    );
+    // const template: NotificationTemplate = {
+    //   eventName: "PostAnswered",
+    //   exchangeName: "chekromlek-notification",
+    //   routingKey: "post-notification",
+    //   logMessage: `Notification sent for answer creation (Post ID: ${postId})`,
+    // };
+
+    // const message = JSON.stringify({
+    //   eventType: "AnswerCreated",
+    //   eventData: {
+    //     postId,
+    //     userId,
+    //     answerOwnerId,
+    //   },
+    // });
+
+    // await publishDirectMessage(channel, template, message);
   }
   // public async notifyUser(
   //   type: "like" | "answer",

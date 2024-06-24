@@ -106,7 +106,7 @@ export class UserController {
         (post) => post !== null,
       );
       return {
-        message: 'Save post found successfully',
+        message: 'Get post found successfully',
         data: posts,
       };
     } catch (error) {
@@ -271,7 +271,10 @@ export class UserController {
       }
     } catch (error) {
       logger.error(`Error in AddPost: ${error}`);
-      throw new APIError('Error adding post to user', StatusCode.BadRequest);
+      throw new APIError(
+        'Error adding post to user',
+        StatusCode.InternalServerError,
+      );
     }
   }
 
@@ -321,17 +324,15 @@ export class UserController {
           message: 'Post removed from saves successfully',
           data: user,
         };
-      } else {
-        // Add post to saves
-        user.saves.push(post._id);
-        await user.save();
-        logger.info(`Post ${postId} added to saves for user ${request.userId}`);
-        return {
-          message: 'Post added to saves successfully',
-          data: user,
-        };
       }
-    } catch (error:any) {
+      user.saves.push(post._id);
+      await user.save();
+      logger.info(`Post ${postId} added to saves for user ${request.userId}`);
+      return {
+        message: 'Post added to saves successfully',
+        data: user,
+      };
+    } catch (error: any) {
       logger.error(
         `Error in toggleSavePost for user ${request.userId} and post ${postId}: ${error.message}`,
         {
