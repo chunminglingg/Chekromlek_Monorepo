@@ -16,7 +16,7 @@ export const PostUpdateSchema = z.object({
 export const AnswerSchema = z.object({
   userId: z.string().optional(),
   username: z.string().optional(),
-  answer: z.string(),
-  answerlikedBy: z.array(z.string()).optional(), // Make it optional
+  answerSchema: z.string().min(1, { message: "Answer cannot be empty" }),
+  answerlikedBy: z.array(z.string()).optional(),
   likeCounts: z.number().default(0),
 });

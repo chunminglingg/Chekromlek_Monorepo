@@ -22,7 +22,10 @@ export const AuthUserSignUpSchema = z.object({
 
       // No explicit return value needed here, Zod handles successful validation
     }, "Password must be strong"),
-  username: z.string().min(4, "Full name is required"),
+  username: z
+    .string()
+    .min(5, { message: "Username must be at least 5 characters long" })
+    .max(20, { message: "Username must be at most 20 characters long" }),
 });
 
 const AuthUserSignInSchema = z.object({

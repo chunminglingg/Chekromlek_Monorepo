@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "../globals.css";
-import NavAfter from "@/components/Organisms/navbar/NavAfter";
 import { KhFont } from "@/utils/font";
-import { SideBarLogin } from "@/components/Organisms/sidebar/SieBarLogin";
-
-const inter = Inter({ subsets: ["latin"] });
+import { cookies } from "next/headers";
+import { NavFetching } from "@/components/Organisms/navbar/NavFetching";
+import SideRight from "@/components/Molecules/SideRight/SideRight";
+import { SideLeft } from "@/components";
 
 export const metadata: Metadata = {
   title: "Chekromlek",
@@ -17,15 +16,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = cookies();
+  const session = cookieStore.get("session");
+  const sigSession = cookieStore.get("session.sig");
+
   return (
     <html lang="en">
       <body className={KhFont.className}>
-        <NavAfter />
-        <div className="flex justify-center items-center h-full">
-          <div className="h-[200px]"></div>
+        <div className="flex justify-center items-center h-full ">
+          <NavFetching session={session} sigSession={sigSession} />
           {children}
         </div>
-        <SideBarLogin />
+        <div className="fixed  top-5 left-5 z-30 w-62 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 lg:translate-x-0 max-lg:border-hidden flex flex-col gap-4 max-sm:hidden">
+          <SideLeft session={session} sigSession={sigSession} />
+        </div>
+       
       </body>
     </html>
   );

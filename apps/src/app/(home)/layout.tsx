@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "../globals.css";
-import Nav from "@/components/Organisms/navbar/Nav";
-import { Sidebar } from "@/components/Organisms/sidebar/Sidebar";
-import SideRight from "@/components/Molecules/SideRight/SideRight";
 import { KhFont } from "@/utils/font";
-const inter = Inter({ subsets: ["latin"] });
+import { cookies } from "next/headers";
+import { NavFetching } from "@/components/Organisms/navbar/NavFetching";
+import SideRight from "@/components/Molecules/SideRight/SideRight";
+import { SideLeft } from "@/components";
+import Page from "./page";
+import { Toaster } from "@/components/ui/toaster";
+
 
 export const metadata: Metadata = {
   title: "Chekromlek",
@@ -17,17 +19,24 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = cookies();
+  const session = cookieStore.get("session");
+  const sigSession = cookieStore.get("session.sig");
+
   return (
     <html lang="en">
       <body className={KhFont.className}>
-        <Nav />
         <div className="flex justify-center items-center h-full ">
-          {children}
-          <div className="absolute right-0 top-28 hidden lg:block">
-            <SideRight></SideRight>
-          </div>
+          <NavFetching session={session} sigSession={sigSession} />
+          <Page session={session} sigSession={sigSession}/>
+          <Toaster/>
         </div>
-        <Sidebar />
+        <div className="fixed  top-5 left-5 z-30 w-62 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 lg:translate-x-0 max-lg:border-hidden flex flex-col gap-4 max-sm:hidden">
+          <SideLeft session={session} sigSession={sigSession} />
+        </div>
+        <div className="fixed right-5 top-28 hidden lg:block">
+            <SideRight session={session} sigSession={sigSession}></SideRight>
+          </div>
       </body>
     </html>
   );
