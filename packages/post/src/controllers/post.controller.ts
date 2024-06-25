@@ -347,7 +347,7 @@ export class PostController {
   }
 
   @SuccessResponse(StatusCode.OK, "Liked successfully")
-  @Post("/:postId/likepost")
+  @Post("/{postId}/likepost")
   @Middlewares(verificationToken)
   public async LikePost(
     @Path() postId: string,
@@ -370,7 +370,7 @@ export class PostController {
   }
 
   @SuccessResponse(StatusCode.OK, "UnLiked successfully")
-  @Post("/:postId/unlikepost")
+  @Post("/{postId}/unlikepost")
   @Middlewares(verificationToken)
   public async UnLikePost(
     @Path() postId: string,
@@ -394,7 +394,7 @@ export class PostController {
 
   @SuccessResponse(StatusCode.NoContent, "Deleted successfully")
   @Middlewares(verificationToken)
-  @Delete("/:postId")
+  @Delete("/{postId}")
   public async DeletePost(@Path() postId: string, @Request() request: any) {
     const existedPost = await this.postService.findPostById(postId);
     if (!existedPost) {

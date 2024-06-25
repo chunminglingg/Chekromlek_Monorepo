@@ -12,6 +12,9 @@
 			},
 			"IAnswer": {
 				"properties": {
+					"userId": {
+						"type": "string"
+					},
 					"answer": {
 						"type": "string"
 					},
@@ -29,10 +32,17 @@
 						"type": "string",
 						"format": "date-time"
 					},
+					"username": {
+						"type": "string"
+					},
 					"elapsedTime": {
 						"type": "string"
 					}
 				},
+				"required": [
+					"userId",
+					"username"
+				],
 				"type": "object",
 				"additionalProperties": false
 			},

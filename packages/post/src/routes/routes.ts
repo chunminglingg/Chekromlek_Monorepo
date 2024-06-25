@@ -19,10 +19,12 @@ const models: TsoaRoute.Models = {
     "IAnswer": {
         "dataType": "refObject",
         "properties": {
+            "userId": {"dataType":"string","required":true},
             "answer": {"dataType":"string"},
             "likeCounts": {"dataType":"double"},
             "answerlikedBy": {"dataType":"array","array":{"dataType":"refAlias","ref":"mongoose.Types.ObjectId"}},
             "createdAt": {"dataType":"datetime"},
+            "username": {"dataType":"string","required":true},
             "elapsedTime": {"dataType":"string"},
         },
         "additionalProperties": false,
