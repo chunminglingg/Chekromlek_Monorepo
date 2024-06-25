@@ -11,7 +11,7 @@ interface PostType {
   postlikedBy: string[];
   likeCounts: number;
   createdAt: number;
-  answers: any[];
+  saved: any[];
 }
 
 interface PostProps {
