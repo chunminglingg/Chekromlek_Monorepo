@@ -17,7 +17,6 @@ function createConfig(configPath: string) {
     "AUTH_SERVICE_URL",
     "USER_SERVICE_URL",
     "POST_SERVICE_URL",
-    "NOTIFICATION_SERVICE_URL",
   ];
   const missingConfig = requiredConfig.filter((key) => !process.env[key]);
 
@@ -38,7 +37,6 @@ function createConfig(configPath: string) {
     cookieSecretKeyTwo: process.env.COOKIE_SECRET_KEY_TWO,
     authServiceUrl: process.env.AUTH_SERVICE_URL,
     userServiceUrl: process.env.USER_SERVICE_URL,
-    notificationUrl: process.env.NOTIFICATION_SERVICE_URL,
     postServiceUrl: process.env.POST_SERVICE_URL,
   };
 }

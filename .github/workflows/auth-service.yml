@@ -1,0 +1,144 @@
+name: CI/CD Auth Service
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "packages/auth/**"
+
+defaults:
+  run:
+    working-directory: packages/auth
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build the project
+        run: yarn build
+
+      - name: Archive Production Artifact
+        uses: actions/upload-artifact@v2 # Use v2 as in the working script
+        with:
+          name: build
+          path: packages/auth/build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the Production Artifact
+        uses: actions/download-artifact@v2 # Use v2 as in the working script
+        with:
+          name: build
+          path: packages/auth/build
+
+      - name: Add SSH Key
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Ensure target directory exists
+        uses: appleboy/ssh-action@master # Use master as in the working script
+        with:
+          host: ${{ secrets.EC2_IP }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            chown ubuntu:ubuntu /home/ubuntu
+
+      - name: Copy files to EC2
+        uses: appleboy/scp-action@master # Use master as in the working script
+        with:
+          host: ${{ secrets.EC2_IP }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          source: "packages/auth/build/*"
+          target: "/home/ubuntu/"
+
+      - name: Create .env file
+        uses: appleboy/ssh-action@master # Use master as in the working script
+        with:
+          host: ${{ secrets.EC2_IP }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            cat <<EOF > /home/ubuntu/packages/auth/build/configs/.env
+            NODE_ENV=${{ secrets.NODE_ENV }}
+            PORT=${{ secrets.AUTH_PORT }}
+            MONGO_URL=${{ secrets.MONGO_URL }}
+            LOG_LEVEL=${{ secrets.LOG_LEVEL }}
+            RABBITMQ_ENDPOINT=amqp://myuser:mypassword@localhost:5672
+            USER_SERVICE_URL=${{ secrets.USER_SERVICE_URL }}
+            CLIENT_ID=${{ secrets.CLIENT_ID }}
+            CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}
+            REDIRECT_URL=${{ secrets.REDIRECT_URL }}
+            FACEBOOK_CLIENT_ID=${{ secrets.FACEBOOK_CLIENT_ID }}
+            FACEBOOK_CLIENT_SECRET=${{ secrets.FACEBOOK_CLIENT_SECRET }}
+            FACEBOOK_URL=${{ secrets.FACEBOOK_URL }}
+            API_GATEWAY=${{ secrets.API_GATEWAY_URL }}
+            CLIENT_URL=${{ secrets.CLIENT_URL }}
+            JWT_EXPIRES_IN=${{ secrets.JWT_EXPIRES_IN }}
+            EOF
+
+      - name: Start Application
+        uses: appleboy/ssh-action@master # Use master as in the working script
+        with:
+          host: ${{ secrets.EC2_IP }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            # Check if nvm is installed
+            if [ -s "$HOME/.nvm/nvm.sh" ]; then
+              source "$HOME/.nvm/nvm.sh"
+            elif [ -s "/usr/local/nvm/nvm.sh" ]; then
+              source "/usr/local/nvm/nvm.sh"
+            else
+              echo "nvm is not installed."
+              exit 1
+            fi
+
+            # Verify yarn installation
+            if ! command -v yarn &> /dev/null; then
+              echo "Yarn could not be found"
+              exit 1
+            fi
+
+            cd /home/ubuntu/packages/auth/build
+            echo "Checking directory contents..."
+            ls -alh # Lists all files in the current directory
+
+            # Check if server.js exists in the correct directory
+            if [ ! -f ./src/server.js ]; then
+              echo "server.js not found in ./src/"
+              exit 1
+            fi
+
+            # Install Dependencies
+            echo "Installing dependencies..."
+            yarn install
+
+            # Check if the PM2 process is running
+            if pm2 show auth > /dev/null; then
+              echo "Application is running. Restarting..."
+              yarn restart
+            else
+              echo "Application is not running. Starting..."
+              yarn start
+            fi
