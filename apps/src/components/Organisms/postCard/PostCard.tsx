@@ -11,10 +11,11 @@ import { useParams } from "next/navigation";
 
 export interface postCardProps {
   id: string;
-  profile: string;
+  profile?: string;
   likeCounts: number;
   username: string;
   createdAt: number;
+  category: string;
   title?: string;
   description?: string;
   postImage?: string | undefined;

@@ -8,6 +8,7 @@ import { SideLeft } from "@/components";
 import Page from "./page";
 import { Toaster } from "@/components/ui/toaster";
 
+
 export const metadata: Metadata = {
   title: "Chekromlek",
   description: `Chekromlek" is a social media platform dedicated to sharing creative projects. It provides a user-friendly interface for artists, designers, and entrepreneurs to showcase their work, connect with others, and inspire a global community of creators`,
