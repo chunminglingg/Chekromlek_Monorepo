@@ -171,7 +171,7 @@ const PostCard: React.FC<postCardProps> = ({
                     </div>
                     {/* Save */}
                     <div className="Saved">
-                      <Saved postId={id} />
+                      <Saved postId={`${id}`} />
                     </div>
                   </div>
                   {/* Answer */}

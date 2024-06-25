@@ -1,19 +1,30 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios"; // Import axios
 import Image from "next/image";
 import { toast } from "@/components/ui/use-toast";
+
 interface SavedProps {
   postId: string; // or number, depending on your ID type
 }
+
 const Saved: React.FC<SavedProps> = ({ postId }) => {
   const [isSaved, setIsSaved] = useState(false);
 
+  // Retrieve saved state from local storage when the component mounts
+  useEffect(() => {
+    const savedStatus = localStorage.getItem(`savedPost-${postId}`);
+    if (savedStatus === "true") {
+      setIsSaved(true);
+    }
+  }, [postId]);
+
   const handleClick = async () => {
+    const newIsSaved = !isSaved;
     try {
       const response = await axios.post(
         `http://localhost:3000/v1/users/save/${postId}`,
-        { isSaved },
+        { isSaved: newIsSaved },
         {
           withCredentials: true,
           headers: {
@@ -24,9 +35,12 @@ const Saved: React.FC<SavedProps> = ({ postId }) => {
       console.log("responseData:", response.data);
 
       toast({
-        description: "You have been saved successfully.",
+        description: newIsSaved
+          ? " saved successfully"
+          : " unsaved successfully ",
       });
-      setIsSaved(!isSaved);
+      setIsSaved(newIsSaved);
+      localStorage.setItem(`savedPost-${postId}`, newIsSaved.toString());
     } catch (error: any) {
       console.error(
         "Error saving the post:",
