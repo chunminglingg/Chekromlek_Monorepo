@@ -5,7 +5,7 @@ interface TypoProps {
   className?: string;
   align?: "left" | "center" | "right";
   fontSize?: "header" | "title" | "caption" | "normal";
-  color?: "primary" | "secondary" | "submit"| "wearing" | "success" ;
+  color?: "primary" | "secondary" | "submit"|"categories"|"wearing" | "success" ;
   Inter?: "inter 28" | "inter 24" | "inter 20" | "inter 16" | "inter 14";
   Mulish?: "Regular 1" | "Regular 2" | "Regular 3" | "Regular 4";
 }

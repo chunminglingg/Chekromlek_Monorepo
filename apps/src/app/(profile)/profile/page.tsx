@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 import { formattedData } from "@/utils/formattedData";
+import { Toaster } from "@/components/ui/toaster";
 
 interface PostType {
   _id: string;
@@ -17,15 +18,27 @@ interface PostType {
   postlikedBy: string[];
   likeCounts: number;
   createdAt: number;
-  answers: any[];
+  saved: string[];
 }
 
+interface SavedType {
+  _id: string;
+  username: string;
+  title: string;
+  description: string;
+  postImage: string;
+  category: string;
+  postlikedBy: string[];
+  likeCounts: number;
+  createdAt: number;
+  saved: string[];
+}
 interface UserDataTypes {
   _id: string;
   username: string;
   email: string;
   work: string;
-  answers: number;
+  saved: SavedType[];
   posts: PostType[];
   bio: string;
   gender: string;
@@ -58,41 +71,74 @@ const Page = () => {
         withCredentials: true,
       });
 
-        if (response.data && response.data.data) {
-          const formattedPosts = formattedData(
-            Array.isArray(response.data.data) ? response.data.data.filter((post: null) => post !== null) : []
-          );
-    
-          if (formattedPosts.length === 0) {
-            console.log('No posts available for this user.');
-          }
-    
-          setUserData((prevUserData) => ({
-            ...prevUserData!,
-            posts: formattedPosts,
-          }));
-        } else {
+      if (response.data && response.data.data) {
+        const formattedPosts = formattedData(
+          Array.isArray(response.data.data) ? response.data.data.filter((post: any) => post !== null) : []
+        );
+
+        if (formattedPosts.length === 0) {
           console.log('No posts available for this user.');
-          setUserData((prevUserData) => ({
-            ...prevUserData!,
-            posts: [],
-          }));
         }
-      } catch (error: any) {
-        console.error('Error fetching user posts:', error);
+
+        setUserData((prevUserData) => ({
+          ...prevUserData!,
+          posts: formattedPosts,
+        }));
+      } else {
+        console.log('No posts available for this user.');
+        setUserData((prevUserData) => ({
+          ...prevUserData!,
+          posts: [],
+        }));
       }
-    };
+    } catch (error: any) {
+      console.error('Error fetching user posts:', error);
+    }
+  };
+
+  const fetchSavedPosts = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/v1/users/save', {
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: true,
+      });
+
+      if (response.data && response.data.data) {
+        const formattedPosts = formattedData(
+          Array.isArray(response.data.data) ? response.data.data.filter((saves: any) => saves !== null) : []
+        );
+        console.log(' posts available for this user.');
+        if (formattedPosts.length === 0) {
+          console.log('No posts available for this user.');
+        }
+
+        setUserData((prevUserData) => ({
+          ...prevUserData!,
+          saved: formattedPosts,
+        }));
+      } else {
+        console.log('No posts available for this user.');
+        setUserData((prevUserData) => ({
+          ...prevUserData!,
+          saved: [],
+        }));
+      }
+    } catch (error: any) {
+      console.error('Error fetching saved posts:', error);
+    }
+  };
 
   useEffect(() => {
     fetchUserData();
     fetchUserPosts();
-  }, []);
+    fetchSavedPosts();
+  }, [view]);
 
   if (!userData) {
     return <div>Loading...</div>;
   }
 
-  const { username, work, answers, posts, profile, bio } = userData;
+  const { username, work, saved = [], posts = [], profile, bio } = userData;
 
   return (
     <div className="content flex flex-col justify-center items-center">
@@ -113,7 +159,7 @@ const Page = () => {
             </div>
             <div className="been-post text-[#6C757D] text-[15px] font-sans flex flex-row gap-10">
               <p>{posts.length} Posts</p>
-              <p>{answers} Saved</p>
+              <p>{saved.length} Saved</p>
             </div>
             <div className="Category text-[#623cbb] text-[15px] font-medium">
               {work}
@@ -160,9 +206,14 @@ const Page = () => {
             <div>No posts available.</div>
           )
         ) : (
-          <SavedPost />
+          saved.length > 0 ? (
+            <SavedPost savedpost={saved} />
+          ) : (
+            <div>No saved posts available.</div>
+          )
         )}
       </div>
+      <Toaster />
     </div>
   );
 };

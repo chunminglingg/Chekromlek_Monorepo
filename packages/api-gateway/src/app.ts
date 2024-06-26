@@ -2,7 +2,7 @@ import express, { Response, Request, NextFunction } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import applyProxy from "./middleware/proxy";
-import { applyRateLimit } from "./middleware/rate-limit";
+// import { applyRateLimit } from "./middleware/rate-limit";
 import cookieSession from "cookie-session";
 import hpp from "hpp";
 import { logger } from "./utils/logger";
@@ -56,7 +56,7 @@ app.use(
 );
 
 // Apply Limit Request
-applyRateLimit(app);
+// applyRateLimit(app);
 
 // Hide Express Server Information
 app.disable("x-powered-by");
