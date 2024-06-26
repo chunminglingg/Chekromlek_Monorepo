@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import PostCard, {postCardProps} from "@/components/Organisms/postCard/PostCard";
+import { formattedData } from "@/utils/formattedData";
+
 
 const Khmer = () => {
   const [posts, setPosts] = useState<postCardProps[]>([]);
@@ -19,7 +21,8 @@ const Khmer = () => {
         }
        
         const data = await response.json();
-        setPosts(data.posts); // Adjust this line based on your API response structure
+        const formateData = formattedData (data.posts);
+        setPosts(formateData); // Adjust this line based on your API response structure
         setPage(page + 1);
         setLoading(false);
       } catch (error:any) {
@@ -55,7 +58,7 @@ const Khmer = () => {
           </button>
         </div>
         <div className="items-center w-[420px] flex-row">
-          <p className="text-purple-600 font-bold text-[23px]">Khmer</p>
+          <p className="text-purple-600 font-bold text-[23px]">Khmer Writing</p>
         </div>
       </div>
       <div className="flex flex-col gap-2 mt-12">
