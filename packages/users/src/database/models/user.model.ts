@@ -10,8 +10,6 @@ export interface IUser {
   post?: string[];
   bio?: string;
   work?: string;
-  answers?: number;
-  posts?: number;
   gender?: string;
   createdAt?: Date | string;
 }
@@ -34,8 +32,6 @@ const userSchema = new mongoose.Schema(
       default: 'Student',
       enum: ['Student', 'General', 'Developer'],
     },
-    answers: { type: Number, default: 0 },
-    posts: { type: Number, default: 0 },
     createdAt: { type: Date, default: Date.now },
   },
   {
