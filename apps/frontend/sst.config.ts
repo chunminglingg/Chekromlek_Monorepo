@@ -1,34 +1,31 @@
 import { SSTConfig } from "sst";
 import { NextjsSite } from "sst/constructs";
-
 import { HostedZone, IHostedZone } from "aws-cdk-lib/aws-route53";
 import { Certificate, ICertificate, CertificateValidation } from "aws-cdk-lib/aws-certificatemanager";
 
-const ROOT_DOMAIN_NAME = "chekromlek.com"; // Your domain name here
-const DOMAIN_NAME = `${ROOT_DOMAIN_NAME}`; // Any prefix you want, or just the root domain
+const ROOT_DOMAIN_NAME = "chekromlek.com";
+const DOMAIN_NAME = `${ROOT_DOMAIN_NAME}`;
 
 export default {
   config(_input) {
     return {
       name: "chekromlek",
-      region: "us-east-1", // Keep it that way
+      region: "us-east-1",
+      requestTimeout: 70000
     };
   },
   stacks(app) {
     app.stack(function Site({ stack }) {
-      // Look up hosted zone
       const hostedZone: IHostedZone = HostedZone.fromLookup(stack, "HostedZone", {
         domainName: ROOT_DOMAIN_NAME,
       });
 
-      // Create a SSL certificate linked to the hosted zone
       const certificate: ICertificate = new Certificate(stack, "Certificate", {
         domainName: DOMAIN_NAME,
         subjectAlternativeNames: [`www.${DOMAIN_NAME}`],
         validation: CertificateValidation.fromDns(hostedZone),
       });
 
-      // Add the hosted zone and the certificate to the Next.js site
       const site = new NextjsSite(stack, "NextJS", {
         customDomain: {
           domainName: DOMAIN_NAME,

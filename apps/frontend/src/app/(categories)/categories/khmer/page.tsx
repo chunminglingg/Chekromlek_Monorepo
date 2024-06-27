@@ -19,7 +19,7 @@ const Khmer = () => {
           </button>
         </div>
         <div className="items-center w-[420px] flex-row">
-          <p className="text-purple-600 font-bold text-[23px]">Biology</p>
+          <p className="text-purple-600 font-bold text-[23px]">Khmer</p>
         </div>
       </div>
       <div className="flex flex-col gap-2 mt-4">
