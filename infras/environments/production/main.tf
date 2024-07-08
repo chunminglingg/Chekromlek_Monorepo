@@ -10,11 +10,11 @@ module "s3_bucket" {
   source        = "../../modules/s3_bucket"
   bucket_name   = "chekromlek-resource"
   account_id    = var.account_id
-  iam_role_name = "USER_SERVICE"
+  iam_role_name = "NORMAL_USER_SERVICE"
 }
 
 module "ec2_s3_iam_role" {
   source           = "../../modules/iam"
   iam_role_service = "ec2.amazonaws.com"
-  iam_role_name    = "USER_SERVICE"
+  iam_role_name    = "NORMAL_USER_SERVICE"
 }

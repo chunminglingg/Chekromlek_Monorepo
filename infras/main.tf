@@ -5,3 +5,12 @@ module "chekromlek_dev" {
   account_id = var.account_id
 }
 
+terraform {
+  backend "s3" {
+    bucket         = "chekromlek-state-bucket"
+    key            = "terraform/state"
+    region         = "us-east-1"
+    encrypt        = true
+    dynamodb_table = "chekromlek-lock-table"
+  }
+}

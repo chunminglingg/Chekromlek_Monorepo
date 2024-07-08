@@ -9,5 +9,3 @@ resource "aws_instance" "app_instance" {
     Name = var.ec2_tag_name
   }
 }
-
-# COMMENT THIS OUT AFTER FIRST APPLY
